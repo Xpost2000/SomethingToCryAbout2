@@ -16,12 +16,14 @@ Renderer2D::Renderer2D(ShaderProgram *program)
 	vao->Attrib(0, 2, false, 2, 0);
 	vao->Attrib(1, 2, false, 2, 0);
 	buffer->Unbind();
+	fprintf(stderr, "Renderer2D : Instance Created\n");
 	delete buffer;
 }
 
 
 Renderer2D::~Renderer2D()
 {
+	fprintf(stderr, "Renderer2D : Destructor\n");
 	delete buffer;
 	delete vao;
 }
@@ -37,6 +39,7 @@ void Renderer2D::Draw(glm::vec2 pos, glm::vec2 size, float angle, glTexture *tex
 	program->SetUniformMatrix4fv("model", glm::value_ptr(model));
 	vao->Draw(GL_TRIANGLE_STRIP, 4);
 	texture->Unbind();
+	fprintf(stderr, "Renderer2D: Draw Quad (Overload +1)\n");
 }
 
 void Renderer2D::Draw(glm::vec2 pos, glm::vec2 size, float angle, glm::vec3 color){
@@ -48,6 +51,8 @@ void Renderer2D::Draw(glm::vec2 pos, glm::vec2 size, float angle, glm::vec3 colo
 	program->SetUniform3f("iClr", color.r, color.g, color.b);
 	program->SetUniformMatrix4fv("model", glm::value_ptr(model));
 	vao->Draw(GL_TRIANGLE_STRIP, 4);
+	
+	fprintf(stderr, "Renderer2D: Draw Quad(Overload +2)\n");
 }
 
 void Renderer2D::DrawM(glm::vec2 pos, glm::vec2 size, float angle, glTexture* texture, glm::vec3 color){
@@ -62,16 +67,20 @@ void Renderer2D::DrawM(glm::vec2 pos, glm::vec2 size, float angle, glTexture* te
 	program->SetUniformMatrix4fv("model", glm::value_ptr(model));
 	vao->Draw(GL_TRIANGLE_STRIP, 4);
 	texture->Unbind();
+
+	fprintf(stderr, "Renderer2D: Draw Quad(Overload +3)\n");
 }
 
 void Renderer2D::SupplyMatrix(glm::mat4& model){
 	this->model = model;
+	fprintf(stderr, "Renderer2D: Model Matrix Supplied.\n");
 }
 
 void Renderer2D::EnableAlpha(bool val){
 	if (val){
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+		fprintf(stderr, "Renderer2D: Alpha has been Enabled\n");
 	}
 	else{
 		return;
