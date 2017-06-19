@@ -79,7 +79,7 @@ void Renderer2D::SupplyMatrix(glm::mat4& model){
 void Renderer2D::EnableAlpha(bool val){
 	if (val){
 		glEnable(GL_BLEND);
-		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		fprintf(stderr, "Renderer2D: Alpha has been Enabled\n");
 	}
 	else{

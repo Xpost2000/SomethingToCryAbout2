@@ -33,10 +33,11 @@ void Game::InitGame(){
 	program->DetachShader(*vertex);
 	program->DetachShader(*fragment);
 	tex = new glTexture();
-	tex->SetFilter(GL_NEAREST);
+	tex->SetFilter(GL_LINEAR);
 	tex->SetWrapMode(GL_REPEAT);
-	tex->LoadImage("Assests\\Textures\\test.png");
+	tex->LoadImage("Assests\\Textures\\circle.png");
 	renderer = new Renderer2D(program);
+	renderer->EnableAlpha(true);
 	float l, r, b, t;
 	l = 0.; r = 1024.; b = 0.; t = 768.;
 	projection = glm::ortho(l, r, b, t, -1.f, 1.f);
@@ -64,7 +65,7 @@ void Game::DrawGame(){
 	// Draw everything here.
 	program->SetUniformMatrix4fv("model", glm::value_ptr(model));
 	program->Use();
-	renderer->Draw(glm::vec2(x, y), glm::vec2(200, 300), 20, tex);
+	renderer->Draw(glm::vec2(x, y), glm::vec2(300, 300), 20, tex);
 	program->SetUniformMatrix4fv("view", glm::value_ptr(view));
 	window->Refresh();
 }
