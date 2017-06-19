@@ -3,6 +3,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <GL\glew.h>
+float x = 100;
+float y = 100;
 Game::Game()
 {
 	window = new Window("Game Window", 1024, 768);
@@ -62,9 +64,7 @@ void Game::DrawGame(){
 	// Draw everything here.
 	program->SetUniformMatrix4fv("model", glm::value_ptr(model));
 	program->Use();
-	renderer->Draw(glm::vec2(0, 0), glm::vec2(200, 300), 20, tex);
-	renderer->Draw(glm::vec2(255, 100), glm::vec2(300, 100), 0, glm::vec3(133, 100, 255));
-	renderer->DrawM(glm::vec2(300, 400), glm::vec2(400, 200), 0, tex, glm::vec3(122, 255, 255));
+	renderer->Draw(glm::vec2(x, y), glm::vec2(200, 300), 20, tex);
 	program->SetUniformMatrix4fv("view", glm::value_ptr(view));
 	window->Refresh();
 }
@@ -76,6 +76,8 @@ void Game::HandleInput(){
 			inState = GameState::GAME_QUIT;
 			break;
 		case SDL_KEYDOWN:
+			x = rand() % 1024;
+			y = rand() % 768;
 			break;
 		case SDL_KEYUP:
 			break;

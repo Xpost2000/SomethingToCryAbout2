@@ -67,3 +67,13 @@ void Renderer2D::DrawM(glm::vec2 pos, glm::vec2 size, float angle, glTexture* te
 void Renderer2D::SupplyMatrix(glm::mat4& model){
 	this->model = model;
 }
+
+void Renderer2D::EnableAlpha(bool val){
+	if (val){
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+	}
+	else{
+		return;
+	}
+}
