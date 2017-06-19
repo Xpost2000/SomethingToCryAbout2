@@ -5,6 +5,7 @@
 #include <GL\glew.h>
 float x = 100;
 float y = 100;
+float angle = 0;
 Game::Game()
 {
 	window = new Window("Game Win : Build Win32 0.1", 1024, 768);
@@ -66,7 +67,8 @@ void Game::DrawGame(){
 	// Draw everything here.
 	program->SetUniformMatrix4fv("model", glm::value_ptr(model));
 	program->Use();
-	renderer->DrawM(glm::vec2(x, y), glm::vec2(150, 150), 20, tex, glm::vec3(155, 10, 255));
+	angle += 0.2;
+	renderer->DrawM(glm::vec2(x, y), glm::vec2(150, 150), angle, tex, glm::vec3(155, 10, 255));
 	program->SetUniformMatrix4fv("view", glm::value_ptr(view));
 	window->Refresh();
 }

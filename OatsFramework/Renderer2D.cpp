@@ -33,7 +33,10 @@ void Renderer2D::Draw(glm::vec2 pos, glm::vec2 size, float angle, glTexture *tex
 	texture->Bind();
 	model = glm::mat4();
 	model = glm::translate(model, glm::vec3(pos, 1.0f));
-	model = glm::scale(model, glm::vec3(size.x , size.y, 1.0f));
+	model = glm::translate(model, glm::vec3(0.5f * size.x, 0.5f * size.y, 0.0f));
+	model = glm::rotate(model, angle, glm::vec3(0.0f, 0.0f, 1.0f));
+	model = glm::translate(model, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f));
+	model = glm::scale(model, glm::vec3(size.x, size.y, 1.0f));
 	program->SetUniform1i("textured", 1);
 	program->SetUniform1i("tex", 0);
 	program->SetUniformMatrix4fv("model", glm::value_ptr(model));
@@ -46,6 +49,9 @@ void Renderer2D::Draw(glm::vec2 pos, glm::vec2 size, float angle, glm::vec3 colo
 	program->Use();
 	model = glm::mat4();
 	model = glm::translate(model, glm::vec3(pos, 1.0f));
+	model = glm::translate(model, glm::vec3(0.5f * size.x, 0.5f * size.y, 0.0f));
+	model = glm::rotate(model, angle, glm::vec3(0.0f, 0.0f, 1.0f));
+	model = glm::translate(model, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f));
 	model = glm::scale(model, glm::vec3(size.x, size.y, 1.0f));
 	program->SetUniform1i("textured", 0);
 	program->SetUniform3f("iClr", color.r, color.g, color.b);
@@ -60,6 +66,10 @@ void Renderer2D::DrawM(glm::vec2 pos, glm::vec2 size, float angle, glTexture* te
 	texture->Bind();
 	model = glm::mat4();
 	model = glm::translate(model, glm::vec3(pos, 1.0f));
+
+	model = glm::translate(model, glm::vec3(0.5f * size.x, 0.5f * size.y, 0.0f));
+	model = glm::rotate(model, angle, glm::vec3(0.0f, 0.0f, 1.0f));
+	model = glm::translate(model, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f));
 	model = glm::scale(model, glm::vec3(size.x, size.y, 1.0f));
 	program->SetUniform3f("iClr", color.r, color.g, color.b);
 	program->SetUniform1i("textured", 2);
