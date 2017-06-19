@@ -14,10 +14,12 @@ VertexBuffer::~VertexBuffer()
 
 void VertexBuffer::AddVertices(float x, float y){
 	data.push_back(x); data.push_back(y);
+	vertices++;
 }
 
 void VertexBuffer::AddVertices(float x, float y, float z){
 	data.push_back(x); data.push_back(y); data.push_back(z);
+	vertices++;
 }
 
 void VertexBuffer::Bind(){

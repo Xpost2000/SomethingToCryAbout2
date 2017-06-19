@@ -3,6 +3,7 @@
 #include "Window.h"
 #include "Shader.h"
 #include "VertexBuffer.h"
+#include "VertexArray.h"
 #include "ShaderProgram.h"
 #include "glTexture.h"
 class Game
@@ -23,6 +24,8 @@ private:
 	void HandleInput();
 	void DrawGame();
 	void UpdateGame();
+	// Wrapper
+	VertexArray *VAO;
 	// Temporary OGL stuff
 	GLuint vao;
 };

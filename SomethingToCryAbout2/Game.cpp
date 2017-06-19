@@ -23,7 +23,7 @@ Game::~Game(){
 
 void Game::InitGame(){
 	glGenVertexArrays(1, &vao);
-
+	VAO = new VertexArray();
 	VertexBuffer test;
 	test.AddVertices(0.0, 0.2);
 	test.AddVertices(1.0, -1.0);
@@ -31,15 +31,10 @@ void Game::InitGame(){
 	test.AddVertices(0.0, 1.0);
 	test.AddVertices(1.0, -1.0);
 	test.AddVertices(-1.0, -1.0);
-	glBindVertexArray(vao);
-	
 	test.BufferData();
 	test.Bind();
-	glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(float) * 4, (void*)0);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 2, GL_FLOAT, false, sizeof(float) * 4, (void*)(sizeof(float) * 2));
-	glEnableVertexAttribArray(1);
-	glBindVertexArray(0);
+	VAO->Attrib(0, 2, false, 4, 0);
+	VAO->Attrib(1, 2, false, 4, 2);
 	test.Unbind();
 	fragment = new Shader(GL_FRAGMENT_SHADER);
 	vertex = new Shader(GL_VERTEX_SHADER);
@@ -78,9 +73,7 @@ void Game::DrawGame(){
 	program->Use();
 	tex->Bind();
 	program->SetUniform1i("tex", 0);
-	glBindVertexArray(vao);
-	glDrawArrays(GL_TRIANGLES, 0, 3);
-	glBindVertexArray(0);
+	VAO->Draw(GL_TRIANGLES, 3);
 	tex->Unbind();
 	window->Refresh();
 }
