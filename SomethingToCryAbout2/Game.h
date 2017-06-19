@@ -6,6 +6,7 @@
 #include "VertexArray.h"
 #include "ShaderProgram.h"
 #include "glTexture.h"
+#include "Renderer2D.h"
 class Game
 {
 public:
@@ -14,20 +15,21 @@ public:
 	void InitGame();
 	void RunGame();
 private:
+	//Math Stuff
+	glm::mat4 view = glm::mat4();
+	glm::mat4 projection = glm::mat4();
+	glm::mat4 model = glm::mat4();
+	//
 	Window *window = nullptr;
 	Shader* fragment = nullptr;
 	Shader* vertex = nullptr;
 	ShaderProgram* program = nullptr;
 	glTexture* tex = nullptr;
+	Renderer2D* renderer = nullptr;
 	GameState inState;
 	// Functions
 	void HandleInput();
 	void DrawGame();
 	void UpdateGame();
-	// Wrapper
-	VertexArray *VAO;
-	VertexArray *VAO2;
-	// Temporary OGL stuff
-	GLuint vao;
 };
 

@@ -13,8 +13,6 @@ Game::Game()
 
 
 Game::~Game(){
-	delete VAO;
-	delete VAO2;
 	delete fragment;
 	delete vertex;
 	delete program;
@@ -23,32 +21,6 @@ Game::~Game(){
 }
 
 void Game::InitGame(){
-	glGenVertexArrays(1, &vao);
-	VAO = new VertexArray();
-	VAO2 = new VertexArray();
-	VertexBuffer test, test1;
-	test.AddVertices(0.0, 0.2);
-	test.AddVertices(1.0, -1.0);
-	test.AddVertices(-1.0, -1.0);
-	test.AddVertices(0.0, 1.0);
-	test.AddVertices(1.0, -1.0);
-	test.AddVertices(-1.0, -1.0);
-	test.BufferData();
-	test1.AddVertices(-1.0, -1.0);
-	test1.AddVertices(1.0, 1.0);
-	test1.AddVertices(-1, 1.);
-	test1.AddVertices(-1, -1);
-	test1.AddVertices(1, 1);
-	test1.AddVertices(1, -1);
-	test1.BufferData();
-	test1.Bind();
-	VAO2->Attrib(0, 2, false, 2, 0);
-	VAO2->Attrib(1, 2, false, 2, 0);
-	test1.Unbind();
-	test.Bind();
-	VAO->Attrib(0, 2, false, 4, 0);
-	VAO->Attrib(1, 2, false, 4, 2);
-	test.Unbind();
 	fragment = new Shader(GL_FRAGMENT_SHADER);
 	vertex = new Shader(GL_VERTEX_SHADER);
 	program = new ShaderProgram();
@@ -63,35 +35,36 @@ void Game::InitGame(){
 	tex->SetFilter(GL_LINEAR);
 	tex->SetWrapMode(GL_REPEAT);
 	tex->LoadImage("test.png");
-	program->SetUniform3f("iClr", 100, 1, 155);
+	renderer = new Renderer2D(program);
 }
 
 void Game::RunGame(){
 	while (inState == GameState::GAME_RUNNING | inState == GameState::GAME_PAUSE){
 		HandleInput();
-		DrawGame();
 		UpdateGame();
+		DrawGame();
 	}
 }
 
 void Game::UpdateGame(){
-
+	view = glm::mat4();
+	model = glm::mat4();
+	float l, r, b, t;
+	l = 0.; r = 1024.; b = 0.; t = 768.;
+	projection = glm::ortho(l, r, b, t, -1.f, 1.f);
 }
 
 void Game::DrawGame(){
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClearColor(0.5f, 1.2f, 0.3f, 1.0f);
 	glViewport(0, 0, 1024, 768);
+
 	// Draw everything here.
+	program->SetUniformMatrix4fv("model", glm::value_ptr(model));
 	program->Use();
-	program->SetUniform3f("iClr", 100, 1, 155);
-	program->SetUniform1i("textured", 0);
-	VAO2->Draw(GL_TRIANGLE_STRIP, 6);
-	tex->Bind();
-	program->SetUniform1i("textured", 1);
-	program->SetUniform1i("tex", 0);
-	VAO->Draw(GL_TRIANGLES, 3);
-	tex->Unbind();
+	renderer->Draw(glm::vec2(150, 150), glm::vec2(200, 300), 20, tex);
+	program->SetUniformMatrix4fv("projection", glm::value_ptr(projection));
+	program->SetUniformMatrix4fv("view", glm::value_ptr(view));
 	window->Refresh();
 }
 
