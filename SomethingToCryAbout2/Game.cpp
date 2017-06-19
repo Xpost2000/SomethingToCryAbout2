@@ -38,6 +38,7 @@ void Game::InitGame(){
 	tex->LoadImage("Assests\\Textures\\circle.png");
 	renderer = new Renderer2D(program);
 	renderer->EnableAlpha(true);
+	renderer->EnableAntiAliasing(true);
 	float l, r, b, t;
 	l = 0.; r = 1024.; b = 0.; t = 768.;
 	projection = glm::ortho(l, r, b, t, -1.f, 1.f);
@@ -65,7 +66,7 @@ void Game::DrawGame(){
 	// Draw everything here.
 	program->SetUniformMatrix4fv("model", glm::value_ptr(model));
 	program->Use();
-	renderer->Draw(glm::vec2(x, y), glm::vec2(300, 300), 20, tex);
+	renderer->DrawM(glm::vec2(x, y), glm::vec2(150, 150), 20, tex, glm::vec3(155, 10, 255));
 	program->SetUniformMatrix4fv("view", glm::value_ptr(view));
 	window->Refresh();
 }
@@ -77,8 +78,6 @@ void Game::HandleInput(){
 			inState = GameState::GAME_QUIT;
 			break;
 		case SDL_KEYDOWN:
-			x = rand() % 1024;
-			y = rand() % 768;
 			break;
 		case SDL_KEYUP:
 			break;

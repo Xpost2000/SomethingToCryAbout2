@@ -40,9 +40,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LibraryPath>C:\Users\Random\Dropbox\SomethingToCryAboutOGL\SomethingToCryAbout2\Debug\OatsFramework;$(LibraryPath)</LibraryPath>
+    <ExecutablePath>C:\Users\Random\Dropbox\SomethingToCryAboutOGL\SomethingToCryAbout2\Debug\OatsFramework;$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LibraryPath>C:\Users\Random\Dropbox\SomethingToCryAboutOGL\SomethingToCryAbout2\Debug\OatsFramework;$(LibraryPath)</LibraryPath>
+    <ExecutablePath>C:\Users\Random\Dropbox\SomethingToCryAboutOGL\SomethingToCryAbout2\Debug\OatsFramework;$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

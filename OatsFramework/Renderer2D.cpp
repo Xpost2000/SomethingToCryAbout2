@@ -86,3 +86,13 @@ void Renderer2D::EnableAlpha(bool val){
 		return;
 	}
 }
+
+void Renderer2D::EnableAntiAliasing(bool val){
+	if (val){
+		glEnable(GL_MULTISAMPLE);
+		fprintf(stderr, "Renderer2D: Anti-Aliasing Functionality Enabled\n");
+	}
+	else{
+		return;
+	}
+}

@@ -17,6 +17,7 @@ public:
 	// Colored Rectangle with texture
 	OATS_LIB_API void DrawM(glm::vec2 pos, glm::vec2 size, float angle, glTexture *texture, glm::vec3 color = glm::vec3(255, 255, 255));
 	OATS_LIB_API void EnableAlpha(bool);
+	OATS_LIB_API void EnableAntiAliasing(bool);
 private:
 	glm::mat4 model; // matrix
 
