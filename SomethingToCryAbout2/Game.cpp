@@ -7,7 +7,7 @@ float x = 100;
 float y = 100;
 Game::Game()
 {
-	window = new Window("Game Window", 1024, 768);
+	window = new Window("Game Win : Build Win32 0.1", 1024, 768);
 	window->CreateWindow();
 	inState = GameState::GAME_RUNNING;
 }

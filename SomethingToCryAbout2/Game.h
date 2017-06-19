@@ -1,13 +1,12 @@
 #pragma once
-#include "GameStateEnum.h"
-#include "Window.h"
-#include "ResourceManager.h"
-#include "Shader.h"
-#include "VertexBuffer.h"
-#include "VertexArray.h"
-#include "ShaderProgram.h"
-#include "glTexture.h"
-#include "Renderer2D.h"
+#include <Oats\GameStateEnum.h>
+#include <Oats\Window.h>
+#include <Oats\ResourceManager.h>
+#include <Oats\Shader.h>
+#include <Oats\VertexBuffer.h>
+#include <Oats\VertexArray.h>
+#include <Oats\glTexture.h>
+#include <Oats\Renderer2D.h>
 class Game
 {
 public:
