@@ -68,6 +68,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ClockTimer.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="glTexture.cpp" />
     <ClCompile Include="main.cpp" />
@@ -78,9 +79,11 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ClockTimer.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameStateEnum.h" />
     <ClInclude Include="glTexture.h" />
+    <ClInclude Include="MathHelperFunctions.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="VertexArray.h" />

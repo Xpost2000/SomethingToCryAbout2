@@ -15,9 +15,7 @@ glTexture::~glTexture()
 
 void glTexture::LoadImage(std::string path){
 	img = IMG_Load(path.c_str());
-	this->Bind();
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img->w, img->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, img->pixels);
-	this->Unbind();
+	glTextureImage2DEXT(tex, GL_TEXTURE_2D, 0, GL_RGBA, img->w, img->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, img->pixels);
 	glGenerateTextureMipmap(tex);
 }
 

@@ -13,7 +13,8 @@ Game::Game()
 
 
 Game::~Game(){
-	glDeleteVertexArrays(1, &vao);
+	delete VAO;
+	delete VAO2;
 	delete fragment;
 	delete vertex;
 	delete program;
@@ -24,7 +25,8 @@ Game::~Game(){
 void Game::InitGame(){
 	glGenVertexArrays(1, &vao);
 	VAO = new VertexArray();
-	VertexBuffer test;
+	VAO2 = new VertexArray();
+	VertexBuffer test, test1;
 	test.AddVertices(0.0, 0.2);
 	test.AddVertices(1.0, -1.0);
 	test.AddVertices(-1.0, -1.0);
@@ -32,6 +34,17 @@ void Game::InitGame(){
 	test.AddVertices(1.0, -1.0);
 	test.AddVertices(-1.0, -1.0);
 	test.BufferData();
+	test1.AddVertices(-1.0, -1.0);
+	test1.AddVertices(1.0, 1.0);
+	test1.AddVertices(-1, 1.);
+	test1.AddVertices(-1, -1);
+	test1.AddVertices(1, 1);
+	test1.AddVertices(1, -1);
+	test1.BufferData();
+	test1.Bind();
+	VAO2->Attrib(0, 2, false, 2, 0);
+	VAO2->Attrib(1, 2, false, 2, 0);
+	test1.Unbind();
 	test.Bind();
 	VAO->Attrib(0, 2, false, 4, 0);
 	VAO->Attrib(1, 2, false, 4, 2);
@@ -71,7 +84,11 @@ void Game::DrawGame(){
 	glViewport(0, 0, 1024, 768);
 	// Draw everything here.
 	program->Use();
+	program->SetUniform3f("iClr", 100, 1, 155);
+	program->SetUniform1i("textured", 0);
+	VAO2->Draw(GL_TRIANGLE_STRIP, 6);
 	tex->Bind();
+	program->SetUniform1i("textured", 1);
 	program->SetUniform1i("tex", 0);
 	VAO->Draw(GL_TRIANGLES, 3);
 	tex->Unbind();

@@ -26,6 +26,7 @@ private:
 	void UpdateGame();
 	// Wrapper
 	VertexArray *VAO;
+	VertexArray *VAO2;
 	// Temporary OGL stuff
 	GLuint vao;
 };
