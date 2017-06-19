@@ -1,6 +1,7 @@
 #pragma once
 #include "GameStateEnum.h"
 #include "Window.h"
+#include "ResourceManager.h"
 #include "Shader.h"
 #include "VertexBuffer.h"
 #include "VertexArray.h"

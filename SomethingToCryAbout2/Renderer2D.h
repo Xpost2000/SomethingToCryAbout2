@@ -13,7 +13,9 @@ public:
 	void SupplyMatrix(glm::mat4 &model);
 	void Draw(glm::vec2 pos, glm::vec2 size, float angle, glTexture *texture);
 	// Colored rectangle draw + 1 overload
-	void Draw(glm::vec2 pos, glm::vec2 size, float angle, glm::vec3 color = glm::vec3(1.0, 1.0, 1.0));
+	void Draw(glm::vec2 pos, glm::vec2 size, float angle, glm::vec3 color = glm::vec3(255, 255, 255));
+	// Colored Rectangle with texture
+	void DrawM(glm::vec2 pos, glm::vec2 size, float angle, glTexture *texture, glm::vec3 color = glm::vec3(255, 255, 255));
 private:
 	glm::mat4 model; // matrix
 
