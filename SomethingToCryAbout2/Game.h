@@ -2,6 +2,7 @@
 #include "GameStateEnum.h"
 #include "Window.h"
 #include "Shader.h"
+#include "VertexBuffer.h"
 #include "ShaderProgram.h"
 #include "glTexture.h"
 class Game
@@ -23,6 +24,6 @@ private:
 	void DrawGame();
 	void UpdateGame();
 	// Temporary OGL stuff
-	GLuint vbo, vao;
+	GLuint vao;
 };
 

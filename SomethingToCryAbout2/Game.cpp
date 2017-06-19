@@ -13,7 +13,6 @@ Game::Game()
 
 
 Game::~Game(){
-	glDeleteBuffers(1, &vbo);
 	glDeleteVertexArrays(1, &vao);
 	delete fragment;
 	delete vertex;
@@ -23,25 +22,25 @@ Game::~Game(){
 }
 
 void Game::InitGame(){
-	glGenBuffers(1, &vbo);
 	glGenVertexArrays(1, &vao);
 
-	GLfloat data[] = {
-		0.0, 1.0,	0., 1.,
-		1.0, -1.0,  1., -1.,
-		-1.0, -1.0, -1., -1.
-	};
+	VertexBuffer test;
+	test.AddVertices(0.0, 0.2);
+	test.AddVertices(1.0, -1.0);
+	test.AddVertices(-1.0, -1.0);
+	test.AddVertices(0.0, 1.0);
+	test.AddVertices(1.0, -1.0);
+	test.AddVertices(-1.0, -1.0);
 	glBindVertexArray(vao);
 	
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(data), data, GL_STATIC_DRAW);
+	test.BufferData();
+	test.Bind();
 	glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(float) * 4, (void*)0);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(1, 2, GL_FLOAT, false, sizeof(float) * 4, (void*)(sizeof(float) * 2));
 	glEnableVertexAttribArray(1);
 	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-
+	test.Unbind();
 	fragment = new Shader(GL_FRAGMENT_SHADER);
 	vertex = new Shader(GL_VERTEX_SHADER);
 	program = new ShaderProgram();
