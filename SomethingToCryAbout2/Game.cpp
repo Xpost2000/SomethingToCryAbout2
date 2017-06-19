@@ -3,9 +3,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <GL\glew.h>
-float x = 100;
-float y = 100;
-float angle = 0;
 Game::Game()
 {
 	window = new Window("Game Win : Build Win32 0.1", 1024, 768);
@@ -20,6 +17,7 @@ Game::~Game(){
 	delete program;
 	delete window;
 	delete tex;
+	delete bkgrnd;
 }
 
 void Game::InitGame(){
@@ -33,10 +31,12 @@ void Game::InitGame(){
 	program->LinkProgram();
 	program->DetachShader(*vertex);
 	program->DetachShader(*fragment);
-	tex = new glTexture();
+	tex = new glTexture(); bkgrnd = new glTexture();
+	bkgrnd->SetFilter(GL_LINEAR); bkgrnd->SetWrapMode(GL_REPEAT);
 	tex->SetFilter(GL_LINEAR);
 	tex->SetWrapMode(GL_REPEAT);
 	tex->LoadImage("Assests\\Textures\\circle.png");
+	bkgrnd->LoadImage("Assests\\Textures\\gradient.png");
 	renderer = new Renderer2D(program);
 	renderer->EnableAlpha(true);
 	renderer->EnableAntiAliasing(true);
@@ -44,6 +44,22 @@ void Game::InitGame(){
 	l = 0.; r = 1024.; b = 0.; t = 768.;
 	projection = glm::ortho(l, r, b, t, -1.f, 1.f);
 	program->SetUniformMatrix4fv("projection", glm::value_ptr(projection));
+
+	for (int i = 0; i < 20; i++){
+		balls.push_back(DemoBall(glm::vec2(100+i*i, 15), glm::vec2(8*i), glm::vec3(100*i, 100, 200)));
+		balls.back().SetBounds(0, 1024, 768, 0);
+		balls.back().SetVelocity(5 + i-2);
+	}
+	for (int i = 0; i < 20; i++){
+		balls.push_back(DemoBall(glm::vec2(20 + i*i, 15), glm::vec2(8 * i), glm::vec3(2, 100*i, 200)));
+		balls.back().SetBounds(0, 1024, 768, 0);
+		balls.back().SetVelocity(5 + i - 2);
+	}
+	for (int i = 0; i < 15; i++){
+		balls.push_back(DemoBall(glm::vec2(40 + i*i, 15), glm::vec2(8 * i), glm::vec3(2, 2, 40 *i)));
+		balls.back().SetBounds(0, 1024, 768, 0);
+		balls.back().SetVelocity(5 + i - 2);
+	}
 }
 
 void Game::RunGame(){
@@ -57,6 +73,9 @@ void Game::RunGame(){
 void Game::UpdateGame(){
 	view = glm::mat4();
 	model = glm::mat4();
+	for (auto &b : balls){
+		b.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
+	}
 }
 
 void Game::DrawGame(){
@@ -67,8 +86,10 @@ void Game::DrawGame(){
 	// Draw everything here.
 	program->SetUniformMatrix4fv("model", glm::value_ptr(model));
 	program->Use();
-	angle += 0.2;
-	renderer->DrawM(glm::vec2(x, y), glm::vec2(150, 150), angle, tex, glm::vec3(155, 10, 255));
+	renderer->DrawM(glm::vec2(0), glm::vec2(1024), 0, bkgrnd, glm::vec3(125, 211, 100));
+	for (auto &b : balls){
+		renderer->DrawM(b.GetPos(), b.GetSize(), 0, tex, b.GetColor());
+	}
 	program->SetUniformMatrix4fv("view", glm::value_ptr(view));
 	window->Refresh();
 }

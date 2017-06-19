@@ -3,10 +3,13 @@
 #include <Oats\Window.h>
 #include <Oats\ResourceManager.h>
 #include <Oats\Shader.h>
+#include <Oats\ClockTimer.h>
 #include <Oats\VertexBuffer.h>
 #include <Oats\VertexArray.h>
 #include <Oats\glTexture.h>
 #include <Oats\Renderer2D.h>
+
+#include "DemoBall.h"
 class Game
 {
 public:
@@ -15,6 +18,8 @@ public:
 	void InitGame();
 	void RunGame();
 private:
+	// Objects for Game
+	std::vector<DemoBall> balls;
 	//Math Stuff
 	glm::mat4 view = glm::mat4();
 	glm::mat4 projection = glm::mat4();
@@ -25,6 +30,7 @@ private:
 	Shader* vertex = nullptr;
 	ShaderProgram* program = nullptr;
 	glTexture* tex = nullptr;
+	glTexture* bkgrnd = nullptr;
 	Renderer2D* renderer = nullptr;
 	GameState inState;
 	// Functions
