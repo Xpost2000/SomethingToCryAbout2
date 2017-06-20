@@ -41,22 +41,22 @@ void Game::InitGame(){
 	renderer->EnableAlpha(true);
 	renderer->EnableAntiAliasing(true);
 	float l, r, b, t;
-	l = 0.; r = 1024.; b = 0.; t = 768.;
+	l = 0.; r = 1024.; b = 768.; t = 0.;
 	projection = glm::ortho(l, r, b, t, -1.f, 1.f);
 	program->SetUniformMatrix4fv("projection", glm::value_ptr(projection));
 
 	for (int i = 0; i < 20; i++){
-		balls.push_back(DemoBall(glm::vec2(100+i*i, 15), glm::vec2(8*i), glm::vec3(100*i, 100, 200)));
+		balls.push_back(DemoBall(glm::vec2(100+i*i, 600), glm::vec2(8*i), glm::vec3(100*i, 100, 200)));
 		balls.back().SetBounds(0, 1024, 768, 0);
 		balls.back().SetVelocity(5 + i-2);
 	}
 	for (int i = 0; i < 20; i++){
-		balls.push_back(DemoBall(glm::vec2(20 + i*i, 15), glm::vec2(8 * i), glm::vec3(2, 100*i, 200)));
+		balls.push_back(DemoBall(glm::vec2(20 + i*i, 600), glm::vec2(8 * i), glm::vec3(2, 100*i, 200)));
 		balls.back().SetBounds(0, 1024, 768, 0);
 		balls.back().SetVelocity(5 + i - 2);
 	}
 	for (int i = 0; i < 15; i++){
-		balls.push_back(DemoBall(glm::vec2(40 + i*i, 15), glm::vec2(8 * i), glm::vec3(2, 2, 40 *i)));
+		balls.push_back(DemoBall(glm::vec2(40 + i*i, 600), glm::vec2(8 * i), glm::vec3(2, 2, 40 *i)));
 		balls.back().SetBounds(0, 1024, 768, 0);
 		balls.back().SetVelocity(5 + i - 2);
 	}
@@ -74,8 +74,10 @@ void Game::UpdateGame(){
 	view = glm::mat4();
 	model = glm::mat4();
 	ClockTimer::Tick();
-	for (auto &b : balls){
-		b.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
+	if (inState != GameState::GAME_PAUSE){
+		for (auto &b : balls){
+			b.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
+		}
 	}
 }
 
@@ -102,6 +104,16 @@ void Game::HandleInput(){
 			inState = GameState::GAME_QUIT;
 			break;
 		case SDL_KEYDOWN:
+			switch (window->event.key.keysym.sym){
+			case SDLK_ESCAPE:
+				if (inState != GameState::GAME_PAUSE)
+					inState = GameState::GAME_PAUSE;
+				else
+					inState = GameState::GAME_RUNNING;
+				break;
+			default:
+				break;
+			}
 			break;
 		case SDL_KEYUP:
 			break;

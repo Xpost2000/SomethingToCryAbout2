@@ -16,6 +16,7 @@ DemoBall::~DemoBall()
 void DemoBall::CollideWithBounds(float dt){
 	if (y+h > bnds.u || y < bnds.d){
 		vY = -vY;
+		x += 120 * dt;
 	}
 	else{
 		return;
@@ -24,6 +25,7 @@ void DemoBall::CollideWithBounds(float dt){
 
 void DemoBall::Update(float dt){
 	y += vY;
+
 	CollideWithBounds(dt);
 }
 

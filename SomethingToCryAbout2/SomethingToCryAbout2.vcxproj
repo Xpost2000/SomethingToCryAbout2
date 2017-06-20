@@ -39,12 +39,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>C:\Users\Random\Dropbox\SomethingToCryAboutOGL\SomethingToCryAbout2\Debug\OatsFramework;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Users\Random\Dropbox\SomethingToCryAboutOGL\SomethingToCryAbout2\Debug\OatsFramework\;$(LibraryPath)</LibraryPath>
     <ExecutablePath>C:\Users\Random\Dropbox\SomethingToCryAboutOGL\SomethingToCryAbout2\Debug\OatsFramework;$(ExecutablePath)</ExecutablePath>
+    <IncludePath>C:\Users\Random\Dropbox\SomethingToCryAboutOGL\SomethingToCryAbout2\Debug\OatsFramework\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LibraryPath>C:\Users\Random\Dropbox\SomethingToCryAboutOGL\SomethingToCryAbout2\Debug\OatsFramework;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Users\Random\Dropbox\SomethingToCryAboutOGL\SomethingToCryAbout2\Debug\OatsFramework\;$(LibraryPath)</LibraryPath>
     <ExecutablePath>C:\Users\Random\Dropbox\SomethingToCryAboutOGL\SomethingToCryAbout2\Debug\OatsFramework;$(ExecutablePath)</ExecutablePath>
+    <IncludePath>C:\Users\Random\Dropbox\SomethingToCryAboutOGL\SomethingToCryAbout2\Debug\OatsFramework\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
