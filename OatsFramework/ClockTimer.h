@@ -29,6 +29,7 @@ public:
 		return the total elasped time in the format of your choosing
 	*/
 	OATS_LIB_API static float returnElaspedTime(const TimeMeasure);
+	OATS_LIB_API static float returnFramesPerSecond();
 private:
 	static uint32_t delta;
 	static uint32_t last;

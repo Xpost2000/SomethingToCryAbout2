@@ -52,3 +52,8 @@ float ClockTimer::returnElaspedTime(const TimeMeasure m){
 			break;
 	}
 }
+
+float ClockTimer::returnFramesPerSecond(){
+	// WIP
+	return 1;
+}

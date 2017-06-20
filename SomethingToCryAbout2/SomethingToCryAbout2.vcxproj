@@ -82,6 +82,10 @@
   <ItemGroup>
     <ClInclude Include="DemoBall.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SomethingToCryAbout2.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

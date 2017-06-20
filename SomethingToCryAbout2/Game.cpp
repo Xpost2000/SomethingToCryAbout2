@@ -73,6 +73,7 @@ void Game::RunGame(){
 void Game::UpdateGame(){
 	view = glm::mat4();
 	model = glm::mat4();
+	ClockTimer::Tick();
 	for (auto &b : balls){
 		b.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
 	}
