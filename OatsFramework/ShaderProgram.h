@@ -12,6 +12,7 @@ public:
 	OATS_LIB_API void DetachShader(Shader& sh);
 	OATS_LIB_API void LinkProgram();
 	OATS_LIB_API void Use();
+	OATS_LIB_API static void Unuse();
 
 	// Uniform Functions
 	// TODO: Use Specialized Templates for all of this.

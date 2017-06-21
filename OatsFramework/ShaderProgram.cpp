@@ -66,3 +66,7 @@ void ShaderProgram::SetUniformMatrix4fv(const char* location, float* value){
 	glProgramUniformMatrix4fv(sObject, glGetUniformLocation(sObject, location), 1, false, &value[0]);
 	fprintf(stderr, "ShaderProgram : Uniform Matrix4fv set\n");
 }
+
+void ShaderProgram::Unuse(){
+	glUseProgram(0);
+}

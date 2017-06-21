@@ -36,7 +36,9 @@ private:
 	GameState inState;
 	
 	int width = 1024, height = 768;
-	
+	struct CameraScale{
+		float x, y;
+	}scale;
 	// Functions
 	void HandleInput();
 	void DrawGame();

@@ -43,6 +43,7 @@ void Renderer2D::Draw(glm::vec2 pos, glm::vec2 size, float angle, glTexture *tex
 	vao->Draw(GL_TRIANGLE_STRIP, 4);
 	texture->Unbind();
 	fprintf(stderr, "Renderer2D: Draw Quad (Overload +1)\n");
+	
 }
 
 void Renderer2D::Draw(glm::vec2 pos, glm::vec2 size, float angle, glm::vec3 color){

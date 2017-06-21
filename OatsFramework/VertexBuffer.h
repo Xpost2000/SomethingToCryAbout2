@@ -12,7 +12,7 @@ public:
 	OATS_LIB_API void BufferData();
     GLint GetVertexCount() { return vertices; }
 	OATS_LIB_API void Bind();
-	OATS_LIB_API void Unbind();
+	OATS_LIB_API static void Unbind();
 private:
 	GLuint vbo;
 	GLint vertices;

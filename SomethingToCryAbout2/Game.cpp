@@ -45,6 +45,7 @@ void Game::InitGame(){
 	renderer = new Renderer2D(program);
 	renderer->EnableAlpha(true);
 	renderer->EnableAntiAliasing(true);
+	scale.x = width; scale.y = height;
 	l = 0.; r = width; b = height; t = 0.;
 	projection = glm::ortho(l, r, b, t, -1.f, 1.f);
 	program->SetUniformMatrix4fv("projection", glm::value_ptr(projection));
@@ -92,15 +93,14 @@ void Game::DrawGame(){
 
 	// Draw everything here.
 	camera->SupplyMatrix(view);
-	camera->Scale(glm::vec2(width, height)); // camera system.
+	camera->Scale(glm::vec2(scale.x, scale.y)); // camera system.
 	view = camera->RetrieveMatrix(); // Call this to transfer matrix.
+	program->SetUniformMatrix4fv("view", glm::value_ptr(view));
 	program->SetUniformMatrix4fv("model", glm::value_ptr(model));
-	program->Use();
 	renderer->DrawM(glm::vec2(0), glm::vec2(1024), 0, bkgrnd, glm::vec3(125, 211, 100));
 	for (auto &b : balls){
 		renderer->DrawM(b.GetPos(), b.GetSize(), 0, tex, b.GetColor());
 	}
-	program->SetUniformMatrix4fv("view", glm::value_ptr(view));
 	window->Refresh();
 }
 
@@ -121,15 +121,6 @@ void Game::HandleInput(){
 					inState = GameState::GAME_RUNNING;
 				break;
 			case SDLK_SPACE:
-				srand(time(NULL));
-				re = rand() % 105;
-				srand(time(NULL));
-				ge = rand() % 100;
-				srand(time(NULL));
-				be = rand() % 255;
-				balls.push_back(DemoBall(glm::vec2(rand() % 800, 500), glm::vec2(100), glm::vec3(re, ge, be)));
-				balls.back().SetBounds(l, r, b, t);
-				balls.back().SetVelocity(15.0f);
 				break;
 			default:
 				break;

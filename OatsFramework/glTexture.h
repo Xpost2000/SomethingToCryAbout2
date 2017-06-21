@@ -9,7 +9,8 @@ class glTexture
 public:
 	OATS_LIB_API glTexture();
 	OATS_LIB_API ~glTexture();
-	OATS_LIB_API void Bind(); OATS_LIB_API void Unbind();
+	OATS_LIB_API void Bind(); 
+	OATS_LIB_API static void Unbind();
 	OATS_LIB_API void LoadImage(std::string path);
 	OATS_LIB_API void SetFilter(GLenum filter);
 	OATS_LIB_API void SetWrapMode(GLenum mode);
