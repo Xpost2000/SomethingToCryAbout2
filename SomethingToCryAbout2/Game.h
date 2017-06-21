@@ -8,7 +8,7 @@
 #include <Oats\VertexArray.h>
 #include <Oats\glTexture.h>
 #include <Oats\Renderer2D.h>
-
+#include <Oats\Camera2D.h>
 #include "DemoBall.h"
 class Game
 {
@@ -28,11 +28,15 @@ private:
 	Window *window = nullptr;
 	Shader* fragment = nullptr;
 	Shader* vertex = nullptr;
+	Camera2D* camera = nullptr;
 	ShaderProgram* program = nullptr;
 	glTexture* tex = nullptr;
 	glTexture* bkgrnd = nullptr;
 	Renderer2D* renderer = nullptr;
 	GameState inState;
+	
+	int width = 1024, height = 768;
+	
 	// Functions
 	void HandleInput();
 	void DrawGame();

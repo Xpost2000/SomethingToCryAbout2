@@ -3,6 +3,8 @@
 /*
 This is to test if this renderer rendering
 supplied information is a good approach
+
+This thing is completely renderer agnostic :)
 */
 class DemoBall
 {

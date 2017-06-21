@@ -3,9 +3,12 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <GL\glew.h>
+#include <ctime>
+float l, r, b, t;
+int re, ge, be;
 Game::Game()
 {
-	window = new Window("Game Win : Build Win32 0.1", 1024, 768);
+	window = new Window("Game Win : Build Win32 0.1", width, height);
 	window->CreateWindow();
 	inState = GameState::GAME_RUNNING;
 }
@@ -18,9 +21,11 @@ Game::~Game(){
 	delete window;
 	delete tex;
 	delete bkgrnd;
+	delete camera;
 }
 
 void Game::InitGame(){
+	camera = new Camera2D(view, width, height);
 	fragment = new Shader(GL_FRAGMENT_SHADER);
 	vertex = new Shader(GL_VERTEX_SHADER);
 	program = new ShaderProgram();
@@ -40,24 +45,23 @@ void Game::InitGame(){
 	renderer = new Renderer2D(program);
 	renderer->EnableAlpha(true);
 	renderer->EnableAntiAliasing(true);
-	float l, r, b, t;
-	l = 0.; r = 1024.; b = 768.; t = 0.;
+	l = 0.; r = width; b = height; t = 0.;
 	projection = glm::ortho(l, r, b, t, -1.f, 1.f);
 	program->SetUniformMatrix4fv("projection", glm::value_ptr(projection));
 
 	for (int i = 0; i < 20; i++){
 		balls.push_back(DemoBall(glm::vec2(100+i*i, 600), glm::vec2(8*i), glm::vec3(100*i, 100, 200)));
-		balls.back().SetBounds(0, 1024, 768, 0);
+		balls.back().SetBounds(l, r, b, t);
 		balls.back().SetVelocity(5 + i-2);
 	}
 	for (int i = 0; i < 20; i++){
 		balls.push_back(DemoBall(glm::vec2(20 + i*i, 600), glm::vec2(8 * i), glm::vec3(2, 100*i, 200)));
-		balls.back().SetBounds(0, 1024, 768, 0);
+		balls.back().SetBounds(l, r, b, t);
 		balls.back().SetVelocity(5 + i - 2);
 	}
 	for (int i = 0; i < 15; i++){
 		balls.push_back(DemoBall(glm::vec2(40 + i*i, 600), glm::vec2(8 * i), glm::vec3(2, 2, 40 *i)));
-		balls.back().SetBounds(0, 1024, 768, 0);
+		balls.back().SetBounds(l, r, b, t);
 		balls.back().SetVelocity(5 + i - 2);
 	}
 }
@@ -87,6 +91,9 @@ void Game::DrawGame(){
 	glViewport(0, 0, 1024, 768);
 
 	// Draw everything here.
+	camera->SupplyMatrix(view);
+	camera->Scale(glm::vec2(width, height)); // camera system.
+	view = camera->RetrieveMatrix(); // Call this to transfer matrix.
 	program->SetUniformMatrix4fv("model", glm::value_ptr(model));
 	program->Use();
 	renderer->DrawM(glm::vec2(0), glm::vec2(1024), 0, bkgrnd, glm::vec3(125, 211, 100));
@@ -106,10 +113,23 @@ void Game::HandleInput(){
 		case SDL_KEYDOWN:
 			switch (window->event.key.keysym.sym){
 			case SDLK_ESCAPE:
-				if (inState != GameState::GAME_PAUSE)
+				if (inState != GameState::GAME_PAUSE){
 					inState = GameState::GAME_PAUSE;
+					printf("Balls Amount : %d\n", balls.size());
+				}
 				else
 					inState = GameState::GAME_RUNNING;
+				break;
+			case SDLK_SPACE:
+				srand(time(NULL));
+				re = rand() % 105;
+				srand(time(NULL));
+				ge = rand() % 100;
+				srand(time(NULL));
+				be = rand() % 255;
+				balls.push_back(DemoBall(glm::vec2(rand() % 800, 500), glm::vec2(100), glm::vec3(re, ge, be)));
+				balls.back().SetBounds(l, r, b, t);
+				balls.back().SetVelocity(15.0f);
 				break;
 			default:
 				break;
