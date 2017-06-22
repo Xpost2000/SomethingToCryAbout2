@@ -122,9 +122,12 @@ void Game::DrawGame(){
 	}
 	FrameBuffer->End();
 	glClear(GL_COLOR_BUFFER_BIT);
-	glClearColor(1.f, 1.2f, 0.3f, 1.0f);
 	scrProgram->Use();
 	scrProgram->SetUniform1i("frameBuffer", 0);
+	scrProgram->SetUniform1i("waterFX", waterFX);
+	scrProgram->SetUniform1i("glitch", glitch);
+	scrProgram->SetUniform1i("greyScale", greyScale);
+	scrProgram->SetUniform1f("offSet", 0.5f * ClockTimer::returnElaspedTime(TimeMeasure::TIME_SECONDS));
 	FrameBuffer->Render();
 	scrProgram->Unuse();
 	window->Refresh();
@@ -147,6 +150,13 @@ void Game::HandleInput(){
 					inState = GameState::GAME_RUNNING;
 				break;
 			case SDLK_SPACE:
+				greyScale = !greyScale;
+				break;
+			case SDLK_c:
+				waterFX = !waterFX;
+				break;
+			case SDLK_g:
+				glitch = !glitch;
 				break;
 			default:
 				break;

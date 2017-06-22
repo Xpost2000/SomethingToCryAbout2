@@ -51,5 +51,9 @@ private:
 	void HandleInput();
 	void DrawGame();
 	void UpdateGame();
+
+	bool waterFX;
+	bool glitch;
+	bool greyScale;
 };
 
