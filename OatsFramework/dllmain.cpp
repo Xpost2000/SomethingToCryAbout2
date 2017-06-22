@@ -4,8 +4,7 @@
 #include <SDL2\SDL_image.h>
 #include "dllDef.h"
 #include <ctime>
-#include <ft2build.h>
-#include FT_FREETYPE_H
+
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,
                        LPVOID lpReserved

@@ -9,6 +9,7 @@
 #include <Oats\glTexture.h>
 #include <Oats\Renderer2D.h>
 #include <Oats\Camera2D.h>
+#include <Oats\Framebuffer.h>
 #include "DemoBall.h"
 class Game
 {
@@ -28,8 +29,15 @@ private:
 	Window *window = nullptr;
 	Shader* fragment = nullptr;
 	Shader* vertex = nullptr;
+
+	Shader* pFrag = nullptr;
+	Shader* pVert = nullptr;
+
+	Framebuffer* FrameBuffer = nullptr;
+
 	Camera2D* camera = nullptr;
 	ShaderProgram* program = nullptr;
+	ShaderProgram* scrProgram = nullptr;
 	glTexture* tex = nullptr;
 	glTexture* bkgrnd = nullptr;
 	Renderer2D* renderer = nullptr;

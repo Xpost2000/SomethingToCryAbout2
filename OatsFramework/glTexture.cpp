@@ -11,6 +11,7 @@ glTexture::glTexture()
 glTexture::~glTexture()
 {
 	fprintf(stderr, "glTexture : Destructor\n");
+	if (img != nullptr)
 	SDL_FreeSurface(img);
 	glDeleteTextures(1, &tex);
 }
@@ -48,4 +49,10 @@ void glTexture::SetWrapMode(GLenum mode){
 	glTextureParameteri(tex, GL_TEXTURE_WRAP_T, mode);
 	glTextureParameteri(tex, GL_TEXTURE_WRAP_S, mode);
 	fprintf(stderr, "glTexture : Texture Wrapping Mode Set\n");
+}
+
+void glTexture::Allocate(GLenum fmt, int w, int h){
+	Bind();
+	glTexImage2D(GL_TEXTURE_2D, 0, fmt, w, h, 0, fmt, GL_UNSIGNED_BYTE, 0);
+	Unbind();
 }

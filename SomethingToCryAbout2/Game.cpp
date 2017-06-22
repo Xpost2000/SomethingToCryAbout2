@@ -15,12 +15,16 @@ Game::Game()
 
 
 Game::~Game(){
+	delete scrProgram;
+	delete pFrag;
+	delete pVert;
 	delete fragment;
 	delete vertex;
 	delete program;
 	delete window;
 	delete tex;
 	delete bkgrnd;
+	delete FrameBuffer;
 	delete camera;
 }
 
@@ -28,7 +32,14 @@ void Game::InitGame(){
 	camera = new Camera2D(view, width, height);
 	fragment = new Shader(GL_FRAGMENT_SHADER);
 	vertex = new Shader(GL_VERTEX_SHADER);
+	pFrag = new Shader(GL_FRAGMENT_SHADER);
+	pVert = new Shader(GL_VERTEX_SHADER);
+
+	scrProgram = new ShaderProgram();
 	program = new ShaderProgram();
+	FrameBuffer = new Framebuffer(width, height);
+	pFrag->LoadFromFile("Assests\\Shader\\pp\\frag.glsl");
+	pVert->LoadFromFile("Assests\\Shader\\pp\\vert.glsl");
 	fragment->LoadFromFile("Assests\\Shader\\frag.glsl");
 	vertex->LoadFromFile("Assests\\Shader\\vert.glsl");
 	program->AddShader(*vertex);
@@ -36,6 +47,13 @@ void Game::InitGame(){
 	program->LinkProgram();
 	program->DetachShader(*vertex);
 	program->DetachShader(*fragment);
+
+	scrProgram->AddShader(*pFrag);
+	scrProgram->AddShader(*pVert);
+	scrProgram->LinkProgram();
+	scrProgram->DetachShader(*pFrag);
+	scrProgram->DetachShader(*pVert);
+
 	tex = new glTexture(); bkgrnd = new glTexture();
 	bkgrnd->SetFilter(GL_LINEAR); bkgrnd->SetWrapMode(GL_REPEAT);
 	tex->SetFilter(GL_LINEAR);
@@ -87,20 +105,28 @@ void Game::UpdateGame(){
 }
 
 void Game::DrawGame(){
-	glClear(GL_COLOR_BUFFER_BIT);
-	glClearColor(0.5f, 1.2f, 0.3f, 1.0f);
 	glViewport(0, 0, 1024, 768);
 
 	// Draw everything here.
+	FrameBuffer->Begin();
+	glClear(GL_COLOR_BUFFER_BIT);
+	glClearColor(0.5f, 1.2f, 0.3f, 1.0f);
 	camera->SupplyMatrix(view);
 	camera->Scale(glm::vec2(scale.x, scale.y)); // camera system.
 	view = camera->RetrieveMatrix(); // Call this to transfer matrix.
 	program->SetUniformMatrix4fv("view", glm::value_ptr(view));
 	program->SetUniformMatrix4fv("model", glm::value_ptr(model));
-	renderer->DrawM(glm::vec2(0), glm::vec2(1024), 0, bkgrnd, glm::vec3(125, 211, 100));
+//	renderer->DrawM(glm::vec2(0), glm::vec2(1024), 0, bkgrnd, glm::vec3(125, 211, 100));
 	for (auto &b : balls){
 		renderer->DrawM(b.GetPos(), b.GetSize(), 0, tex, b.GetColor());
 	}
+	FrameBuffer->End();
+	glClear(GL_COLOR_BUFFER_BIT);
+	glClearColor(1.f, 1.2f, 0.3f, 1.0f);
+	scrProgram->Use();
+	scrProgram->SetUniform1i("frameBuffer", 0);
+	FrameBuffer->Render();
+	scrProgram->Unuse();
 	window->Refresh();
 }
 
