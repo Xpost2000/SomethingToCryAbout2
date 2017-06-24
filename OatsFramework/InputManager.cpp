@@ -1,5 +1,10 @@
 #include "InputManager.h"
 
+/*
+	As of right now the whole class is a basic wrapper around API specific things
+	:D
+*/
+
 
 InputManager::InputManager()
 {
@@ -29,4 +34,12 @@ void InputManager::PollEvents(std::function<void(SDL_Event*)> func){
 	while (SDL_PollEvent(&event)){
 		func(&event);
 	}
+}
+
+bool InputManager::isKeyReleased(int sdlScanCode, std::function<void()> action){
+	if (!internalKeyState[sdlScanCode]){
+		action;
+		return true;
+	}
+	return false;
 }

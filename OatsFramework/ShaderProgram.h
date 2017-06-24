@@ -1,7 +1,17 @@
 #pragma once
 #include "dllDef.h"
 #include <GL\glew.h>
+// Forward Declaration
 class Shader;
+/*	
+	ShaderProgram
+
+	OpenGL ShaderProgram wrapper.
+	Again most of the wrapper ensures that you do the least amount of work.
+
+	It also contains helper utilities for commonly used uniform value setter functions
+	Very easy to use
+*/
 class ShaderProgram
 {
 public:

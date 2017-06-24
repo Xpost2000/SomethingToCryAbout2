@@ -1,6 +1,11 @@
 #pragma once
 #include <GL/glew.h>
 #include "dllDef.h"
+/*
+	Simple Vertex Array object class.
+	Does most of the work and provides simple functions that 
+	still provide you with fair amounts of control over the internals.
+*/
 class VertexArray
 {
 public:

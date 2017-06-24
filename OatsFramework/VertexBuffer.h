@@ -2,6 +2,15 @@
 #include <GL/glew.h>
 #include <vector>
 #include "dllDef.h"
+/*
+	Vertex buffer Object class
+
+	This takes care of most of the hard lifting.
+	You can add vertices manually using the AddVerticies function.
+	BufferData is pretty much automatically dealt with.
+
+	Also has helper vertex count function
+*/
 class VertexBuffer
 {
 public:

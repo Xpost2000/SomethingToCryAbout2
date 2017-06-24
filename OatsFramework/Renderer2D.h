@@ -5,6 +5,20 @@
 #include "ShaderProgram.h"
 #include "MathHelperFunctions.h"
 
+/*
+	Renderer2D
+
+	This is a basic 2D renderer.
+	It contains it's own model matrix which most be supplied from an original matrix.
+	It has the capacity to Render 3 types of things
+
+	Textured Objects
+	Colored Objects
+	Textured Objects with Additive Blend Colors.
+
+	It also has alpha enabling as a choice.
+	ShaderProgram MUST be specified as a constructor argument.
+*/
 class Renderer2D
 {
 public:

@@ -2,6 +2,12 @@
 #include <GL\glew.h>
 #include <string>
 #include "dllDef.h"
+/*
+	Shader 
+	OpenGL Shader class wrapper.
+	It takes care of virtually everything but incase you ever actually want to make
+	4 function calls on your own you may access the handle directly.
+*/
 class Shader
 {
 public:

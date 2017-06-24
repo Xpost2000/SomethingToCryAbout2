@@ -10,6 +10,15 @@ enum class TimeMeasure{
 };
 /*
 	ClockTimer for delta time
+	--- From SomethingToCryAbout1 ---
+
+	This is a Clock/Timer class that can do the following.
+	- Return Delta Time ( in either milliseconds or seconds )
+	- Return total Elapsed time ( in either milliseconds or seconds )
+	- *TODO* Return the current frames per second
+
+	USAGE
+	- Call the tick function every frame and it will be fine.
 */
 class ClockTimer
 {
@@ -31,7 +40,9 @@ public:
 	OATS_LIB_API static float returnElaspedTime(const TimeMeasure);
 	OATS_LIB_API static float returnFramesPerSecond();
 private:
+	// Delta time variable
 	static uint32_t delta;
+	// Previous delta time
 	static uint32_t last;
 };
 

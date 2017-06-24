@@ -5,7 +5,6 @@
 #include <GL\glew.h>
 #include <ctime>
 float l, r, b, t;
-int re, ge, be;
 Game::Game()
 {
 	window = new Window("Game Win : Build Win32 0.1", width, height);
@@ -28,7 +27,7 @@ Game::~Game(){
 	delete camera;
 	delete input;
 }
-
+// Very Huge setup
 void Game::InitGame(){
 	camera = new Camera2D(view, width, height);
 	fragment = new Shader(GL_FRAGMENT_SHADER);
@@ -39,36 +38,41 @@ void Game::InitGame(){
 	scrProgram = new ShaderProgram();
 	program = new ShaderProgram();
 	FrameBuffer = new Framebuffer(width, height);
-	pFrag->LoadFromFile("Assests\\Shader\\pp\\frag.glsl");
-	pVert->LoadFromFile("Assests\\Shader\\pp\\vert.glsl");
-	fragment->LoadFromFile("Assests\\Shader\\frag.glsl");
-	vertex->LoadFromFile("Assests\\Shader\\vert.glsl");
-	program->AddShader(*vertex);
+	pFrag->LoadFromFile("Assests\\Shader\\pp\\frag.glsl"); // Postprocess Fragment
+	pVert->LoadFromFile("Assests\\Shader\\pp\\vert.glsl"); // Postprocess Vertex
+	fragment->LoadFromFile("Assests\\Shader\\frag.glsl"); // Standard Frag
+	vertex->LoadFromFile("Assests\\Shader\\vert.glsl"); // Standard Vertex
+	program->AddShader(*vertex); // Adding Shaders for compilation
 	program->AddShader(*fragment);
-	program->LinkProgram();
+	program->LinkProgram(); // Link shaders
 	program->DetachShader(*vertex);
-	program->DetachShader(*fragment);
+	program->DetachShader(*fragment); // Detach Shaders
 
+	// Framebuffer / Postprocessing program
 	scrProgram->AddShader(*pFrag);
 	scrProgram->AddShader(*pVert);
 	scrProgram->LinkProgram();
 	scrProgram->DetachShader(*pFrag);
 	scrProgram->DetachShader(*pVert);
 
+	// Setting up textures
 	tex = new glTexture(); bkgrnd = new glTexture();
 	bkgrnd->SetFilter(GL_LINEAR); bkgrnd->SetWrapMode(GL_REPEAT);
 	tex->SetFilter(GL_LINEAR);
 	tex->SetWrapMode(GL_REPEAT);
 	tex->LoadImage("Assests\\Textures\\circle.png");
 	bkgrnd->LoadImage("Assests\\Textures\\gradient.png");
+	// Setting up renderer
 	renderer = new Renderer2D(program);
 	renderer->EnableAlpha(true);
 	renderer->EnableAntiAliasing(true);
+	// Setup orthographic matrix
 	scale.x = width; scale.y = height;
 	l = 0.; r = width; b = height; t = 0.;
 	projection = glm::ortho(l, r, b, t, -1.f, 1.f);
 	program->SetUniformMatrix4fv("projection", glm::value_ptr(projection));
 
+	// Setup the balls.
 	for (int i = 0; i < 20; i++){
 		balls.push_back(DemoBall(glm::vec2(100+i*i, 600), glm::vec2(8*i), glm::vec3(100*i, 100, 200)));
 		balls.back().SetBounds(l, r, b, t);
@@ -85,7 +89,7 @@ void Game::InitGame(){
 		balls.back().SetVelocity(5 + i - 2);
 	}
 }
-
+// Run game that condenses all seperate functions into one.
 void Game::RunGame(){
 	while (inState == GameState::GAME_RUNNING | inState == GameState::GAME_PAUSE){
 		HandleInput();
@@ -93,7 +97,7 @@ void Game::RunGame(){
 		DrawGame();
 	}
 }
-
+// Neat little update function
 void Game::UpdateGame(){
 	view = glm::mat4();
 	model = glm::mat4();
@@ -117,13 +121,13 @@ void Game::DrawGame(){
 	view = camera->RetrieveMatrix(); // Call this to transfer matrix.
 	program->SetUniformMatrix4fv("view", glm::value_ptr(view));
 	program->SetUniformMatrix4fv("model", glm::value_ptr(model));
-//	renderer->DrawM(glm::vec2(0), glm::vec2(1024), 0, bkgrnd, glm::vec3(125, 211, 100));
 	for (auto &b : balls){
 		renderer->DrawM(b.GetPos(), b.GetSize(), 0, tex, b.GetColor());
 	}
 	FrameBuffer->End();
 	glClear(GL_COLOR_BUFFER_BIT);
 	scrProgram->Use();
+	// Set all appropriete uniforms
 	scrProgram->SetUniform1i("frameBuffer", 0);
 	scrProgram->SetUniform1i("waterFX", waterFX);
 	scrProgram->SetUniform1i("glitch", glitch);
