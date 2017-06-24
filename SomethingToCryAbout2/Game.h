@@ -1,6 +1,7 @@
 #pragma once
 #include <Oats\GameStateEnum.h>
 #include <Oats\Window.h>
+#include <Oats\InputManager.h>
 #include <Oats\ResourceManager.h>
 #include <Oats\Shader.h>
 #include <Oats\ClockTimer.h>
@@ -42,7 +43,8 @@ private:
 	glTexture* bkgrnd = nullptr;
 	Renderer2D* renderer = nullptr;
 	GameState inState;
-	
+	InputManager* input;
+
 	int width = 1024, height = 768;
 	struct CameraScale{
 		float x, y;

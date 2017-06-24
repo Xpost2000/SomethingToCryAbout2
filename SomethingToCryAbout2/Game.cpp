@@ -26,6 +26,7 @@ Game::~Game(){
 	delete bkgrnd;
 	delete FrameBuffer;
 	delete camera;
+	delete input;
 }
 
 void Game::InitGame(){
@@ -34,7 +35,7 @@ void Game::InitGame(){
 	vertex = new Shader(GL_VERTEX_SHADER);
 	pFrag = new Shader(GL_FRAGMENT_SHADER);
 	pVert = new Shader(GL_VERTEX_SHADER);
-
+	input = new InputManager();
 	scrProgram = new ShaderProgram();
 	program = new ShaderProgram();
 	FrameBuffer = new Framebuffer(width, height);
@@ -134,36 +135,30 @@ void Game::DrawGame(){
 }
 
 void Game::HandleInput(){
-	while (SDL_PollEvent(&window->event)){
-		switch (window->event.type){
+	input->PollEvents([&](SDL_Event* evnt){
+		switch (evnt->type){
 		case SDL_QUIT:
 			inState = GameState::GAME_QUIT;
 			break;
 		case SDL_KEYDOWN:
-			switch (window->event.key.keysym.sym){
+			switch (evnt->key.keysym.sym){
 			case SDLK_ESCAPE:
 				if (inState != GameState::GAME_PAUSE){
 					inState = GameState::GAME_PAUSE;
-					printf("Balls Amount : %d\n", balls.size());
+					printf("BallCount : %d\n", balls.size());
 				}
-				else
+				else{
 					inState = GameState::GAME_RUNNING;
-				break;
-			case SDLK_SPACE:
-				greyScale = !greyScale;
-				break;
-			case SDLK_c:
-				waterFX = !waterFX;
-				break;
-			case SDLK_g:
-				glitch = !glitch;
-				break;
-			default:
+				}
 				break;
 			}
 			break;
 		case SDL_KEYUP:
 			break;
+		default:
+			break;
 		}
-	}
+	});
+	input->Update();
+
 }

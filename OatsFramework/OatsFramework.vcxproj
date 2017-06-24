@@ -89,6 +89,7 @@
     <ClInclude Include="Framebuffer.h" />
     <ClInclude Include="GameStateEnum.h" />
     <ClInclude Include="glTexture.h" />
+    <ClInclude Include="InputManager.h" />
     <ClInclude Include="MathHelperFunctions.h" />
     <ClInclude Include="Renderer2D.h" />
     <ClInclude Include="ResourceManager.h" />
@@ -112,6 +113,7 @@
     </ClCompile>
     <ClCompile Include="Framebuffer.cpp" />
     <ClCompile Include="glTexture.cpp" />
+    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Renderer2D.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Shader.cpp" />
