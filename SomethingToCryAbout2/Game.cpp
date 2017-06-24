@@ -151,6 +151,18 @@ void Game::HandleInput(){
 					inState = GameState::GAME_RUNNING;
 				}
 				break;
+			case SDLK_1:
+			case SDLK_z:
+				waterFX = !waterFX;
+				break;
+			case SDLK_2:
+			case SDLK_x:
+				glitch = !glitch;
+				break;
+			case SDLK_3:
+			case SDLK_c:
+				greyScale = !greyScale;
+				break;
 			}
 			break;
 		case SDL_KEYUP:
