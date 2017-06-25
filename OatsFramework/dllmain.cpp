@@ -35,9 +35,6 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 		else{
 			fprintf(stderr, "SDL_IMG : Init Success\n");
 		}
-		
-		MessageBoxA(NULL, "This framework is in very early alpha", "Please leave advice and or criticism", MB_ICONINFORMATION);
-		fprintf(stderr, "Warning Message Displayed\n");
 	case DLL_THREAD_ATTACH:
 		break;
 	case DLL_THREAD_DETACH:

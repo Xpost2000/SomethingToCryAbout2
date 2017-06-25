@@ -34,11 +34,15 @@ private:
 	Shader* pFrag = nullptr;
 	Shader* pVert = nullptr;
 
+	Shader* tFrag = nullptr;
+	Shader* tVert = nullptr;
+
 	Framebuffer* FrameBuffer = nullptr;
 
 	Camera2D* camera = nullptr;
 	ShaderProgram* program = nullptr;
 	ShaderProgram* scrProgram = nullptr;
+	ShaderProgram* textProgram = nullptr;
 	glTexture* tex = nullptr;
 	glTexture* bkgrnd = nullptr;
 	Renderer2D* renderer = nullptr;
