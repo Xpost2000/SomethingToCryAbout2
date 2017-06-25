@@ -18,5 +18,7 @@ typedef struct
 		signed int gl_version_minor;
 	}version;
 }glQueryInfo;
-
+/*
+	Will return openGL query data
+*/
 OATS_LIB_API glQueryInfo QueryInformation();

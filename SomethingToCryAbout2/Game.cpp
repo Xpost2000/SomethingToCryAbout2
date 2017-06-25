@@ -10,8 +10,13 @@ glm::vec3 textColor = { 0, 0, 0 };
 
 Game::Game()
 {
+	glQueryInfo info;
 	window = new Window("Game Win : Build Win32 0.1", width, height);
 	window->CreateWindow();
+	info = QueryInformation();
+	printf("OpenGL Vendor : %s \nOpenGL Renderer: %s\n", info.vendor, info.renderer);
+	printf("OpenGL Version : %s \nOpenGL-SL Version : %s\n", info.version.legacy, info.glsl_lang_version);
+//	printf("OpenGL Extensions Supported : %s\n", info.ext_support_num);
 	inState = GameState::GAME_RUNNING;
 }
 
@@ -23,6 +28,7 @@ Game::~Game(){
 	delete fragment;
 	delete vertex;
 	delete program;
+	delete arial;
 	delete textProgram;
 	delete window;
 	delete tex;
@@ -90,8 +96,8 @@ void Game::InitGame(){
 	projection = glm::ortho(l, r, b, t, -1.f, 1.f);
 	program->SetUniformMatrix4fv("projection", glm::value_ptr(projection));
 	textProgram->SetUniformMatrix4fv("proj", glm::value_ptr(projection));
-	a = new TextRenderer(textProgram);
-	a->LoadFont("Assests\\Font\\arial.ttf", 44);
+	arial = new TextRenderer(textProgram);
+	arial->LoadFont("Assests\\Font\\arial.ttf", 44);
 	// Setup the balls.
 	for (int i = 0; i < 20; i++){
 		balls.push_back(DemoBall(glm::vec2(100+i*i, 600), glm::vec2(8*i), glm::vec3(100*i, 100, 200)));
@@ -157,12 +163,12 @@ void Game::DrawGame(){
 	// Set all appropriete uniforms
 	FrameBuffer->Render();
 	scrProgram->Unuse();
-	a->Render("Frame Rate : " + std::to_string(ClockTimer::returnFramesPerSecond()), glm::vec2(30, 590), 1, textColor);
+	arial->Render("Frame Rate : " + std::to_string(ClockTimer::returnFramesPerSecond()), glm::vec2(30, 590), 1, textColor);
 	if (inState != GameState::GAME_PAUSE)
-		a->Render("The Quick Brown Fox Jumps Over The Lazy Dog", glm::vec2(30, 40), 1, textColor);
+		arial->Render("The Quick Brown Fox Jumps Over The Lazy Dog", glm::vec2(30, 40), 1, textColor);
 	else
-		a->Render("Ball Count : " + std::to_string(balls.size()), glm::vec2(40, 40), 1,  textColor);
-	a->Render(specialFx, glm::vec2(30, 90), 0.6, textColor);
+		arial->Render("Ball Count : " + std::to_string(balls.size()), glm::vec2(40, 40), 1,  textColor);
+	arial->Render(specialFx, glm::vec2(30, 90), 0.6, textColor);
 	if ((!waterFX && !glitch && !greyScale)){
 		specialFx = "None";
 		textColor = { 0, 0, 0 };
