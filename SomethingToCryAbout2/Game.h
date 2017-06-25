@@ -7,6 +7,7 @@
 #include <Oats\ClockTimer.h>
 #include <Oats\VertexBuffer.h>
 #include <Oats\VertexArray.h>
+#include <Oats\TextRenderer.h>
 #include <Oats\glTexture.h>
 #include <Oats\Renderer2D.h>
 #include <Oats\Camera2D.h>
@@ -46,6 +47,7 @@ private:
 	glTexture* tex = nullptr;
 	glTexture* bkgrnd = nullptr;
 	Renderer2D* renderer = nullptr;
+	TextRenderer* a;
 	GameState inState;
 	InputManager* input;
 

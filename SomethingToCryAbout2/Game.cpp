@@ -49,8 +49,8 @@ void Game::InitGame(){
 	pVert->LoadFromFile("Assests\\Shader\\pp\\vert.glsl"); // Postprocess Vertex
 	fragment->LoadFromFile("Assests\\Shader\\frag.glsl"); // Standard Frag
 	vertex->LoadFromFile("Assests\\Shader\\vert.glsl"); // Standard Vertex
-	tFrag->LoadFromFile("Assests\\Shader\\text\\tFrag.glsl");
-	tVert->LoadFromFile("Assests\\Shader\\text\\tVert.glsl");
+	tFrag->LoadFromFile("Assests\\Shader\\text\\textFrag.glsl");
+	tVert->LoadFromFile("Assests\\Shader\\text\\textVert.glsl");
 
 	program->AddShader(*vertex); // Adding Shaders for compilation
 	program->AddShader(*fragment);
@@ -70,7 +70,6 @@ void Game::InitGame(){
 	textProgram->LinkProgram();
 	textProgram->DetachShader(*tFrag);
 	textProgram->DetachShader(*tVert);
-
 	// Setting up textures
 	tex = new glTexture(); bkgrnd = new glTexture();
 	bkgrnd->SetFilter(GL_LINEAR); bkgrnd->SetWrapMode(GL_REPEAT);
@@ -87,8 +86,9 @@ void Game::InitGame(){
 	l = 0.; r = width; b = height; t = 0.;
 	projection = glm::ortho(l, r, b, t, -1.f, 1.f);
 	program->SetUniformMatrix4fv("projection", glm::value_ptr(projection));
-	projection = glm::mat4();
-	textProgram->SetUniformMatrix4fv("projection", glm::value_ptr(projection));
+	textProgram->SetUniformMatrix4fv("proj", glm::value_ptr(projection));
+	a = new TextRenderer(textProgram);
+	a->LoadFont("Assests\\Font\\arial.ttf", 24);
 	// Setup the balls.
 	for (int i = 0; i < 20; i++){
 		balls.push_back(DemoBall(glm::vec2(100+i*i, 600), glm::vec2(8*i), glm::vec3(100*i, 100, 200)));
@@ -131,6 +131,7 @@ void Game::DrawGame(){
 	glViewport(0, 0, 1024, 768);
 
 	// Draw everything here.
+
 	FrameBuffer->Begin();
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClearColor(0.5f, 1.2f, 0.3f, 1.0f);
@@ -153,7 +154,7 @@ void Game::DrawGame(){
 	scrProgram->SetUniform1f("offSet", 0.5f * ClockTimer::returnElaspedTime(TimeMeasure::TIME_SECONDS));
 	FrameBuffer->Render();
 	scrProgram->Unuse();
-	renderer->Draw(glm::vec2(0, 698), glm::vec2(1024, 50), 0, glm::vec3(128));
+	a->Render("ABCDEF", glm::vec2(30, 40), 5, glm::vec3(1, 0, 0));
 	window->Refresh();
 }
 
