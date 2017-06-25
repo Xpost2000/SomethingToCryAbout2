@@ -51,10 +51,10 @@ void TextRenderer::LoadFont(std::string path, GLint fSize){
 
 TextRenderer::~TextRenderer()
 {
-	FT_Done_FreeType(ftI);
 	FT_Done_Face(font);
-	glDeleteBuffers(1, &vbo);
+	FT_Done_FreeType(ftI);
 	glDeleteVertexArrays(1, &vao);
+	glDeleteBuffers(1, &vbo);
 }
 
 void TextRenderer::Render(std::string text, glm::vec2 pos, float scale, glm::vec3 rgb){

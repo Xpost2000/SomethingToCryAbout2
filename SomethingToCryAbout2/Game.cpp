@@ -97,24 +97,7 @@ void Game::InitGame(){
 	program->SetUniformMatrix4fv("projection", glm::value_ptr(projection));
 	textProgram->SetUniformMatrix4fv("proj", glm::value_ptr(projection));
 	arial = new TextRenderer(textProgram);
-	arial->LoadFont("Assests\\Font\\arial.ttf", 44);
-	// Setup the balls.
-	for (int i = 0; i < 20; i++){
-		balls.push_back(DemoBall(glm::vec2(100+i*i, 600), glm::vec2(8*i), glm::vec3(100*i, 100, 200)));
-		balls.back().SetBounds(l, r, b, t);
-		balls.back().SetVelocity(5 + i-2);
-	}
-	for (int i = 0; i < 20; i++){
-		balls.push_back(DemoBall(glm::vec2(20 + i*i, 600), glm::vec2(8 * i), glm::vec3(2, 100*i, 200)));
-		balls.back().SetBounds(l, r, b, t);
-		balls.back().SetVelocity(5 + i - 2);
-	}
-	for (int i = 0; i < 15; i++){
-		balls.push_back(DemoBall(glm::vec2(40 + i*i, 600), glm::vec2(8 * i), glm::vec3(2, 2, 40 *i)));
-		balls.back().SetBounds(l, r, b, t);
-		balls.back().SetVelocity(5 + i - 2);
-	}
-
+	arial->LoadFont("Assests\\Font\\arial.ttf", 48);
 }
 // Run game that condenses all seperate functions into one.
 void Game::RunGame(){
@@ -130,9 +113,6 @@ void Game::UpdateGame(){
 	model = glm::mat4();
 	ClockTimer::Tick();
 	if (inState != GameState::GAME_PAUSE){
-		for (auto &b : balls){
-			b.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
-		}
 	}
 }
 
@@ -142,17 +122,16 @@ void Game::DrawGame(){
 	// Draw everything here.
 
 	FrameBuffer->Begin();
+	//
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClearColor(0.5f, 1.2f, 0.3f, 1.0f);
 	camera->SupplyMatrix(view);
 	camera->Scale(glm::vec2(scale.x, scale.y)); // camera system.
 	view = camera->RetrieveMatrix(); // Call this to transfer matrix.
 	program->SetUniformMatrix4fv("view", glm::value_ptr(view));
-	program->SetUniformMatrix4fv("model", glm::value_ptr(model));
-	for (auto &b : balls){
-		renderer->DrawM(b.GetPos(), b.GetSize(), 0, tex, b.GetColor());
-	}
+	//
 	FrameBuffer->End();
+
 	glClear(GL_COLOR_BUFFER_BIT);
 	scrProgram->SetUniform1i("frameBuffer", 0);
 	scrProgram->SetUniform1i("waterFX", waterFX);
@@ -160,19 +139,8 @@ void Game::DrawGame(){
 	scrProgram->SetUniform1i("greyScale", greyScale);
 	scrProgram->SetUniform1f("offSet", 0.5f * ClockTimer::returnElaspedTime(TimeMeasure::TIME_SECONDS));
 	scrProgram->Use();
-	// Set all appropriete uniforms
 	FrameBuffer->Render();
 	scrProgram->Unuse();
-	arial->Render("Frame Rate : " + std::to_string(ClockTimer::returnFramesPerSecond()), glm::vec2(30, 590), 1, textColor);
-	if (inState != GameState::GAME_PAUSE)
-		arial->Render("The Quick Brown Fox Jumps Over The Lazy Dog", glm::vec2(30, 40), 1, textColor);
-	else
-		arial->Render("Ball Count : " + std::to_string(balls.size()), glm::vec2(40, 40), 1,  textColor);
-	arial->Render(specialFx, glm::vec2(30, 90), 0.6, textColor);
-	if ((!waterFX && !glitch && !greyScale)){
-		specialFx = "None";
-		textColor = { 0, 0, 0 };
-	}
 	window->Refresh();
 }
 
