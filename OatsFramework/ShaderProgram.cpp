@@ -34,9 +34,10 @@ void ShaderProgram::Use(){
 }
 
 /*
-	I'm implementing all of these helper functions with direct state access cause it's
-	more modern and oh shit. going to upgrade context version in a few minutes
+	I may or may not downgrade this to be compatible with older OGL versions.
 */
+#include "flag.h" // Use this flag to dictate whether it is openGL 3.3 compatible
+#ifndef COMPATIBILITY_33
 void ShaderProgram::SetUniform1i(const char* location, int v0){
 	glProgramUniform1i(sObject, glGetUniformLocation(sObject, location), v0);
 	fprintf(stderr, "ShaderProgram : Uniform1i set\n");
@@ -66,7 +67,52 @@ void ShaderProgram::SetUniformMatrix4fv(const char* location, float* value){
 	glProgramUniformMatrix4fv(sObject, glGetUniformLocation(sObject, location), 1, false, &value[0]);
 	fprintf(stderr, "ShaderProgram : Uniform Matrix4fv set\n");
 }
+#endif
+#ifdef COMPATIBILITY_33
+void ShaderProgram::SetUniform1i(const char* location, int v0){
+	Use();
+	glUniform1i(glGetUniformLocation(sObject, location), v0);
+	fprintf(stderr, "ShaderProgram : Uniform1i set\n");
+	Unuse();
+}
+void ShaderProgram::SetUniform1f(const char* location, float v0){
+	Use();
+	glUniform1f(glGetUniformLocation(sObject, location), v0);
+	fprintf(stderr, "ShaderProgram : Uniform1f set\n");
+	Unuse();
+}
+void ShaderProgram::SetUniform2f(const char* location, float v0, float v1){
+	Use();
+	glUniform2f(glGetUniformLocation(sObject, location), v0, v1);
+	fprintf(stderr, "ShaderProgram : Uniform2f set\n");
+	Unuse();
+}
+void ShaderProgram::SetUniform3f(const char* location, float v0, float v1, float v2){
+	Use();
+	glUniform3f(glGetUniformLocation(sObject, location), v0, v1, v2);
+	fprintf(stderr, "ShaderProgram : Uniform3f set\n");
+	Unuse();
+}
+void ShaderProgram::SetUniform4f(const char* location, float v0, float v1, float v2, float v3){
+	Use();
+	glUniform4f(glGetUniformLocation(sObject, location), v0, v1, v2, v3);
+	fprintf(stderr, "ShaderProgram : Uniform4f set\n");
+	Unuse();
+}
 
+void ShaderProgram::SetUniform4fv(const char* location, float* value){
+	Use();
+	glUniform4fv(glGetUniformLocation(sObject, location), 1, &value[0]);
+	fprintf(stderr, "ShaderProgram : Uniform4fv set\n");
+	Unuse();
+}
+void ShaderProgram::SetUniformMatrix4fv(const char* location, float* value){
+	Use();
+	glUniformMatrix4fv(glGetUniformLocation(sObject, location), 1, false, &value[0]);
+	fprintf(stderr, "ShaderProgram : Uniform Matrix4fv set\n");
+	Unuse();
+}
+#endif
 void ShaderProgram::Unuse(){
 	glUseProgram(0);
 }

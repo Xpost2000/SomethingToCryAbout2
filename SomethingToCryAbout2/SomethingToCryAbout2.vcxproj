@@ -39,14 +39,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>C:\Users\Random\Dropbox\SomethingToCryAboutOGL\SomethingToCryAbout2\Debug\OatsFramework\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Users\Random\Dropbox\SomethingToCryAboutOGL\SomethingToCryAbout2\Release\OatsFramework;C:\Users\Random\Dropbox\SomethingToCryAboutOGL\SomethingToCryAbout2\Debug\OatsFramework\;$(LibraryPath)</LibraryPath>
     <ExecutablePath>C:\Users\Random\Dropbox\SomethingToCryAboutOGL\SomethingToCryAbout2\Debug\OatsFramework;$(ExecutablePath)</ExecutablePath>
-    <IncludePath>C:\Users\Random\Dropbox\SomethingToCryAboutOGL\SomethingToCryAbout2\Debug\OatsFramework\;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\Random\Dropbox\SomethingToCryAboutOGL\SomethingToCryAbout2\Release;C:\Users\Random\Dropbox\SomethingToCryAboutOGL\SomethingToCryAbout2\Debug\OatsFramework\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LibraryPath>C:\Users\Random\Dropbox\SomethingToCryAboutOGL\SomethingToCryAbout2\Debug\OatsFramework\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Users\Random\Dropbox\SomethingToCryAboutOGL\SomethingToCryAbout2\Release\OatsFramework;C:\Users\Random\Dropbox\SomethingToCryAboutOGL\SomethingToCryAbout2\Debug\OatsFramework\;$(LibraryPath)</LibraryPath>
     <ExecutablePath>C:\Users\Random\Dropbox\SomethingToCryAboutOGL\SomethingToCryAbout2\Debug\OatsFramework;$(ExecutablePath)</ExecutablePath>
-    <IncludePath>C:\Users\Random\Dropbox\SomethingToCryAboutOGL\SomethingToCryAbout2\Debug\OatsFramework\;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\Random\Dropbox\SomethingToCryAboutOGL\SomethingToCryAbout2\Release;C:\Users\Random\Dropbox\SomethingToCryAboutOGL\SomethingToCryAbout2\Debug\OatsFramework\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -55,8 +55,8 @@
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>OatsFW_Beta.lib;freetype.lib;SDL2main.lib;SDL2_image.lib;SDL2.lib;glew32.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <AdditionalDependencies>OatsFW_Beta.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -69,10 +69,10 @@
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>OatsFW_Beta.lib;freetype.lib;SDL2main.lib;SDL2_image.lib;SDL2.lib;glew32.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>OatsFW_Beta.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>

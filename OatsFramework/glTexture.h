@@ -25,8 +25,6 @@ public:
 	OATS_LIB_API void SetFilter(GLenum filter);
 	// Set texture wrapping mode. GL_REPEAT / GL_CLAMP_TO ___ accepted
 	OATS_LIB_API void SetWrapMode(GLenum mode);
-	// Do not use. (Allocate memory for images)
-	OATS_LIB_API void Allocate(GLenum fmt, int w, int h);
 	// Retrieve texture object handle
 	OATS_LIB_API inline GLuint GetTextureObject() { return tex; }
 private:

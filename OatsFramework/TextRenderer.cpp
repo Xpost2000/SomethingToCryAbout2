@@ -58,9 +58,9 @@ TextRenderer::~TextRenderer()
 }
 
 void TextRenderer::Render(std::string text, glm::vec2 pos, float scale, glm::vec3 rgb){
-	sp->Use();
 	sp->SetUniform1i("text", 0);
-	sp->SetUniform3f("iClr", rgb.r, rgb.b, rgb.g);
+	sp->SetUniform3f("iClr", rgb.r, rgb.g, rgb.b);
+	sp->Use();
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(vao);
 	std::string::const_iterator c;

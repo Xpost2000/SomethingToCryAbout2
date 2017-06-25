@@ -1,10 +1,13 @@
-#include "Game.h"
+﻿#include "Game.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <GL\glew.h>
 #include <ctime>
 float l, r, b, t;
+std::string specialFx = "None";
+glm::vec3 textColor = { 0, 0, 0 };
+
 Game::Game()
 {
 	window = new Window("Game Win : Build Win32 0.1", width, height);
@@ -88,7 +91,7 @@ void Game::InitGame(){
 	program->SetUniformMatrix4fv("projection", glm::value_ptr(projection));
 	textProgram->SetUniformMatrix4fv("proj", glm::value_ptr(projection));
 	a = new TextRenderer(textProgram);
-	a->LoadFont("Assests\\Font\\arial.ttf", 24);
+	a->LoadFont("Assests\\Font\\arial.ttf", 44);
 	// Setup the balls.
 	for (int i = 0; i < 20; i++){
 		balls.push_back(DemoBall(glm::vec2(100+i*i, 600), glm::vec2(8*i), glm::vec3(100*i, 100, 200)));
@@ -145,16 +148,25 @@ void Game::DrawGame(){
 	}
 	FrameBuffer->End();
 	glClear(GL_COLOR_BUFFER_BIT);
-	scrProgram->Use();
-	// Set all appropriete uniforms
 	scrProgram->SetUniform1i("frameBuffer", 0);
 	scrProgram->SetUniform1i("waterFX", waterFX);
 	scrProgram->SetUniform1i("glitch", glitch);
 	scrProgram->SetUniform1i("greyScale", greyScale);
 	scrProgram->SetUniform1f("offSet", 0.5f * ClockTimer::returnElaspedTime(TimeMeasure::TIME_SECONDS));
+	scrProgram->Use();
+	// Set all appropriete uniforms
 	FrameBuffer->Render();
 	scrProgram->Unuse();
-	a->Render("ABCDEF", glm::vec2(30, 40), 5, glm::vec3(1, 0, 0));
+	a->Render("Frame Rate : " + std::to_string(ClockTimer::returnFramesPerSecond()), glm::vec2(30, 590), 1, textColor);
+	if (inState != GameState::GAME_PAUSE)
+		a->Render("The Quick Brown Fox Jumps Over The Lazy Dog", glm::vec2(30, 40), 1, textColor);
+	else
+		a->Render("Ball Count : " + std::to_string(balls.size()), glm::vec2(40, 40), 1,  textColor);
+	a->Render(specialFx, glm::vec2(30, 90), 0.6, textColor);
+	if ((!waterFX && !glitch && !greyScale)){
+		specialFx = "None";
+		textColor = { 0, 0, 0 };
+	}
 	window->Refresh();
 }
 
@@ -170,6 +182,7 @@ void Game::HandleInput(){
 				if (inState != GameState::GAME_PAUSE){
 					inState = GameState::GAME_PAUSE;
 					printf("BallCount : %d\n", balls.size());
+
 				}
 				else{
 					inState = GameState::GAME_RUNNING;
@@ -178,14 +191,18 @@ void Game::HandleInput(){
 			case SDLK_1:
 			case SDLK_z:
 				waterFX = !waterFX;
+				specialFx = "Water Shader Active";
 				break;
 			case SDLK_2:
 			case SDLK_x:
 				glitch = !glitch;
+				specialFx = "Glitch Shader Active";
+				textColor = { 1, 1, 1 };
 				break;
 			case SDLK_3:
 			case SDLK_c:
 				greyScale = !greyScale;
+				specialFx = "Greyscale Active";
 				break;
 			}
 			break;

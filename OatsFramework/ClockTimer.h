@@ -44,5 +44,6 @@ private:
 	static uint32_t delta;
 	// Previous delta time
 	static uint32_t last;
+	static uint32_t curFrame;
 };
 

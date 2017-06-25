@@ -11,5 +11,5 @@
 #else
 #define OATS_LIB_API _declspec(dllimport)
 #endif
-
+#include "linker.h"
 #define VERSION_RELEASE "0.001 Alpha"

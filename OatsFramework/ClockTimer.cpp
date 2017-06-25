@@ -2,7 +2,7 @@
 
  uint32_t ClockTimer::delta = 0;
  uint32_t ClockTimer::last = 0;
-
+ uint32_t ClockTimer::curFrame = 0;
 ClockTimer::ClockTimer()
 {
 	delete this;
@@ -21,6 +21,7 @@ void ClockTimer::Tick(){
 	uint32_t tickTime = SDL_GetTicks();
 	delta = tickTime - last;
 	last = tickTime;
+	curFrame++;
 }
 /*
 	return the value of delta time in either milliseconds or seconds
@@ -54,6 +55,5 @@ float ClockTimer::returnElaspedTime(const TimeMeasure m){
 }
 
 float ClockTimer::returnFramesPerSecond(){
-	// WIP
-	return 1;
+	return curFrame / returnElaspedTime(TimeMeasure::TIME_SECONDS);
 }

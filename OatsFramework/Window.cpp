@@ -34,7 +34,8 @@ void Window::CreateWindow(){
 	SDL_GL_SetAttribute(SDL_GLattr::SDL_GL_MULTISAMPLESAMPLES, 8);
 	ogl = SDL_GL_CreateContext(window);
 	glewExperimental = true;
-	if (glewInit() == GLEW_OK) { ; }
+	if (glewInit() == GLEW_OK) { 
+	}
 	else { SDL_Quit(); exit(0); }
 }
 
