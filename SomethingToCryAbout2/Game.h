@@ -13,7 +13,8 @@
 #include <Oats\Renderer2D.h>
 #include <Oats\Camera2D.h>
 #include <Oats\Framebuffer.h>
-#include "DemoBall.h"
+
+#include "Button.h"
 class Game
 {
 public:
@@ -22,8 +23,6 @@ public:
 	void InitGame();
 	void RunGame();
 private:
-	// Objects for Game
-	std::vector<DemoBall> balls;
 	//Math Stuff
 	glm::mat4 view = glm::mat4();
 	glm::mat4 projection = glm::mat4();
@@ -45,12 +44,13 @@ private:
 	ShaderProgram* program = nullptr;
 	ShaderProgram* scrProgram = nullptr;
 	ShaderProgram* textProgram = nullptr;
-	glTexture* tex = nullptr;
-	glTexture* bkgrnd = nullptr;
 	Renderer2D* renderer = nullptr;
-	TextRenderer* arial;
 	GameState inState;
 	InputManager* input;
+
+	TextRenderer* arial;
+	TextRenderer* smArial;
+	TextRenderer* cmcSans;
 
 	int width = 1024, height = 768;
 	struct CameraScale{

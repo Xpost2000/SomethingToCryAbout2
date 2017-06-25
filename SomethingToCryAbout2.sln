@@ -4,23 +4,36 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SomethingToCryAbout2", "SomethingToCryAbout2\SomethingToCryAbout2.vcxproj", "{8B4D96EF-1303-4BDA-BD8E-9F506AE40962}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B0844D4A-4B39-4F62-AF9D-36EB9D360CF5} = {B0844D4A-4B39-4F62-AF9D-36EB9D360CF5}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OatsFramework", "OatsFramework\OatsFramework.vcxproj", "{B0844D4A-4B39-4F62-AF9D-36EB9D360CF5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
+		OpenGL 3.3 Release|Win32 = OpenGL 3.3 Release|Win32
+		OpenGL 4.5 Rel|Win32 = OpenGL 4.5 Rel|Win32
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{8B4D96EF-1303-4BDA-BD8E-9F506AE40962}.Debug|Win32.ActiveCfg = Debug|Win32
 		{8B4D96EF-1303-4BDA-BD8E-9F506AE40962}.Debug|Win32.Build.0 = Debug|Win32
+		{8B4D96EF-1303-4BDA-BD8E-9F506AE40962}.OpenGL 3.3 Release|Win32.ActiveCfg = OpenGL 3.3 Release|Win32
+		{8B4D96EF-1303-4BDA-BD8E-9F506AE40962}.OpenGL 3.3 Release|Win32.Build.0 = OpenGL 3.3 Release|Win32
+		{8B4D96EF-1303-4BDA-BD8E-9F506AE40962}.OpenGL 4.5 Rel|Win32.ActiveCfg = OpenGL 4.5 Release|Win32
+		{8B4D96EF-1303-4BDA-BD8E-9F506AE40962}.OpenGL 4.5 Rel|Win32.Build.0 = OpenGL 4.5 Release|Win32
 		{8B4D96EF-1303-4BDA-BD8E-9F506AE40962}.Release|Win32.ActiveCfg = Release|Win32
 		{8B4D96EF-1303-4BDA-BD8E-9F506AE40962}.Release|Win32.Build.0 = Release|Win32
 		{B0844D4A-4B39-4F62-AF9D-36EB9D360CF5}.Debug|Win32.ActiveCfg = Debug|Win32
 		{B0844D4A-4B39-4F62-AF9D-36EB9D360CF5}.Debug|Win32.Build.0 = Debug|Win32
-		{B0844D4A-4B39-4F62-AF9D-36EB9D360CF5}.Release|Win32.ActiveCfg = Release|Win32
-		{B0844D4A-4B39-4F62-AF9D-36EB9D360CF5}.Release|Win32.Build.0 = Release|Win32
+		{B0844D4A-4B39-4F62-AF9D-36EB9D360CF5}.OpenGL 3.3 Release|Win32.ActiveCfg = OpenGL 3.3 Release|Win32
+		{B0844D4A-4B39-4F62-AF9D-36EB9D360CF5}.OpenGL 3.3 Release|Win32.Build.0 = OpenGL 3.3 Release|Win32
+		{B0844D4A-4B39-4F62-AF9D-36EB9D360CF5}.OpenGL 4.5 Rel|Win32.ActiveCfg = OpenGL 4.5 Rel|Win32
+		{B0844D4A-4B39-4F62-AF9D-36EB9D360CF5}.OpenGL 4.5 Rel|Win32.Build.0 = OpenGL 4.5 Rel|Win32
+		{B0844D4A-4B39-4F62-AF9D-36EB9D360CF5}.Release|Win32.ActiveCfg = OpenGL 3.3 Release|Win32
+		{B0844D4A-4B39-4F62-AF9D-36EB9D360CF5}.Release|Win32.Build.0 = OpenGL 3.3 Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -45,7 +45,6 @@ void TextRenderer::LoadFont(std::string path, GLint fSize){
 			font->glyph->advance.x
 		};
 		Characters.insert(std::pair<GLchar, Character>(c, temp));
-		printf("Loaded Char %c\n", c);
 	}
 }
 

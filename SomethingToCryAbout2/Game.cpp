@@ -5,12 +5,14 @@
 #include <GL\glew.h>
 #include <ctime>
 float l, r, b, t;
+int mx;
+int my;
 std::string specialFx = "None";
 glm::vec3 textColor = { 0, 0, 0 };
-
+Button test(glm::vec2(400, 300), glm::vec2(150, 60), glm::vec3(255), glm::vec3(0), "Test");
+glQueryInfo info;
 Game::Game()
 {
-	glQueryInfo info;
 	window = new Window("Game Win : Build Win32 0.1", width, height);
 	window->CreateWindow();
 	info = QueryInformation();
@@ -28,11 +30,11 @@ Game::~Game(){
 	delete fragment;
 	delete vertex;
 	delete program;
+	delete smArial;
 	delete arial;
+	delete cmcSans;
 	delete textProgram;
 	delete window;
-	delete tex;
-	delete bkgrnd;
 	delete FrameBuffer;
 	delete camera;
 	delete tFrag;
@@ -41,6 +43,7 @@ Game::~Game(){
 }
 // Very Huge setup
 void Game::InitGame(){
+	test.SetID(2);
 	camera = new Camera2D(view, width, height);
 	fragment = new Shader(GL_FRAGMENT_SHADER);
 	vertex = new Shader(GL_VERTEX_SHADER);
@@ -54,6 +57,7 @@ void Game::InitGame(){
 	program = new ShaderProgram();
 
 	FrameBuffer = new Framebuffer(width, height);
+	// TODO incorporate SPR-V loading
 	pFrag->LoadFromFile("Assests\\Shader\\pp\\frag.glsl"); // Postprocess Fragment
 	pVert->LoadFromFile("Assests\\Shader\\pp\\vert.glsl"); // Postprocess Vertex
 	fragment->LoadFromFile("Assests\\Shader\\frag.glsl"); // Standard Frag
@@ -80,12 +84,6 @@ void Game::InitGame(){
 	textProgram->DetachShader(*tFrag);
 	textProgram->DetachShader(*tVert);
 	// Setting up textures
-	tex = new glTexture(); bkgrnd = new glTexture();
-	bkgrnd->SetFilter(GL_LINEAR); bkgrnd->SetWrapMode(GL_REPEAT);
-	tex->SetFilter(GL_LINEAR);
-	tex->SetWrapMode(GL_REPEAT);
-	tex->LoadImage("Assests\\Textures\\circle.png");
-	bkgrnd->LoadImage("Assests\\Textures\\gradient.png");
 	// Setting up renderer
 	renderer = new Renderer2D(program);
 	renderer->EnableAlpha(true);
@@ -97,7 +95,11 @@ void Game::InitGame(){
 	program->SetUniformMatrix4fv("projection", glm::value_ptr(projection));
 	textProgram->SetUniformMatrix4fv("proj", glm::value_ptr(projection));
 	arial = new TextRenderer(textProgram);
+	cmcSans = new TextRenderer(textProgram);
+	smArial = new TextRenderer(textProgram);
 	arial->LoadFont("Assests\\Font\\arial.ttf", 48);
+	cmcSans->LoadFont("Assests\\Font\\cmc.ttf", 48);
+	smArial->LoadFont("Assests\\Font\\arial.ttf", 14);
 }
 // Run game that condenses all seperate functions into one.
 void Game::RunGame(){
@@ -109,6 +111,8 @@ void Game::RunGame(){
 }
 // Neat little update function
 void Game::UpdateGame(){
+	mx = input->GetMouseX();
+	my = input->GetMouseY();
 	view = glm::mat4();
 	model = glm::mat4();
 	ClockTimer::Tick();
@@ -124,7 +128,7 @@ void Game::DrawGame(){
 	FrameBuffer->Begin();
 	//
 	glClear(GL_COLOR_BUFFER_BIT);
-	glClearColor(0.5f, 1.2f, 0.3f, 1.0f);
+	glClearColor(0.f, 0.2f, .3f, 1.0f);
 	camera->SupplyMatrix(view);
 	camera->Scale(glm::vec2(scale.x, scale.y)); // camera system.
 	view = camera->RetrieveMatrix(); // Call this to transfer matrix.
@@ -141,9 +145,17 @@ void Game::DrawGame(){
 	scrProgram->Use();
 	FrameBuffer->Render();
 	scrProgram->Unuse();
+	smArial->Render("OpenGL Vendor: " + std::string(reinterpret_cast<const char*>(info.vendor)), glm::vec2(10, 20), 1, glm::vec3(255));
+	smArial->Render("OpenGL Version: " + std::string(reinterpret_cast<const char*>(info.version.legacy.gl_api_version)), glm::vec2(250, 20), 1, glm::vec3(255));
+	smArial->Render("OpenGL-SL Version : " + std::string(reinterpret_cast<const char*>(info.glsl_lang_version)), glm::vec2(10, 40), 1, glm::vec3(255));
+	smArial->Render("OpenGL Renderer : " + std::string(reinterpret_cast<const char*>(info.renderer)), glm::vec2(10, 90), 1, glm::vec3(255));
+	
+	// Drawing a button like this
+	renderer->Draw(test.GetLoc(), test.GetSize(), 0, test.GetColor());
+	arial->Render(test.GetString(), test.GetTextLoc(), 1, test.GetTextColor());
 	window->Refresh();
 }
-
+#include <Windows.h>
 void Game::HandleInput(){
 	input->PollEvents([&](SDL_Event* evnt){
 		switch (evnt->type){
@@ -152,35 +164,14 @@ void Game::HandleInput(){
 			break;
 		case SDL_KEYDOWN:
 			switch (evnt->key.keysym.sym){
-			case SDLK_ESCAPE:
-				if (inState != GameState::GAME_PAUSE){
-					inState = GameState::GAME_PAUSE;
-					printf("BallCount : %d\n", balls.size());
-
-				}
-				else{
-					inState = GameState::GAME_RUNNING;
-				}
-				break;
-			case SDLK_1:
-			case SDLK_z:
-				waterFX = !waterFX;
-				specialFx = "Water Shader Active";
-				break;
-			case SDLK_2:
-			case SDLK_x:
-				glitch = !glitch;
-				specialFx = "Glitch Shader Active";
-				textColor = { 1, 1, 1 };
-				break;
-			case SDLK_3:
-			case SDLK_c:
-				greyScale = !greyScale;
-				specialFx = "Greyscale Active";
-				break;
 			}
 			break;
 		case SDL_KEYUP:
+			break;
+		case SDL_MOUSEBUTTONDOWN:
+			if (test.IsInBounds(mx, my)){
+					MessageBox(NULL, "Test Fggit", "Test Clicked", MB_ICONEXCLAMATION);
+			}
 			break;
 		default:
 			break;
