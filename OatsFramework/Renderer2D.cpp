@@ -28,8 +28,8 @@ Renderer2D::~Renderer2D()
 	delete vao;
 }
 
-void Renderer2D::Draw(glm::vec2 pos, glm::vec2 size, float angle, glTexture *texture){
-	texture->Bind();
+void Renderer2D::Draw(glm::vec2 pos, glm::vec2 size, float angle, glTexture &texture){
+	texture.Bind();
 	model = glm::mat4();
 	model = glm::translate(model, glm::vec3(pos, 1.0f));
 	model = glm::translate(model, glm::vec3(0.5f * size.x, 0.5f * size.y, 0.0f));
@@ -41,7 +41,7 @@ void Renderer2D::Draw(glm::vec2 pos, glm::vec2 size, float angle, glTexture *tex
 	program->SetUniformMatrix4fv("model", glm::value_ptr(model));
 	program->Use();
 	vao->Draw(GL_TRIANGLE_STRIP, 4);
-	texture->Unbind();
+	texture.Unbind();
 	fprintf(stderr, "Renderer2D: Draw Quad (Overload +1)\n");
 	program->Unuse();
 }
@@ -62,8 +62,8 @@ void Renderer2D::Draw(glm::vec2 pos, glm::vec2 size, float angle, glm::vec3 colo
 	fprintf(stderr, "Renderer2D: Draw Quad(Overload +2)\n");
 }
 
-void Renderer2D::DrawM(glm::vec2 pos, glm::vec2 size, float angle, glTexture* texture, glm::vec3 color){
-	texture->Bind();
+void Renderer2D::DrawM(glm::vec2 pos, glm::vec2 size, float angle, glTexture& texture, glm::vec3 color){
+	texture.Bind();
 	model = glm::mat4();
 	model = glm::translate(model, glm::vec3(pos, 1.0f));
 
@@ -77,7 +77,7 @@ void Renderer2D::DrawM(glm::vec2 pos, glm::vec2 size, float angle, glTexture* te
 	program->SetUniformMatrix4fv("model", glm::value_ptr(model));
 	program->Use();
 	vao->Draw(GL_TRIANGLE_STRIP, 4);
-	texture->Unbind();
+	texture.Unbind();
 	program->Unuse();
 	fprintf(stderr, "Renderer2D: Draw Quad(Overload +3)\n");
 }

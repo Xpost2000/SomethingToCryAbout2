@@ -5,6 +5,7 @@
 #include "Paddle.h"
 #include "Entity.h"
 #include "Player.h"
+#include <Oats\ResourceManager.h>
 #include <cmath>
 #include <GL\glew.h>
 #include <ctime>
@@ -65,16 +66,15 @@ void Game::InitGame(){
 	wall = new glTexture();
 	devTex = new glTexture();
 	playerT = new glTexture();
-	playerT->LoadImage("Assests\\Textures\\player.png");
-	wall->LoadImage("Assests\\Textures\\dvColBox.png");
-	devTex->LoadImage("Assests\\Textures\\dvBox.png");
 	wall->SetFilter(GL_LINEAR);
 	devTex->SetFilter(GL_LINEAR);
 	wall->SetWrapMode(GL_REPEAT);
 	devTex->SetWrapMode(GL_REPEAT);
 	playerT->SetFilter(GL_LINEAR);
 	playerT->SetWrapMode(GL_REPEAT);
-
+	playerT->LoadImage("Assests\\Textures\\player.png");
+	wall->LoadImage("Assests\\Textures\\dvColBox.png");
+	devTex->LoadImage("Assests\\Textures\\dvBox.png");
 
 	Textures.insert(std::pair<std::string, glTexture*>(TextureListNames[0], wall)); // put all textures in a map;
 	Textures.insert(std::pair<std::string, glTexture*>(TextureListNames[1], devTex));
@@ -203,12 +203,12 @@ void Game::DrawGame(){
 		for (auto& wll : walls){
 			// Compare the name of these things to all possible wall name values
 			if (wll.GetName() == "wall-dev" || wll.GetName() == "dev")
-				renderer->Draw(wll.GetPosition(), wll.GetSize(), 0, Textures[wll.GetName()]);
+				renderer->Draw(wll.GetPosition(), wll.GetSize(), 0, *Textures[wll.GetName()]);
 			else
 				renderer->Draw(wll.GetPosition(), wll.GetSize(), 0, wll.GetColor());
 		}
 		//Everything else
-		renderer->Draw(player.GetPosition(), player.GetSize(), player.GetAngle(), Textures["player"]);
+		renderer->Draw(player.GetPosition(), player.GetSize(), player.GetAngle(), *Textures["player"]);
 	}
 	program->Unuse();
 	FrameBuffer->End();
