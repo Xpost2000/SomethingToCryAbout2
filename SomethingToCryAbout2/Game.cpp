@@ -48,6 +48,11 @@ Game::~Game(){
 	delete devTex;
 }
 // Very Huge setup
+
+std::string TextureListNames[] = {
+	"wall-dev", "dev"
+};
+
 void Game::InitGame(){
 	// Setup the map here
 	
@@ -61,8 +66,8 @@ void Game::InitGame(){
 	devTex->SetWrapMode(GL_REPEAT);
 
 
-	Textures.insert(std::pair<std::string, glTexture*>("wall-dev", wall)); // put all textures in a map;
-	Textures.insert(std::pair<std::string, glTexture*>("dev", devTex));
+	Textures.insert(std::pair<std::string, glTexture*>(TextureListNames[0], wall)); // put all textures in a map;
+	Textures.insert(std::pair<std::string, glTexture*>(TextureListNames[1], devTex));
 
 
 	camera = new Camera2D(view, width, height);
@@ -126,6 +131,10 @@ void Game::InitGame(){
 	//camera->SupplyMatrix(view);
 	walls.push_back(Entity(glm::vec2(400), glm::vec2(200), glm::vec3(255), 100, "dev", true));
 	walls.push_back(Entity(glm::vec2(200), glm::vec2(100), glm::vec3(255), 100, "wall-dev", true));
+	walls.push_back(Entity(glm::vec2(0), glm::vec2(30, 768), glm::vec3(0), 100, "Boundary", true));
+	walls.push_back(Entity(glm::vec2(1024, 0), glm::vec2(30, 768), glm::vec3(0), 100, "Boundary", true));
+	walls.push_back(Entity(glm::vec2(0), glm::vec2(1024, 30), glm::vec3(0), 100, "Boundary", true));
+	walls.push_back(Entity(glm::vec2(0, 768), glm::vec2(1024, 30), glm::vec3(0), 100, "Boundary", true));
 }
 // Run game that condenses all seperate functions into one.
 void Game::RunGame(){
@@ -174,10 +183,16 @@ void Game::DrawGame(){
 	if (inState == GameState::GAME_MENU){
 	}
 	if (inState == GameState::GAME_RUNNING){
-		renderer->Draw(test.GetPosition(), test.GetSize(), 0, test.GetColor());
+		// walls
 		for (auto& wll : walls){
-			renderer->Draw(wll.GetPosition(), wll.GetSize(), 0, Textures[wll.GetName()]);
+			// Compare the name of these things to all possible wall name values
+			if (wll.GetName() == "wall-dev" || wll.GetName() == "dev")
+				renderer->Draw(wll.GetPosition(), wll.GetSize(), 0, Textures[wll.GetName()]);
+			else
+				renderer->Draw(wll.GetPosition(), wll.GetSize(), 0, wll.GetColor());
 		}
+		//Everything else
+		renderer->Draw(test.GetPosition(), test.GetSize(), 0, test.GetColor());
 	}
 	program->Unuse();
 	FrameBuffer->End();
