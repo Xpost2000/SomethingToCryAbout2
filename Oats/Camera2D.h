@@ -25,6 +25,9 @@ public:
 	OATS_LIB_API void Translate(glm::vec2 location);
 	// Scale the camera matrix ( zoom in or out )
 	OATS_LIB_API void Scale(glm::vec2 amount);
+	void Identity(){
+		viewMatrix = glm::mat4();
+	}
 	// Retrieve the value of the matrix of this camera
 	OATS_LIB_API glm::mat4 RetrieveMatrix();
 private:

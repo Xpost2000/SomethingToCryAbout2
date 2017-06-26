@@ -4,6 +4,7 @@
 Camera2D::Camera2D(glm::mat4& matrix, float mX, float mY) :
 viewMatrix(matrix), maxBoundX(mX), maxBoundY(mY)
 {
+	viewMatrix = glm::ortho(0.f, maxBoundX, 0.f, maxBoundY);
 }
 
 
@@ -16,7 +17,7 @@ void Camera2D::SupplyMatrix(glm::mat4& matrix){
 }
 
 void Camera2D::Translate(glm::vec2 location){
-	viewMatrix = glm::translate(viewMatrix, glm::vec3(location, 1.0));
+	viewMatrix = glm::translate(viewMatrix, glm::vec3(location.x, location.y, 0.0));
 }
 
 void Camera2D::Scale(glm::vec2 amount){

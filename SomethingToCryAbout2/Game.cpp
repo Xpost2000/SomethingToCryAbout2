@@ -8,7 +8,7 @@
 #include <ctime>
 int mx;
 int my;
-Entity test(glm::vec2(600), glm::vec2(20), glm::vec3(255), 100, "test", false);
+Entity test(glm::vec2(300), glm::vec2(20), glm::vec3(255), 100, "test", false);
 std::vector<Entity> walls;
 glQueryInfo info;
 glTexture* wall;
@@ -120,7 +120,8 @@ void Game::InitGame(){
 	cmcSans->LoadFont("Assests\\Font\\cmc.ttf", 72);
 	smArial->LoadFont("Assests\\Font\\arial.ttf", 14);
 	test.SetSpeed(120, 120);
-
+	view = glm::mat4();
+	//camera->SupplyMatrix(view);
 	walls.push_back(Entity(glm::vec2(400), glm::vec2(200), glm::vec3(255), 100, "dev", true));
 }
 // Run game that condenses all seperate functions into one.
@@ -136,7 +137,7 @@ void Game::UpdateGame(){
 	// Simulate Everything here.
 	mx = input->GetMouseX();
 	my = input->GetMouseY();
-	view = glm::mat4();
+
 	model = glm::mat4();
 	ClockTimer::Tick();
 	if (inState == GameState::GAME_RUNNING){
@@ -157,7 +158,11 @@ void Game::DrawGame(){
 	//
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClearColor(0.f, 0.2f, .3f, 1.0f);
-	camera->SupplyMatrix(view);
+	
+	//test.GetPosition().x + test.GetSize().x / 2) - width / 2., (test.GetPosition().y + test.GetSize().y / 2) - height / 2.)
+	program->Use();
+	camera->Identity();
+	camera->Translate(glm::vec2((-test.GetPosition().x + width/2), (-test.GetPosition().y + height/2)));
 	camera->Scale(glm::vec2(scale.x, scale.y)); // camera system.
 	view = camera->RetrieveMatrix(); // Call this to transfer matrix.
 	program->SetUniformMatrix4fv("view", glm::value_ptr(view));
@@ -169,6 +174,7 @@ void Game::DrawGame(){
 			renderer->Draw(wll.GetPosition(), wll.GetSize(), 0, Textures[wll.GetName()]);
 		}
 	}
+	program->Unuse();
 	FrameBuffer->End();
 
 	glClear(GL_COLOR_BUFFER_BIT);

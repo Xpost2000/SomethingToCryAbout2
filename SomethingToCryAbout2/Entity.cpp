@@ -10,7 +10,7 @@ Entity::Entity(glm::vec2 pos, glm::vec2 size, glm::vec3 color, int health, std::
 	bCollide = collidable;
 }
 
-Entity::Entity() : Entity(glm::vec2(200), glm::vec2(10), glm::vec3(255), 100, "Bob", true)
+Entity::Entity() : Entity(glm::vec2(0), glm::vec2(10), glm::vec3(255), 100, "Bob", true)
 {
 }
 
