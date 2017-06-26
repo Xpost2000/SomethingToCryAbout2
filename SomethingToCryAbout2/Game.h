@@ -13,7 +13,7 @@
 #include <Oats\Renderer2D.h>
 #include <Oats\Camera2D.h>
 #include <Oats\Framebuffer.h>
-
+#include <map>
 #include "Button.h"
 class Game
 {
@@ -23,6 +23,7 @@ public:
 	void InitGame();
 	void RunGame();
 private:
+	std::map<std::string, glTexture*> Textures;
 	//Math Stuff
 	glm::mat4 view = glm::mat4();
 	glm::mat4 projection = glm::mat4();

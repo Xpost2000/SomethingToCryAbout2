@@ -3,12 +3,16 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "Paddle.h"
+#include "Entity.h"
 #include <GL\glew.h>
 #include <ctime>
 int mx;
 int my;
-
+Entity test(glm::vec2(600), glm::vec2(20), glm::vec3(255), 100, "test", false);
+std::vector<Entity> walls;
 glQueryInfo info;
+glTexture* wall;
+glTexture* devTex;
 Game::Game()
 {
 	window = new Window("Game Win : Build Win32 0.1", width, height);
@@ -17,7 +21,7 @@ Game::Game()
 	printf("OpenGL Vendor : %s \nOpenGL Renderer: %s\n", info.vendor, info.renderer);
 	printf("OpenGL Version : %s \nOpenGL-SL Version : %s\n", info.version.legacy, info.glsl_lang_version);
 //	printf("OpenGL Extensions Supported : %s\n", info.ext_support_num);
-	inState = GameState::GAME_MENU;
+	inState = GameState::GAME_RUNNING;
 }
 
 
@@ -38,9 +42,27 @@ Game::~Game(){
 	delete tFrag;
 	delete tVert;
 	delete input;
+	delete wall;
+	delete devTex;
 }
 // Very Huge setup
 void Game::InitGame(){
+	// Setup the map here
+	
+	wall = new glTexture();
+	devTex = new glTexture();
+	wall->LoadImage("Assests\\Textures\\dvColBox.png");
+	devTex->LoadImage("Assests\\Textures\\dvBox.png");
+	wall->SetFilter(GL_LINEAR);
+	devTex->SetFilter(GL_LINEAR);
+	wall->SetWrapMode(GL_REPEAT);
+	devTex->SetWrapMode(GL_REPEAT);
+
+
+	Textures.insert(std::pair<std::string, glTexture*>("wall-dev", wall)); // put all textures in a map;
+	Textures.insert(std::pair<std::string, glTexture*>("dev", devTex));
+
+
 	camera = new Camera2D(view, width, height);
 	fragment = new Shader(GL_FRAGMENT_SHADER);
 	vertex = new Shader(GL_VERTEX_SHADER);
@@ -97,6 +119,9 @@ void Game::InitGame(){
 	arial->LoadFont("Assests\\Font\\arial.ttf", 48);
 	cmcSans->LoadFont("Assests\\Font\\cmc.ttf", 72);
 	smArial->LoadFont("Assests\\Font\\arial.ttf", 14);
+	test.SetSpeed(120, 120);
+
+	walls.push_back(Entity(glm::vec2(400), glm::vec2(200), glm::vec3(255), 100, "dev", true));
 }
 // Run game that condenses all seperate functions into one.
 void Game::RunGame(){
@@ -108,13 +133,18 @@ void Game::RunGame(){
 }
 // Neat little update function
 void Game::UpdateGame(){
+	// Simulate Everything here.
 	mx = input->GetMouseX();
 	my = input->GetMouseY();
 	view = glm::mat4();
 	model = glm::mat4();
 	ClockTimer::Tick();
-	glitch = true;
 	if (inState == GameState::GAME_RUNNING){
+		for (auto& wall : walls){
+			if(test.AABBCollide(wall)){
+				test.SideCollide(wall, ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
+			}
+		}
 	}
 }
 
@@ -134,6 +164,10 @@ void Game::DrawGame(){
 	if (inState == GameState::GAME_MENU){
 	}
 	if (inState == GameState::GAME_RUNNING){
+		renderer->Draw(test.GetPosition(), test.GetSize(), 0, test.GetColor());
+		for (auto& wll : walls){
+			renderer->Draw(wll.GetPosition(), wll.GetSize(), 0, Textures[wll.GetName()]);
+		}
 	}
 	FrameBuffer->End();
 
@@ -151,11 +185,9 @@ void Game::DrawGame(){
 	smArial->Render("OpenGL-SL Version : " + std::string(reinterpret_cast<const char*>(info.glsl_lang_version)), glm::vec2(10, 40), 1, glm::vec3(255));
 	smArial->Render("OpenGL Renderer : " + std::string(reinterpret_cast<const char*>(info.renderer)), glm::vec2(10, 90), 1, glm::vec3(255));
 
-	// Drawing a button like this
 	if (inState == GameState::GAME_PAUSE || inState == GameState::GAME_MENU){
 	}
 	if (inState == GameState::GAME_RUNNING){
-		
 	}
 	window->Refresh();
 }
@@ -181,5 +213,17 @@ void Game::HandleInput(){
 		default:
 			break;
 		}
+	});
+	input->isKeyPressed(SDL_SCANCODE_W, [&](){
+		test.MoveUp(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
+	});
+	input->isKeyPressed(SDL_SCANCODE_S, [&](){
+		test.MoveDown(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
+	});
+	input->isKeyPressed(SDL_SCANCODE_A, [&](){
+		test.MoveLeft(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
+	});
+	input->isKeyPressed(SDL_SCANCODE_D, [&](){
+		test.MoveRight(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
 	});
 }

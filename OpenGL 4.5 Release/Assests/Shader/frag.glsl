@@ -20,7 +20,8 @@ The output depends on the textured uniform variable
 void main(){
 
 	vec2 TexUV = uv;
-	TexUV.y = -TexUV.y;
+	TexUV.x = TexUV.x;
+	TexUV.y = TexUV.y;
     if(textured == 1)
 	color = texture(tex, TexUV); // Textured
 	else if(textured == 2){
