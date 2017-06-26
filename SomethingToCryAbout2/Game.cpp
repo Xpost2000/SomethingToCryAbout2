@@ -4,12 +4,16 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "Paddle.h"
 #include "Entity.h"
+#include "Player.h"
 #include <cmath>
 #include <GL\glew.h>
 #include <ctime>
 int mx;
 int my;
-Entity test(glm::vec2(300), glm::vec2(20), glm::vec3(255), 100, "test", false);
+
+Player player(glm::vec2(360), glm::vec2(20), glm::vec3(255), 100, "test", false);
+
+
 std::vector<Entity> walls;
 glQueryInfo info;
 glTexture* wall;
@@ -133,7 +137,7 @@ void Game::InitGame(){
 	arial->LoadFont("Assests\\Font\\arial.ttf", 48);
 	cmcSans->LoadFont("Assests\\Font\\cmc.ttf", 72);
 	smArial->LoadFont("Assests\\Font\\arial.ttf", 14);
-	test.SetSpeed(120, 120);
+	player.SetSpeed(120, 120);
 	view = glm::mat4();
 	//camera->SupplyMatrix(view);
 	walls.push_back(Entity(glm::vec2(400), glm::vec2(200), glm::vec3(255), 100, "dev", true));
@@ -155,19 +159,20 @@ void Game::RunGame(){
 void Game::UpdateGame(){
 	// Simulate Everything here.
 	if (inState != GameState::GAME_PAUSE){
-		SDL_SetRelativeMouseMode(SDL_TRUE);
+		//SDL_SetRelativeMouseMode(SDL_TRUE);
 		mx = input->GetMouseX();
 		my = input->GetMouseY();
+		player.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), input, camera);
 	}
 	else{
-		SDL_SetRelativeMouseMode(SDL_FALSE);
-}
+	//	SDL_SetRelativeMouseMode(SDL_FALSE);
+	}
 	model = glm::mat4();
 	ClockTimer::Tick();
 	if (inState == GameState::GAME_RUNNING){
 		for (auto& wall : walls){
-			if(test.AABBCollide(wall)){
-				test.SideCollide(wall, ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
+			if(player.AABBCollide(wall)){
+				player.SideCollide(wall, ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
 				sideCollided = wall.GetName();
 			}
 		}
@@ -187,7 +192,7 @@ void Game::DrawGame(){
 	//test.GetPosition().x + test.GetSize().x / 2) - width / 2., (test.GetPosition().y + test.GetSize().y / 2) - height / 2.)
 	program->Use();
 	camera->Identity();
-	camera->Translate(glm::vec2((-test.GetPosition().x*camera->GetScale() + width/2), (-test.GetPosition().y*camera->GetScale() + height/2)));
+	camera->Translate(glm::vec2((-player.GetPosition().x*camera->GetScale() + width/2), (-player.GetPosition().y*camera->GetScale() + height/2)));
 	camera->Scale(glm::vec2(scale.x, scale.y)); // camera system.
 	view = camera->RetrieveMatrix(); // Call this to transfer matrix.
 	program->SetUniformMatrix4fv("view", glm::value_ptr(view));
@@ -203,7 +208,7 @@ void Game::DrawGame(){
 				renderer->Draw(wll.GetPosition(), wll.GetSize(), 0, wll.GetColor());
 		}
 		//Everything else
-		renderer->Draw(test.GetPosition(), test.GetSize(), test.GetAngle(), Textures["player"]);
+		renderer->Draw(player.GetPosition(), player.GetSize(), player.GetAngle(), Textures["player"]);
 	}
 	program->Unuse();
 	FrameBuffer->End();
@@ -255,30 +260,6 @@ void Game::HandleInput(){
 		default:
 			break;
 		}
-	});
-	input->isKeyPressed(SDL_SCANCODE_Z, [&](){
-		camera->IncreaseScale(2 * ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
-	});
-	input->isKeyPressed(SDL_SCANCODE_X, [&](){
-		camera->DecreaseScale(2 * ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
-	});
-	input->isKeyPressed(SDL_SCANCODE_W, [&](){
-		test.MoveUp(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
-	});
-	input->isKeyPressed(SDL_SCANCODE_S, [&](){
-		test.MoveDown(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
-	});
-	input->isKeyPressed(SDL_SCANCODE_A, [&](){
-		test.MoveLeft(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
-	});
-	input->isKeyPressed(SDL_SCANCODE_D, [&](){
-		test.MoveRight(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
-	});
-	input->isKeyPressed(SDL_SCANCODE_LEFT, [&](){
-		test.RotateLeft(10, ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
-	});
-	input->isKeyPressed(SDL_SCANCODE_RIGHT, [&](){
-		test.RotateRight(10, ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
 	});
 	// atan2(input->GetMouseY() - test.GetPosition().y, input->GetMouseX() - test.GetPosition().x);
 }
