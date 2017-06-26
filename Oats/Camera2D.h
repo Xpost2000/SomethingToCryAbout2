@@ -17,8 +17,9 @@ class Camera2D
 {
 public:
 	// Constructor. Provide a single matrix, and the boundaries of the camera
-	OATS_LIB_API Camera2D(glm::mat4& matrix, float mX, float mY);
+	OATS_LIB_API Camera2D(glm::mat4& matrix, float mX, float mY , float sX, float sY);
 	OATS_LIB_API ~Camera2D();
+	OATS_LIB_API void SetBounds(float x, float y);
 	// Give the camera the reference of a matrix
 	OATS_LIB_API void SupplyMatrix(glm::mat4 &matrix);
 	// Translate the camera to another location
@@ -28,10 +29,17 @@ public:
 	void Identity(){
 		viewMatrix = glm::mat4();
 	}
+	OATS_LIB_API void SetScaleBounds(float max, float min);
+	OATS_LIB_API void SetScale(float x);
+	OATS_LIB_API void DecreaseScale(float amnt);
+	OATS_LIB_API void IncreaseScale(float amnt);
+	const float GetScale() const { return scale; }
 	// Retrieve the value of the matrix of this camera
 	OATS_LIB_API glm::mat4 RetrieveMatrix();
 private:
 	float maxBoundX, maxBoundY;
+	float maxScaleX, maxScaleY;
+	float scale; // Uniform Scale;
 	glm::mat4 viewMatrix;
 };
 

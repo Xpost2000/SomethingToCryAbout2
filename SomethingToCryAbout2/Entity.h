@@ -36,6 +36,10 @@ public:
 	void SideCollide(const Entity &other, float dt);
 	bool isAlive() { bActive = (health > 0); return bActive; };
 	void SetActive(bool val) { bActive = val; }
+	const float GetAngle() const { return angle; }
+	void SetAngle(float x) { angle = x; }
+	void RotateRight(float x, float dt) { angle += x *dt; }
+	void RotateLeft(float x, float dt) { angle -= x *dt; }
 	void SetCollidable(bool val) { bCollide = val; }
 private:
 	float vX;
@@ -43,6 +47,7 @@ private:
 	int health;
 	bool bActive;
 	bool bCollide; // Collidable?
+	float angle;
 	std::string name;
 	glm::vec2 size;
 	glm::vec3 color;

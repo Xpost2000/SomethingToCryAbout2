@@ -10,6 +10,7 @@ public:
 	OATS_LIB_API~Window();
 	OATS_LIB_API void CreateWindow();
 	OATS_LIB_API void Refresh();
+	OATS_LIB_API SDL_Window* returnWindowHandle();
 	SDL_Event event;
 private:
 	int w, h;

@@ -49,3 +49,7 @@ void Window::CreateWindow(){
 void Window::Refresh(){
 	SDL_GL_SwapWindow(window);
 }
+
+SDL_Window* Window::returnWindowHandle(){
+	return window;
+}

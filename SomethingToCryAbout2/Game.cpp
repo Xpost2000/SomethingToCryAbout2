@@ -4,17 +4,18 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "Paddle.h"
 #include "Entity.h"
+#include <cmath>
 #include <GL\glew.h>
 #include <ctime>
 int mx;
 int my;
-float cameraScale = 1;
 Entity test(glm::vec2(300), glm::vec2(20), glm::vec3(255), 100, "test", false);
 std::vector<Entity> walls;
 glQueryInfo info;
 glTexture* wall;
-std::string sideCollided = "Nothing";
+glTexture* playerT;
 glTexture* devTex;
+std::string sideCollided = "Nothing";
 Game::Game()
 {
 	window = new Window("Something To Cry About : OpenGL Version Alpha", width, height);
@@ -46,11 +47,12 @@ Game::~Game(){
 	delete input;
 	delete wall;
 	delete devTex;
+	delete playerT;
 }
 // Very Huge setup
 
 std::string TextureListNames[] = {
-	"wall-dev", "dev"
+	"wall-dev", "dev", "player"
 };
 
 void Game::InitGame(){
@@ -58,19 +60,24 @@ void Game::InitGame(){
 	
 	wall = new glTexture();
 	devTex = new glTexture();
+	playerT = new glTexture();
+	playerT->LoadImage("Assests\\Textures\\player.png");
 	wall->LoadImage("Assests\\Textures\\dvColBox.png");
 	devTex->LoadImage("Assests\\Textures\\dvBox.png");
 	wall->SetFilter(GL_LINEAR);
 	devTex->SetFilter(GL_LINEAR);
 	wall->SetWrapMode(GL_REPEAT);
 	devTex->SetWrapMode(GL_REPEAT);
+	playerT->SetFilter(GL_LINEAR);
+	playerT->SetWrapMode(GL_REPEAT);
 
 
 	Textures.insert(std::pair<std::string, glTexture*>(TextureListNames[0], wall)); // put all textures in a map;
 	Textures.insert(std::pair<std::string, glTexture*>(TextureListNames[1], devTex));
+	Textures.insert(std::pair<std::string, glTexture*>(TextureListNames[2], playerT));
 
-
-	camera = new Camera2D(view, width, height);
+	camera = new Camera2D(view, width, height, 4, 0.5);
+	camera->SetScale(1);
 	fragment = new Shader(GL_FRAGMENT_SHADER);
 	vertex = new Shader(GL_VERTEX_SHADER);
 	pFrag = new Shader(GL_FRAGMENT_SHADER);
@@ -147,10 +154,14 @@ void Game::RunGame(){
 // Neat little update function
 void Game::UpdateGame(){
 	// Simulate Everything here.
-	
-	mx = input->GetMouseX();
-	my = input->GetMouseY();
-
+	if (inState != GameState::GAME_PAUSE){
+		SDL_SetRelativeMouseMode(SDL_TRUE);
+		mx = input->GetMouseX();
+		my = input->GetMouseY();
+	}
+	else{
+		SDL_SetRelativeMouseMode(SDL_FALSE);
+}
 	model = glm::mat4();
 	ClockTimer::Tick();
 	if (inState == GameState::GAME_RUNNING){
@@ -176,8 +187,8 @@ void Game::DrawGame(){
 	//test.GetPosition().x + test.GetSize().x / 2) - width / 2., (test.GetPosition().y + test.GetSize().y / 2) - height / 2.)
 	program->Use();
 	camera->Identity();
-	camera->Translate(glm::vec2((-test.GetPosition().x*cameraScale + width/2), (-test.GetPosition().y*cameraScale + height/2)));
-	camera->Scale(glm::vec2(scale.x*cameraScale, scale.y*cameraScale)); // camera system.
+	camera->Translate(glm::vec2((-test.GetPosition().x*camera->GetScale() + width/2), (-test.GetPosition().y*camera->GetScale() + height/2)));
+	camera->Scale(glm::vec2(scale.x, scale.y)); // camera system.
 	view = camera->RetrieveMatrix(); // Call this to transfer matrix.
 	program->SetUniformMatrix4fv("view", glm::value_ptr(view));
 	if (inState == GameState::GAME_MENU){
@@ -192,7 +203,7 @@ void Game::DrawGame(){
 				renderer->Draw(wll.GetPosition(), wll.GetSize(), 0, wll.GetColor());
 		}
 		//Everything else
-		renderer->Draw(test.GetPosition(), test.GetSize(), 0, test.GetColor());
+		renderer->Draw(test.GetPosition(), test.GetSize(), test.GetAngle(), Textures["player"]);
 	}
 	program->Unuse();
 	FrameBuffer->End();
@@ -207,7 +218,7 @@ void Game::DrawGame(){
 	FrameBuffer->Render();
 	scrProgram->Unuse();
 	smArial->Render("Last Collided With : " + sideCollided, glm::vec2(10, 170), 1, glm::vec3(1, 0, 0));
-	smArial->Render("Camera Zoom : " + std::to_string(cameraScale), glm::vec2(10, 150), 1, glm::vec3(1, 0, 0 ));
+	smArial->Render("Camera Zoom : " + std::to_string(camera->GetScale()), glm::vec2(10, 150), 1, glm::vec3(1, 0, 0 ));
 	smArial->Render("OpenGL Vendor: " + std::string(reinterpret_cast<const char*>(info.vendor)), glm::vec2(10, 20), 1, glm::vec3(255));
 	smArial->Render("OpenGL Version: " + std::string(reinterpret_cast<const char*>(info.version.legacy.gl_api_version)), glm::vec2(250, 20), 1, glm::vec3(255));
 	smArial->Render("OpenGL-SL Version : " + std::string(reinterpret_cast<const char*>(info.glsl_lang_version)), glm::vec2(10, 40), 1, glm::vec3(255));
@@ -230,7 +241,10 @@ void Game::HandleInput(){
 		case SDL_KEYDOWN:
 			switch (evnt->key.keysym.sym){
 			case SDLK_ESCAPE:
-				inState = GameState::GAME_MENU;
+				if (inState != GameState::GAME_PAUSE)
+					inState = GameState::GAME_PAUSE; else{
+					inState = GameState::GAME_RUNNING;
+				}
 				break;
 			}
 			break;
@@ -243,12 +257,10 @@ void Game::HandleInput(){
 		}
 	});
 	input->isKeyPressed(SDL_SCANCODE_Z, [&](){
-		if (cameraScale < 4)
-		cameraScale += 2 * ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS);
+		camera->IncreaseScale(2 * ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
 	});
 	input->isKeyPressed(SDL_SCANCODE_X, [&](){
-		if (cameraScale > 0.5)
-		cameraScale -= 2 * ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS);
+		camera->DecreaseScale(2 * ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
 	});
 	input->isKeyPressed(SDL_SCANCODE_W, [&](){
 		test.MoveUp(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
@@ -262,4 +274,11 @@ void Game::HandleInput(){
 	input->isKeyPressed(SDL_SCANCODE_D, [&](){
 		test.MoveRight(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
 	});
+	input->isKeyPressed(SDL_SCANCODE_LEFT, [&](){
+		test.RotateLeft(10, ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
+	});
+	input->isKeyPressed(SDL_SCANCODE_RIGHT, [&](){
+		test.RotateRight(10, ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
+	});
+	// atan2(input->GetMouseY() - test.GetPosition().y, input->GetMouseX() - test.GetPosition().x);
 }
