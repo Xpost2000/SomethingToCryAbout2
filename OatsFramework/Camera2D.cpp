@@ -27,3 +27,8 @@ void Camera2D::Scale(glm::vec2 amount){
 glm::mat4 Camera2D::RetrieveMatrix(){
 	return viewMatrix;
 }
+
+void Camera2D::SetBounds(float x, float y){
+	maxBoundX = x;
+	maxBoundY = y;
+}

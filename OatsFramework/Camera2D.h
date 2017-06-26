@@ -19,6 +19,7 @@ public:
 	// Constructor. Provide a single matrix, and the boundaries of the camera
 	OATS_LIB_API Camera2D(glm::mat4& matrix, float mX, float mY);
 	OATS_LIB_API ~Camera2D();
+	OATS_LIB_API void SetBounds(float x, float y);
 	// Give the camera the reference of a matrix
 	OATS_LIB_API void SupplyMatrix(glm::mat4 &matrix);
 	// Translate the camera to another location

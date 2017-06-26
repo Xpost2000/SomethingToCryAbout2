@@ -8,14 +8,16 @@
 #include <ctime>
 int mx;
 int my;
+float cameraScale = 1;
 Entity test(glm::vec2(300), glm::vec2(20), glm::vec3(255), 100, "test", false);
 std::vector<Entity> walls;
 glQueryInfo info;
 glTexture* wall;
+std::string sideCollided = "Nothing";
 glTexture* devTex;
 Game::Game()
 {
-	window = new Window("Game Win : Build Win32 0.1", width, height);
+	window = new Window("Something To Cry About : OpenGL Version Alpha", width, height);
 	window->CreateWindow();
 	info = QueryInformation();
 	printf("OpenGL Vendor : %s \nOpenGL Renderer: %s\n", info.vendor, info.renderer);
@@ -123,6 +125,7 @@ void Game::InitGame(){
 	view = glm::mat4();
 	//camera->SupplyMatrix(view);
 	walls.push_back(Entity(glm::vec2(400), glm::vec2(200), glm::vec3(255), 100, "dev", true));
+	walls.push_back(Entity(glm::vec2(200), glm::vec2(100), glm::vec3(255), 100, "wall-dev", true));
 }
 // Run game that condenses all seperate functions into one.
 void Game::RunGame(){
@@ -135,6 +138,7 @@ void Game::RunGame(){
 // Neat little update function
 void Game::UpdateGame(){
 	// Simulate Everything here.
+	
 	mx = input->GetMouseX();
 	my = input->GetMouseY();
 
@@ -144,6 +148,7 @@ void Game::UpdateGame(){
 		for (auto& wall : walls){
 			if(test.AABBCollide(wall)){
 				test.SideCollide(wall, ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
+				sideCollided = wall.GetName();
 			}
 		}
 	}
@@ -162,8 +167,8 @@ void Game::DrawGame(){
 	//test.GetPosition().x + test.GetSize().x / 2) - width / 2., (test.GetPosition().y + test.GetSize().y / 2) - height / 2.)
 	program->Use();
 	camera->Identity();
-	camera->Translate(glm::vec2((-test.GetPosition().x + width/2), (-test.GetPosition().y + height/2)));
-	camera->Scale(glm::vec2(scale.x, scale.y)); // camera system.
+	camera->Translate(glm::vec2((-test.GetPosition().x*cameraScale + width/2), (-test.GetPosition().y*cameraScale + height/2)));
+	camera->Scale(glm::vec2(scale.x*cameraScale, scale.y*cameraScale)); // camera system.
 	view = camera->RetrieveMatrix(); // Call this to transfer matrix.
 	program->SetUniformMatrix4fv("view", glm::value_ptr(view));
 	if (inState == GameState::GAME_MENU){
@@ -186,6 +191,8 @@ void Game::DrawGame(){
 	scrProgram->Use();
 	FrameBuffer->Render();
 	scrProgram->Unuse();
+	smArial->Render("Last Collided With : " + sideCollided, glm::vec2(10, 170), 1, glm::vec3(1, 0, 0));
+	smArial->Render("Camera Zoom : " + std::to_string(cameraScale), glm::vec2(10, 150), 1, glm::vec3(1, 0, 0 ));
 	smArial->Render("OpenGL Vendor: " + std::string(reinterpret_cast<const char*>(info.vendor)), glm::vec2(10, 20), 1, glm::vec3(255));
 	smArial->Render("OpenGL Version: " + std::string(reinterpret_cast<const char*>(info.version.legacy.gl_api_version)), glm::vec2(250, 20), 1, glm::vec3(255));
 	smArial->Render("OpenGL-SL Version : " + std::string(reinterpret_cast<const char*>(info.glsl_lang_version)), glm::vec2(10, 40), 1, glm::vec3(255));
@@ -219,6 +226,14 @@ void Game::HandleInput(){
 		default:
 			break;
 		}
+	});
+	input->isKeyPressed(SDL_SCANCODE_Z, [&](){
+		if (cameraScale < 4)
+		cameraScale += 2 * ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS);
+	});
+	input->isKeyPressed(SDL_SCANCODE_X, [&](){
+		if (cameraScale > 0.5)
+		cameraScale -= 2 * ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS);
 	});
 	input->isKeyPressed(SDL_SCANCODE_W, [&](){
 		test.MoveUp(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
