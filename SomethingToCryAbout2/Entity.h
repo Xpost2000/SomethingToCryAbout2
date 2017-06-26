@@ -41,6 +41,8 @@ public:
 	void RotateRight(float x, float dt) { angle += x *dt; }
 	void RotateLeft(float x, float dt) { angle -= x *dt; }
 	void SetCollidable(bool val) { bCollide = val; }
+	void MoveFromAngleFront(float dt);
+	void MoveFromAngleBack(float dt);
 private:
 	float vX;
 	float vY;

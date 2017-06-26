@@ -1,5 +1,5 @@
 #include "Player.h"
-
+#include <Oats\MathHelperFunctions.h>
 Player::Player() : Entity(glm::vec2(300), glm::vec2(10), glm::vec3(255), 100, "Bob", true)
 {
 }

@@ -123,3 +123,12 @@ void Entity::SideCollide(const Entity &other, float dt){
 		return;
 	}
 }
+#include <Oats\MathHelperFunctions.h>
+void Entity::MoveFromAngleFront(float dt){
+	position.x += (vX * cos(angle)) * dt;
+	position.y += (vY * sin(angle)) *dt;
+}
+void Entity::MoveFromAngleBack(float dt){
+	position.x -= (vX * cos(angle)) * dt;
+	position.y -= (vY * sin(angle)) *dt;
+}
