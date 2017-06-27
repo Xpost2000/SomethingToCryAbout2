@@ -107,3 +107,31 @@ void Renderer2D::EnableAntiAliasing(bool val){
 		return;
 	}
 }
+
+void Renderer2D::EnableWireFrame(bool val){
+	if (val){
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+	else{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		return;
+	}
+}
+
+void Renderer2D::EnablePointsDraw(bool val){
+	if (val){
+		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+	}
+	else{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		return;
+	}
+}
+
+void Renderer2D::SetPointSize(int size){
+	glPointSize(size);
+}
+
+void Renderer2D::SetLineSize(int size){
+	glLineWidth(size);
+}

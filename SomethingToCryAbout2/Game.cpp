@@ -209,7 +209,6 @@ void Game::DrawGame(){
 	glViewport(0, 0, 1024, 768);
 
 	// Draw everything here.
-
 	FrameBuffer->Begin();
 	//
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -238,6 +237,7 @@ void Game::DrawGame(){
 		//Everything else
 		renderer->Draw(player.GetPosition(), player.GetSize(), player.GetAngle(), *Textures["player"]);
 	}
+
 	FrameBuffer->End();
 
 	glClear(GL_COLOR_BUFFER_BIT);
