@@ -82,16 +82,20 @@ void Game::InitGame(){
 
 	camera = new Camera2D(view, width, height, 4, 0.5);
 	camera->SetScale(1);
-	fragment = new Shader(GL_FRAGMENT_SHADER);
-	vertex = new Shader(GL_VERTEX_SHADER);
-	pFrag = new Shader(GL_FRAGMENT_SHADER);
-	pVert = new Shader(GL_VERTEX_SHADER);
-	tFrag = new Shader(GL_FRAGMENT_SHADER);
-	tVert = new Shader(GL_VERTEX_SHADER);
-	input = new InputManager();
-	textProgram = new ShaderProgram();
-	scrProgram = new ShaderProgram();
-	program = new ShaderProgram();
+	/*
+	 * Setting up the shaders for the
+	 * game
+	 */
+	fragment = new Shader(GL_FRAGMENT_SHADER); // standard sprite shader
+	vertex = new Shader(GL_VERTEX_SHADER); // standard vertex sprite shader
+	pFrag = new Shader(GL_FRAGMENT_SHADER); // postprocessing frag
+	pVert = new Shader(GL_VERTEX_SHADER); // postprocessing vert
+	tFrag = new Shader(GL_FRAGMENT_SHADER); // text frag
+	tVert = new Shader(GL_VERTEX_SHADER); // text vert
+	input = new InputManager(); // InputManager
+	textProgram = new ShaderProgram(); // Text Shader Program
+	scrProgram = new ShaderProgram(); // Screen Shader Program
+	program = new ShaderProgram(); // Default Shader Program
 
 	FrameBuffer = new Framebuffer(width, height);
 	// TODO incorporate SPR-V loading
@@ -139,7 +143,6 @@ void Game::InitGame(){
 	smArial->LoadFont("Assests\\Font\\arial.ttf", 14);
 	player.SetSpeed(120, 120);
 	player.SetAngle(360);
-	view = glm::mat4();
 	//camera->SupplyMatrix(view);
 	walls.push_back(Entity(glm::vec2(400), glm::vec2(200), glm::vec3(255), 100, "dev", true));
 	walls.push_back(Entity(glm::vec2(200), glm::vec2(100), glm::vec3(255), 100, "wall-dev", true));
@@ -147,6 +150,7 @@ void Game::InitGame(){
 	walls.push_back(Entity(glm::vec2(1024, 0), glm::vec2(30, 768), glm::vec3(0), 100, "Boundary", true));
 	walls.push_back(Entity(glm::vec2(0), glm::vec2(1024, 30), glm::vec3(0), 100, "Boundary", true));
 	walls.push_back(Entity(glm::vec2(0, 768), glm::vec2(1024, 30), glm::vec3(0), 100, "Boundary", true));
+
 }
 // Run game that condenses all seperate functions into one.
 void Game::RunGame(){
@@ -191,7 +195,6 @@ void Game::DrawGame(){
 	glClearColor(0.f, 0.2f, .3f, 1.0f);
 	
 	//test.GetPosition().x + test.GetSize().x / 2) - width / 2., (test.GetPosition().y + test.GetSize().y / 2) - height / 2.)
-	program->Use();
 	camera->Identity();
 	camera->Translate(glm::vec2((-player.GetPosition().x*camera->GetScale() + width/2), (-player.GetPosition().y*camera->GetScale() + height/2)));
 	camera->Scale(glm::vec2(scale.x, scale.y)); // camera system.
@@ -211,7 +214,6 @@ void Game::DrawGame(){
 		//Everything else
 		renderer->Draw(player.GetPosition(), player.GetSize(), player.GetAngle(), *Textures["player"]);
 	}
-	program->Unuse();
 	FrameBuffer->End();
 
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -252,6 +254,15 @@ void Game::HandleInput(){
 					inState = GameState::GAME_PAUSE; else{
 					inState = GameState::GAME_RUNNING;
 				}
+				break;
+			case SDLK_1:
+				glitch = !glitch;
+				break;
+			case SDLK_2:
+				greyScale = !greyScale;
+				break;
+			case SDLK_3:
+				waterFX = !waterFX;
 				break;
 			}
 			break;
