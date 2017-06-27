@@ -132,3 +132,14 @@ void Entity::MoveFromAngleBack(float dt){
 	position.x -= (vX * cos(angle)) * dt;
 	position.y -= (vY * sin(angle)) *dt;
 }
+
+void Entity::MoveFromAngle(float dt, int direction){
+	if (direction == 1){
+		position.x += (vX * cos(angle)) * dt;
+		position.y += (vY * sin(angle)) *dt;
+	}
+	if (direction == 2){
+		position.x -= (vX * cos(angle)) * dt;
+		position.y -= (vY * sin(angle)) *dt;
+	}
+}

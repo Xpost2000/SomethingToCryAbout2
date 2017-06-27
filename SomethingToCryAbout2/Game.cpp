@@ -5,6 +5,7 @@
 #include "Paddle.h"
 #include "Entity.h"
 #include "Player.h"
+#include "TestAI.h"
 #include <Oats\ResourceManager.h>
 #include <cmath>
 #include <GL\glew.h>
@@ -13,9 +14,11 @@ int mx;
 int my;
 
 Player player(glm::vec2(360), glm::vec2(20), glm::vec3(255), 100, "test", false);
-
+TestAI one(glm::vec2(380), glm::vec2(20), glm::vec3(255), 100, "ai", true);
 
 std::vector<Entity> walls;
+std::vector<TestAI> testAi;
+
 glQueryInfo info;
 glTexture* wall;
 glTexture* playerT;
@@ -150,8 +153,18 @@ void Game::InitGame(){
 	walls.push_back(Entity(glm::vec2(1024, 0), glm::vec2(30, 768), glm::vec3(0), 100, "Boundary", true));
 	walls.push_back(Entity(glm::vec2(0), glm::vec2(1024, 30), glm::vec3(0), 100, "Boundary", true));
 	walls.push_back(Entity(glm::vec2(0, 768), glm::vec2(1024, 30), glm::vec3(0), 100, "Boundary", true));
+	one.SetSpeed(120, 120);
 
+	testAi.push_back(one);
+	testAi.push_back(TestAI(glm::vec2(200, 100), glm::vec2(20), glm::vec3(255), 100, "1oddity", true));
+	testAi.push_back(TestAI(glm::vec2(100, 200), glm::vec2(20), glm::vec3(255), 100, "bobbity", true));
+	testAi.push_back(TestAI(glm::vec2(200, 500), glm::vec2(50), glm::vec3(255), 100, "oddity", true));
+
+	for (auto & a : testAi){
+		a.SetSpeed(120, 120);
+	}
 }
+
 // Run game that condenses all seperate functions into one.
 void Game::RunGame(){
 	while (inState != GameState::GAME_QUIT){
@@ -168,6 +181,9 @@ void Game::UpdateGame(){
 		mx = input->GetMouseX();
 		my = input->GetMouseY();
 		player.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), input, camera);
+		for (auto & ai : testAi){
+			ai.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
+		}
 	}
 	else{
 	//	SDL_SetRelativeMouseMode(SDL_FALSE);
@@ -179,6 +195,11 @@ void Game::UpdateGame(){
 			if(player.AABBCollide(wall)){
 				player.SideCollide(wall, ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
 				sideCollided = wall.GetName();
+			}
+			for (auto &ai : testAi){
+				if (ai.AABBCollide(wall)){
+					ai.SideCollide(wall, ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
+				}
 			}
 		}
 	}
@@ -210,6 +231,9 @@ void Game::DrawGame(){
 				renderer->Draw(wll.GetPosition(), wll.GetSize(), 0, *Textures[wll.GetName()]);
 			else
 				renderer->Draw(wll.GetPosition(), wll.GetSize(), 0, wll.GetColor());
+		}
+		for (auto & ai : testAi){
+			renderer->Draw(ai.GetPosition(), ai.GetSize(), ai.GetAngle(), *Textures["player"]);
 		}
 		//Everything else
 		renderer->Draw(player.GetPosition(), player.GetSize(), player.GetAngle(), *Textures["player"]);

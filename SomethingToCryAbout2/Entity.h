@@ -9,6 +9,10 @@
 	So the goal is to make this as broad as possible.
 	Do not expose any private members if I don't have to.
 */
+
+#define DIR_FORWARD 1
+#define DIR_BACKWARD 2
+
 class Entity
 {
 public:
@@ -43,13 +47,17 @@ public:
 	void SetCollidable(bool val) { bCollide = val; }
 	void MoveFromAngleFront(float dt);
 	void MoveFromAngleBack(float dt);
+	// This is more flexible
+	void MoveFromAngle(float dt, int direction);
 private:
 	float vX;
 	float vY;
 	int health;
 	bool bActive;
 	bool bCollide; // Collidable?
+protected:
 	float angle;
+private:
 	std::string name;
 	glm::vec2 size;
 	glm::vec3 color;
