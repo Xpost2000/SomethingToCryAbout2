@@ -31,7 +31,9 @@ Game::Game()
 	info = QueryInformation();
 	printf("OpenGL Vendor : %s \nOpenGL Renderer: %s\n", info.vendor, info.renderer);
 	printf("OpenGL Version : %s \nOpenGL-SL Version : %s\n", info.version.legacy, info.glsl_lang_version);
-//	printf("OpenGL Extensions Supported : %s\n", info.ext_support_num);
+	printf("OpenGL Supported Extensions # : %d\n", info.ext_support_num);
+	printf("OpenGL Extensions Supported are :\n");
+	CheckExtension("GL_EXT_direct_state_access", info);
 	inState = GameState::GAME_RUNNING;
 }
 
@@ -261,7 +263,7 @@ void Game::DrawGame(){
 	smArial->Render("OpenGL Version: " + std::string(reinterpret_cast<const char*>(info.version.legacy.gl_api_version)), glm::vec2(250, 20), 1, glm::vec3(255));
 	smArial->Render("OpenGL-SL Version : " + std::string(reinterpret_cast<const char*>(info.glsl_lang_version)), glm::vec2(10, 40), 1, glm::vec3(255));
 	smArial->Render("OpenGL Renderer : " + std::string(reinterpret_cast<const char*>(info.renderer)), glm::vec2(10, 90), 1, glm::vec3(255));
-	
+	smArial->Render("OpenGL Supported Extensions #: " + std::to_string(info.ext_support_num), glm::vec2(10, 60), 1, glm::vec3(255));
 	if (inState == GameState::GAME_PAUSE || inState == GameState::GAME_MENU){
 	}
 	if (inState == GameState::GAME_RUNNING){

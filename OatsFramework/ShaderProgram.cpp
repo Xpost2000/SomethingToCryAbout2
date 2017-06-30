@@ -74,6 +74,8 @@ void ShaderProgram::SetUniformMatrix4fv(const char* location, float* value){
 }
 #endif
 #ifdef COMPATIBILITY_33
+// Pray to god you can support an extension cause rn I have no other work around
+
 void ShaderProgram::SetUniform1i(const char* location, int v0){
 	Use();
 	glUniform1i(glGetUniformLocation(sObject, location), v0);

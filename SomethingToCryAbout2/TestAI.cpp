@@ -23,7 +23,6 @@ void TestAI::Update(float dt){
 		std::uniform_int_distribution<> decide(1, 4);
 		angle = distr(gen);
 		decidingMove = decide(gen);
-		std::cout << decidingMove << std::endl;
 	}
 	if (aiCoolDown != 0 || aiCoolDown > 0){
 		MoveFromAngle(dt, decidingMove);

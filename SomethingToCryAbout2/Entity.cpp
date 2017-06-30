@@ -104,19 +104,15 @@ void Entity::SideCollide(const Entity &other, float dt){
 
 		if (tCollide < bCollide && tCollide < lCollide && tCollide < rCollide){
 			position.y -= vY*dt;
-			printf("Top\n");
 		}
 		if (bCollide < tCollide && bCollide < lCollide && bCollide < rCollide){
 			position.y += vY*dt;
-			printf("Bottom\n");
 		}
 		if (lCollide < rCollide && lCollide < tCollide && lCollide < bCollide){
 			position.x -= vY*dt;
-			printf("Left\n");
 		}
 		if (rCollide < lCollide && rCollide < tCollide && rCollide < bCollide){
 			position.x += vY*dt;
-			printf("Right\n");
 		}
 	}
 	else{
