@@ -77,47 +77,93 @@ void ShaderProgram::SetUniformMatrix4fv(const char* location, float* value){
 // Pray to god you can support an extension cause rn I have no other work around
 
 void ShaderProgram::SetUniform1i(const char* location, int v0){
-	Use();
-	glUniform1i(glGetUniformLocation(sObject, location), v0);
-	fprintf(stderr, "ShaderProgram : Uniform1i set\n");
-	Unuse();
+	if (GLEW_EXT_direct_state_access){
+		glProgramUniform1iEXT(sObject, glGetUniformLocation(sObject, location), v0);
+		fprintf(stderr, "ShaderProgram: Extension Backend\n");
+	}
+	else{
+		if (!isInUse())
+		Use();
+		glUniform1i(glGetUniformLocation(sObject, location), v0);
+		fprintf(stderr, "ShaderProgram : Uniform1i set\n");
+	//	Unuse();
+	}
 }
 void ShaderProgram::SetUniform1f(const char* location, float v0){
-	Use();
-	glUniform1f(glGetUniformLocation(sObject, location), v0);
-	fprintf(stderr, "ShaderProgram : Uniform1f set\n");
-	Unuse();
+	if (GLEW_EXT_direct_state_access){
+		glProgramUniform1fEXT(sObject, glGetUniformLocation(sObject, location), v0);
+		fprintf(stderr, "ShaderProgram: Extension Backend\n");
+	}
+	else{
+		if (!isInUse())
+		Use();
+		glUniform1f(glGetUniformLocation(sObject, location), v0);
+		fprintf(stderr, "ShaderProgram : Uniform1f set\n");
+		//	Unuse();
+	}
 }
 void ShaderProgram::SetUniform2f(const char* location, float v0, float v1){
-	Use();
-	glUniform2f(glGetUniformLocation(sObject, location), v0, v1);
-	fprintf(stderr, "ShaderProgram : Uniform2f set\n");
-	Unuse();
+		if (GLEW_EXT_direct_state_access){
+			glProgramUniform2fEXT(sObject, glGetUniformLocation(sObject, location), v0, v1);
+			fprintf(stderr, "ShaderProgram: Extension Backend\n");
+		}
+		else{
+		if (!isInUse()){
+			Use();
+		}
+		glUniform2f(glGetUniformLocation(sObject, location), v0, v1);
+		fprintf(stderr, "ShaderProgram : Uniform2f set\n");
+		//	Unuse();
+	}
 }
 void ShaderProgram::SetUniform3f(const char* location, float v0, float v1, float v2){
-	Use();
-	glUniform3f(glGetUniformLocation(sObject, location), v0, v1, v2);
-	fprintf(stderr, "ShaderProgram : Uniform3f set\n");
-	Unuse();
+	if (GLEW_EXT_direct_state_access){
+		glProgramUniform3fEXT(sObject, glGetUniformLocation(sObject, location), v0, v1, v2);
+		fprintf(stderr, "ShaderProgram: Extension Backend\n");
+	}
+	else{
+		Use();
+		glUniform3f(glGetUniformLocation(sObject, location), v0, v1, v2);
+		fprintf(stderr, "ShaderProgram : Uniform3f set\n");
+		//	Unuse();
+	}
 }
 void ShaderProgram::SetUniform4f(const char* location, float v0, float v1, float v2, float v3){
-	Use();
-	glUniform4f(glGetUniformLocation(sObject, location), v0, v1, v2, v3);
-	fprintf(stderr, "ShaderProgram : Uniform4f set\n");
-	Unuse();
+	if (GLEW_EXT_direct_state_access){
+		glProgramUniform4fEXT(sObject, glGetUniformLocation(sObject, location), v0, v1, v2, v3);
+		fprintf(stderr, "ShaderProgram: Extension Backend\n");
+	}
+	else{
+		Use();
+		glUniform4f(glGetUniformLocation(sObject, location), v0, v1, v2, v3);
+		fprintf(stderr, "ShaderProgram : Uniform4f set\n");
+		//	Unuse();
+	}
 }
 
 void ShaderProgram::SetUniform4fv(const char* location, float* value){
-	Use();
-	glUniform4fv(glGetUniformLocation(sObject, location), 1, &value[0]);
-	fprintf(stderr, "ShaderProgram : Uniform4fv set\n");
-	Unuse();
+	if (GLEW_EXT_direct_state_access){
+		glProgramUniform4fvEXT(sObject, glGetUniformLocation(sObject, location), 1, &value[0]);
+		fprintf(stderr, "ShaderProgram: Extension Backend\n");
+	}
+	else{
+		Use();
+		glUniform4fv(glGetUniformLocation(sObject, location), 1, &value[0]);
+		fprintf(stderr, "ShaderProgram : Uniform4fv set\n");
+		//	Unuse();
+	}
 }
 void ShaderProgram::SetUniformMatrix4fv(const char* location, float* value){
-	Use();
-	glUniformMatrix4fv(glGetUniformLocation(sObject, location), 1, false, &value[0]);
-	fprintf(stderr, "ShaderProgram : Uniform Matrix4fv set\n");
-	Unuse();
+	if (GLEW_EXT_direct_state_access){
+		glProgramUniformMatrix4fvEXT(sObject, glGetUniformLocation(sObject, location), 1, false, &value[0]);
+		fprintf(stderr, "ShaderProgram: Extension Backend\n");
+	}
+	else{
+		Use();
+		glUniformMatrix4fv(glGetUniformLocation(sObject, location), 1, false, &value[0]);
+		fprintf(stderr, "ShaderProgram : Uniform Matrix4fv set\n");
+		//	Unuse();
+	}
 }
 #endif
 void ShaderProgram::Unuse(){
