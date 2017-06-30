@@ -74,8 +74,14 @@ void ShaderProgram::SetUniformMatrix4fv(const char* location, float* value){
 }
 #endif
 #ifdef COMPATIBILITY_33
-// Pray to god you can support an extension cause rn I have no other work around
+/*
+	Most of this code is sadly unreliable mostly because my framework for the most part
+	relies on Direct State Access taking care of all the work I need.
 
+	I used a "emulated" DSA style setup.
+	I first attempt to use an extension. If it is not supported then we do the fallback which is a sort of
+	DSA setup
+*/
 void ShaderProgram::SetUniform1i(const char* location, int v0){
 	if (GLEW_EXT_direct_state_access){
 		glProgramUniform1iEXT(sObject, glGetUniformLocation(sObject, location), v0);
