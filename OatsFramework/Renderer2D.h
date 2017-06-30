@@ -3,6 +3,7 @@
 #include "VertexBuffer.h"
 #include "glTexture.h"
 #include "ShaderProgram.h"
+#include "Shader.h"
 #include "MathHelperFunctions.h"
 
 /*

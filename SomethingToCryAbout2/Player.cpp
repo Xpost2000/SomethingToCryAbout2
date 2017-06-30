@@ -10,6 +10,9 @@ Player::~Player()
 }
 
 void Player::Update(float dt, InputManager *input, Camera2D*camera){
+	/*
+	Use lambda's to fix all of this
+	*/
 	input->isKeyPressed(SDL_SCANCODE_Z, [&](){
 		camera->IncreaseScale(2 * dt);
 	});

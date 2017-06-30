@@ -3,6 +3,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "Paddle.h"
+#include "Bullet.h"
 #include "Entity.h"
 #include "Player.h"
 #include "TestAI.h"
@@ -18,11 +19,13 @@ TestAI one(glm::vec2(380), glm::vec2(20), glm::vec3(255), 100, "ai", true);
 
 std::vector<Entity> walls;
 std::vector<TestAI> testAi;
+std::vector<Bullet> bullets;
 
 glQueryInfo info;
 glTexture* wall;
 glTexture* playerT;
 glTexture* devTex;
+glTexture* bullet;
 std::string sideCollided = "Nothing";
 Game::Game()
 {
@@ -57,6 +60,7 @@ Game::~Game(){
 	delete input;
 	delete wall;
 	delete devTex;
+	delete bullet;
 	delete playerT;
 }
 // Very Huge setup
@@ -67,7 +71,7 @@ std::string TextureListNames[] = {
 
 void Game::InitGame(){
 	// Setup the map here
-	
+	bullet = new glTexture();
 	wall = new glTexture();
 	devTex = new glTexture();
 	playerT = new glTexture();
@@ -78,13 +82,16 @@ void Game::InitGame(){
 	playerT->SetFilter(GL_LINEAR);
 	playerT->SetWrapMode(GL_REPEAT);
 	playerT->LoadImage("Assests\\Textures\\player.png");
+	bullet->SetFilter(GL_LINEAR);
+	bullet->SetWrapMode(GL_REPEAT);
+	bullet->LoadImage("Assests\\Textures\\bullet.png");
 	wall->LoadImage("Assests\\Textures\\dvColBox.png");
 	devTex->LoadImage("Assests\\Textures\\dvBox.png");
 
 	Textures.insert(std::pair<std::string, glTexture*>(TextureListNames[0], wall)); // put all textures in a map;
 	Textures.insert(std::pair<std::string, glTexture*>(TextureListNames[1], devTex));
 	Textures.insert(std::pair<std::string, glTexture*>(TextureListNames[2], playerT));
-
+	Textures.insert(std::pair<std::string, glTexture*>("bullet", bullet));
 	camera = new Camera2D(view, width, height, 4, 0.5);
 	camera->SetScale(1);
 	/*
@@ -103,7 +110,7 @@ void Game::InitGame(){
 	program = new ShaderProgram(); // Default Shader Program
 
 	FrameBuffer = new Framebuffer(width, height);
-	// TODO incorporate SPR-V loading
+	
 	pFrag->LoadFromFile("Assests\\Shader\\pp\\frag.glsl"); // Postprocess Fragment
 	pVert->LoadFromFile("Assests\\Shader\\pp\\vert.glsl"); // Postprocess Vertex
 	fragment->LoadFromFile("Assests\\Shader\\frag.glsl"); // Standard Frag
@@ -148,7 +155,7 @@ void Game::InitGame(){
 	smArial->LoadFont("Assests\\Font\\arial.ttf", 14);
 	player.SetSpeed(120, 120);
 	player.SetAngle(360);
-	//camera->SupplyMatrix(view);
+
 	walls.push_back(Entity(glm::vec2(400), glm::vec2(200), glm::vec3(255), 100, "dev", true));
 	walls.push_back(Entity(glm::vec2(200), glm::vec2(100), glm::vec3(255), 100, "wall-dev", true));
 	walls.push_back(Entity(glm::vec2(0), glm::vec2(30, 768), glm::vec3(0), 100, "Boundary", true));
@@ -198,10 +205,21 @@ void Game::UpdateGame(){
 				player.SideCollide(wall, ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
 				sideCollided = wall.GetName();
 			}
+			for (auto & proj : bullets){
+				if (proj.AABBCollide(wall)){
+					proj.SetActive(false);
+				}
+			}
 			for (auto &ai : testAi){
 				if (ai.AABBCollide(wall)){
 					ai.SideCollide(wall, ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
 				}
+			}
+		}
+		for (auto & proj : bullets){
+			proj.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
+			if (!proj.isActive()){
+				bullets.pop_back(); // Change this
 			}
 		}
 	}
@@ -243,6 +261,11 @@ void Game::DrawGame(){
 		//Everything else
 		renderer->Draw(player.GetPosition(), player.GetSize(), player.GetAngle());
 		renderer->End(*Textures["player"]);
+		renderer->Begin(*Textures["bullet"], glm::vec3(255));
+		for (auto & proj : bullets){
+			renderer->Draw(proj.GetPosition(), proj.GetSize(), proj.GetAngle());
+		}
+		renderer->End(*Textures["bullet"]);
 	}
 
 	FrameBuffer->End();
@@ -256,6 +279,7 @@ void Game::DrawGame(){
 	scrProgram->Use();
 	FrameBuffer->Render();
 	scrProgram->Unuse();
+#ifdef DEBUG_HUD
 	smArial->Render("Player Angle : " + std::to_string(player.GetAngle()), glm::vec2(10, 190), 1, glm::vec3(1, 0, 0));
 	smArial->Render("Last Collided With : " + sideCollided, glm::vec2(10, 170), 1, glm::vec3(1, 0, 0));
 	smArial->Render("Camera Zoom : " + std::to_string(camera->GetScale()), glm::vec2(10, 150), 1, glm::vec3(1, 0, 0 ));
@@ -264,6 +288,7 @@ void Game::DrawGame(){
 	smArial->Render("OpenGL-SL Version : " + std::string(reinterpret_cast<const char*>(info.glsl_lang_version)), glm::vec2(10, 40), 1, glm::vec3(255));
 	smArial->Render("OpenGL Renderer : " + std::string(reinterpret_cast<const char*>(info.renderer)), glm::vec2(10, 90), 1, glm::vec3(255));
 	smArial->Render("OpenGL Supported Extensions #: " + std::to_string(info.ext_support_num), glm::vec2(10, 60), 1, glm::vec3(255));
+#endif 
 	if (inState == GameState::GAME_PAUSE || inState == GameState::GAME_MENU){
 	}
 	if (inState == GameState::GAME_RUNNING){
@@ -295,6 +320,8 @@ void Game::HandleInput(){
 			case SDLK_3:
 				waterFX = !waterFX;
 				break;
+			case SDLK_SPACE:
+				break;
 			}
 			break;
 		case SDL_KEYUP:
@@ -303,6 +330,13 @@ void Game::HandleInput(){
 			break;
 		default:
 			break;
+		}
+	});
+	input->isKeyPressed(SDL_SCANCODE_SPACE, [&](){
+		if (bullets.size() != MAX_PROJECTILES){
+			bullets.push_back(Bullet(glm::vec2(player.GetPosition()), glm::vec2(10), glm::vec3(255), 10, "bullet", false, 120));
+			bullets.back().SetAngle(player.GetAngle());
+			bullets.back().SetSpeed(350, 350);
 		}
 	});
 	// atan2(input->GetMouseY() - test.GetPosition().y, input->GetMouseX() - test.GetPosition().x);

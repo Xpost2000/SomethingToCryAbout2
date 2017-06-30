@@ -1,0 +1,22 @@
+#include "Bullet.h"
+
+
+Bullet::Bullet() : Entity(glm::vec2(300), glm::vec2(10), glm::vec3(255), 100, "Bullet Bill", true)
+{
+	LifeTime = 250;
+}
+
+
+Bullet::~Bullet()
+{
+}
+
+void Bullet::Update(float dt){
+	if (LifeTime > 0){
+		MoveFromAngle(dt, DIR_FORWARD);
+		LifeTime--;
+	}
+	else{
+		bActive = false;
+	}
+}

@@ -83,11 +83,12 @@ void ShaderProgram::SetUniformMatrix4fv(const char* location, float* value){
 	DSA setup
 */
 void ShaderProgram::SetUniform1i(const char* location, int v0){
-	if (GLEW_EXT_direct_state_access){
+	if (GLEW_EXT_direct_state_access){ // this is the extension
 		glProgramUniform1iEXT(sObject, glGetUniformLocation(sObject, location), v0);
 		fprintf(stderr, "ShaderProgram: Extension Backend\n");
 	}
 	else{
+		// If extension doesn't work
 		if (!isInUse())
 		Use();
 		glUniform1i(glGetUniformLocation(sObject, location), v0);

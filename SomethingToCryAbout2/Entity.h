@@ -39,6 +39,7 @@ public:
 	bool AABBCollide(const Entity& other) const;
 	void SideCollide(const Entity &other, float dt);
 	bool isAlive() { bActive = (health > 0); return bActive; };
+	bool isActive() { return bActive; }
 	void SetActive(bool val) { bActive = val; }
 	const float GetAngle() const { return angle; }
 	void SetAngle(float x) { angle = x; }
@@ -53,10 +54,10 @@ private:
 	float vX;
 	float vY;
 	int health;
-	bool bActive;
 	bool bCollide; // Collidable?
 protected:
 	float angle;
+	bool bActive;
 private:
 	std::string name;
 	glm::vec2 size;

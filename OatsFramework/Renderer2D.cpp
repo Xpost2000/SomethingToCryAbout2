@@ -111,6 +111,7 @@ void Renderer2D::SetLineSize(int size){
 	glLineWidth(size);
 }
 
+// This minor change improves performance on unlocked fps. (300 increase for me)
 void Renderer2D::Begin(glTexture& tex, glm::vec3 color){
 	if (!vao->isBound())
 	vao->Bind();
