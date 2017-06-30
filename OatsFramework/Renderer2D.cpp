@@ -28,23 +28,21 @@ Renderer2D::~Renderer2D()
 	delete vao;
 }
 
-void Renderer2D::Draw(glm::vec2 pos, glm::vec2 size, float angle, glTexture &texture){
-	texture.Bind();
+void Renderer2D::Draw(glm::vec2 pos, glm::vec2 size, float angle){
 	model = glm::mat4();
 	model = glm::translate(model, glm::vec3(pos, 1.0f));
 	model = glm::translate(model, glm::vec3(0.5f * size.x, 0.5f * size.y, 0.0f));
 	model = glm::rotate(model, angle, glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::translate(model, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f));
 	model = glm::scale(model, glm::vec3(size.x, size.y, 1.0f));
-	program->SetUniform1i("textured", 1);
+	program->SetUniform1i("textured", 2);
 	program->SetUniform1i("tex", 0);
 	program->SetUniformMatrix4fv("model", glm::value_ptr(model));
 	vao->DrawArrays(GL_TRIANGLE_STRIP, 4);
-	texture.Unbind();
 	fprintf(stderr, "Renderer2D: Draw Quad (Overload +1)\n");
 }
 
-void Renderer2D::Draw(glm::vec2 pos, glm::vec2 size, float angle, glm::vec3 color){
+void Renderer2D::DrawRect(glm::vec2 pos, glm::vec2 size, float angle){
 	model = glm::mat4();
 	model = glm::translate(model, glm::vec3(pos, 1.0f));
 	model = glm::translate(model, glm::vec3(0.5f * size.x, 0.5f * size.y, 0.0f));
@@ -52,35 +50,11 @@ void Renderer2D::Draw(glm::vec2 pos, glm::vec2 size, float angle, glm::vec3 colo
 	model = glm::translate(model, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f));
 	model = glm::scale(model, glm::vec3(size.x, size.y, 1.0f));
 	program->SetUniform1i("textured", 0);
-	program->SetUniform3f("iClr", color.r, color.g, color.b);
 	program->SetUniformMatrix4fv("model", glm::value_ptr(model));
 
 	vao->DrawArrays(GL_TRIANGLE_STRIP, 4);
 	
 	fprintf(stderr, "Renderer2D: Draw Quad(Overload +2)\n");
-}
-
-void Renderer2D::DrawM(glm::vec2 pos, glm::vec2 size, float angle, glTexture& texture, glm::vec3 color){
-	if (!texture.IsBound())
-	texture.Bind();
-	model = glm::mat4();
-	model = glm::translate(model, glm::vec3(pos, 1.0f));
-
-	model = glm::translate(model, glm::vec3(0.5f * size.x, 0.5f * size.y, 0.0f));
-	model = glm::rotate(model, angle, glm::vec3(0.0f, 0.0f, 1.0f));
-	model = glm::translate(model, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f));
-	model = glm::scale(model, glm::vec3(size.x, size.y, 1.0f));
-	program->SetUniform3f("iClr", color.r, color.g, color.b);
-	program->SetUniform1i("textured", 2);
-	program->SetUniform1i("tex", 0);
-	program->SetUniformMatrix4fv("model", glm::value_ptr(model));
-
-	if (vao->isBound())
-	vao->DrawArrays(GL_TRIANGLE_STRIP, 4);
-
-	if (texture.IsBound())
-	texture.Unbind();
-	fprintf(stderr, "Renderer2D: Draw Quad(Overload +3)\n");
 }
 
 void Renderer2D::SupplyMatrix(glm::mat4& model){
@@ -137,16 +111,19 @@ void Renderer2D::SetLineSize(int size){
 	glLineWidth(size);
 }
 
-void Renderer2D::Begin(){
+void Renderer2D::Begin(glTexture& tex, glm::vec3 color){
 	if (!vao->isBound())
 	vao->Bind();
+	tex.Bind();	
+	program->SetUniform3f("iClr", color.r, color.g, color.b);
 	if (!program->isInUse())
 		program->Use();
 }
 
-void Renderer2D::End(){
+void Renderer2D::End(glTexture& tex){
 	if (vao->isBound())
 	vao->Unbind();
+	tex.Unbind();
 	if (program->isInUse())
 		program->Unuse();
 }

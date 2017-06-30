@@ -222,21 +222,25 @@ void Game::DrawGame(){
 	if (inState == GameState::GAME_MENU){
 	}
 	if (inState == GameState::GAME_RUNNING){
-		renderer->Begin();
+		renderer->Begin(*Textures["wall-dev"], glm::vec3(255));
 		// walls
 		for (auto& wll : walls){
 			// Compare the name of these things to all possible wall name values
 			if (wll.GetName() == "wall-dev" || wll.GetName() == "dev")
-				renderer->Draw(wll.GetPosition(), wll.GetSize(), 0, *Textures[wll.GetName()]);
-			else
-				renderer->Draw(wll.GetPosition(), wll.GetSize(), 0, wll.GetColor());
-		}
+				renderer->Draw(wll.GetPosition(), wll.GetSize(), 0);
+			else{
+				renderer->SetColor(wll.GetColor());
+				renderer->DrawRect(wll.GetPosition(), wll.GetSize(), 0);
+			}
+			}
+		renderer->End(*Textures["wall-dev"]);
+		renderer->Begin(*Textures["player"], glm::vec3(255));
 		for (auto & ai : testAi){
-			renderer->Draw(ai.GetPosition(), ai.GetSize(), ai.GetAngle(), *Textures["player"]);
+			renderer->Draw(ai.GetPosition(), ai.GetSize(), ai.GetAngle());
 		}
 		//Everything else
-		renderer->Draw(player.GetPosition(), player.GetSize(), player.GetAngle(), *Textures["player"]);
-		renderer->End();
+		renderer->Draw(player.GetPosition(), player.GetSize(), player.GetAngle());
+		renderer->End(*Textures["player"]);
 	}
 
 	FrameBuffer->End();

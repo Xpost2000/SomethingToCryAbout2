@@ -25,13 +25,12 @@ public:
 	OATS_LIB_API Renderer2D(ShaderProgram *program);
 	OATS_LIB_API ~Renderer2D();
 	OATS_LIB_API void SupplyMatrix(glm::mat4 &model);
-	OATS_LIB_API void Begin();
-	OATS_LIB_API void End();
-	OATS_LIB_API void Draw(glm::vec2 pos, glm::vec2 size, float angle, glTexture &texture);
+	OATS_LIB_API void Begin(glTexture &tex, glm::vec3 color);
+	OATS_LIB_API void End(glTexture &tex);
+	OATS_LIB_API void Draw(glm::vec2 pos, glm::vec2 size, float angle);
 	// Colored rectangle draw + 1 overload
-	OATS_LIB_API void Draw(glm::vec2 pos, glm::vec2 size, float angle, glm::vec3 color = glm::vec3(255, 255, 255));
-	// Colored Rectangle with texture
-	OATS_LIB_API void DrawM(glm::vec2 pos, glm::vec2 size, float angle, glTexture &texture, glm::vec3 color = glm::vec3(255, 255, 255));
+	OATS_LIB_API void DrawRect(glm::vec2 pos, glm::vec2 size, float angle);
+	void SetColor(glm::vec3 clr) { program->SetUniform3f("iClr", clr.r, clr.g, clr.b); }
 	OATS_LIB_API void EnableAlpha(bool);
 	OATS_LIB_API void EnableAntiAliasing(bool);
 	OATS_LIB_API void EnableWireFrame(bool);
