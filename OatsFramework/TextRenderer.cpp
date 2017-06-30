@@ -62,6 +62,7 @@ void TextRenderer::Render(std::string text, glm::vec2 pos, float scale, glm::vec
 	sp->Use();
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(vao);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	std::string::const_iterator c;
 	for (c = text.begin(); c != text.end(); c++){
 		Character ch = Characters[*c];
@@ -80,13 +81,12 @@ void TextRenderer::Render(std::string text, glm::vec2 pos, float scale, glm::vec
 			{x+w, y, 1, 0}
 		};
 		glBindTexture(GL_TEXTURE_2D, ch.texture);
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(verts), verts);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
-		glBindTexture(GL_TEXTURE_2D, 0);
 		pos.x += (ch.advance >> 6) * scale;
 	}
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindVertexArray(0);
 	sp->Unuse();
 }

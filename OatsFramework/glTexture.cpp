@@ -26,12 +26,14 @@ void glTexture::LoadImage(std::string path){
 }
 #endif
 void glTexture::Bind(){
+	bound = true;
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, tex);
 	fprintf(stderr, "glTexture : Bound Texture\n");
 }
 
 void glTexture::Unbind(){
+	bound = false;
 	glBindTexture(GL_TEXTURE_2D, 0);
 	fprintf(stderr, "glTexture : Unbound Texture\n");
 }
@@ -51,6 +53,10 @@ void glTexture::SetWrapMode(GLenum mode){
 	glTextureParameteri(tex, GL_TEXTURE_WRAP_T, mode);
 	glTextureParameteri(tex, GL_TEXTURE_WRAP_S, mode);
 	fprintf(stderr, "glTexture : Texture Wrapping Mode Set\n");
+}
+
+bool glTexture::IsBound() const{
+	return bound;
 }
 #endif
 #ifdef COMPATIBILITY_33

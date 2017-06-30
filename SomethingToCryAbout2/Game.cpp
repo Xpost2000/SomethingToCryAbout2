@@ -213,7 +213,6 @@ void Game::DrawGame(){
 	//
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClearColor(0.f, 0.2f, .3f, 1.0f);
-	
 	//test.GetPosition().x + test.GetSize().x / 2) - width / 2., (test.GetPosition().y + test.GetSize().y / 2) - height / 2.)
 	camera->Identity();
 	camera->Translate(glm::vec2((-player.GetPosition().x*camera->GetScale() + width/2), (-player.GetPosition().y*camera->GetScale() + height/2)));
@@ -223,6 +222,7 @@ void Game::DrawGame(){
 	if (inState == GameState::GAME_MENU){
 	}
 	if (inState == GameState::GAME_RUNNING){
+		renderer->Begin();
 		// walls
 		for (auto& wll : walls){
 			// Compare the name of these things to all possible wall name values
@@ -236,6 +236,7 @@ void Game::DrawGame(){
 		}
 		//Everything else
 		renderer->Draw(player.GetPosition(), player.GetSize(), player.GetAngle(), *Textures["player"]);
+		renderer->End();
 	}
 
 	FrameBuffer->End();

@@ -18,7 +18,8 @@ public:
 	OATS_LIB_API glTexture();
 	OATS_LIB_API ~glTexture();
 	OATS_LIB_API void Bind(); 
-	OATS_LIB_API static void Unbind();
+	OATS_LIB_API void Unbind();
+	OATS_LIB_API bool IsBound() const;
 	// Load an image from specified path
 	OATS_LIB_API void LoadImage(std::string path);
 	// Set texture mag and min filters. GL_LINEAR or GL_NEAREST accepted
@@ -28,6 +29,7 @@ public:
 	// Retrieve texture object handle
 	OATS_LIB_API inline GLuint GetTextureObject() { return tex; }
 private:
+	bool bound;
 	GLuint tex;
 	SDL_Surface* img = nullptr;
 };

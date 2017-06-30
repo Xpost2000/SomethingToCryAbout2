@@ -5,7 +5,7 @@
 #include "ShaderProgram.h" // Do this later
 #include "Shader.h"
 #include "glTexture.h"
-#define EXPERIMENTAL_FUNC
+
 #ifdef EXPERIMENTAL_FUNC
 // Honestly for now it's just two functions.
 // It's not even a proper resource manager

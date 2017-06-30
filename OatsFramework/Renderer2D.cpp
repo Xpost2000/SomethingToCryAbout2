@@ -39,11 +39,9 @@ void Renderer2D::Draw(glm::vec2 pos, glm::vec2 size, float angle, glTexture &tex
 	program->SetUniform1i("textured", 1);
 	program->SetUniform1i("tex", 0);
 	program->SetUniformMatrix4fv("model", glm::value_ptr(model));
-	program->Use();
-	vao->Draw(GL_TRIANGLE_STRIP, 4);
+	vao->DrawArrays(GL_TRIANGLE_STRIP, 4);
 	texture.Unbind();
 	fprintf(stderr, "Renderer2D: Draw Quad (Overload +1)\n");
-	program->Unuse();
 }
 
 void Renderer2D::Draw(glm::vec2 pos, glm::vec2 size, float angle, glm::vec3 color){
@@ -56,13 +54,14 @@ void Renderer2D::Draw(glm::vec2 pos, glm::vec2 size, float angle, glm::vec3 colo
 	program->SetUniform1i("textured", 0);
 	program->SetUniform3f("iClr", color.r, color.g, color.b);
 	program->SetUniformMatrix4fv("model", glm::value_ptr(model));
-	program->Use();
-	vao->Draw(GL_TRIANGLE_STRIP, 4);
-	program->Unuse();
+
+	vao->DrawArrays(GL_TRIANGLE_STRIP, 4);
+	
 	fprintf(stderr, "Renderer2D: Draw Quad(Overload +2)\n");
 }
 
 void Renderer2D::DrawM(glm::vec2 pos, glm::vec2 size, float angle, glTexture& texture, glm::vec3 color){
+	if (!texture.IsBound())
 	texture.Bind();
 	model = glm::mat4();
 	model = glm::translate(model, glm::vec3(pos, 1.0f));
@@ -75,10 +74,12 @@ void Renderer2D::DrawM(glm::vec2 pos, glm::vec2 size, float angle, glTexture& te
 	program->SetUniform1i("textured", 2);
 	program->SetUniform1i("tex", 0);
 	program->SetUniformMatrix4fv("model", glm::value_ptr(model));
-	program->Use();
-	vao->Draw(GL_TRIANGLE_STRIP, 4);
+
+	if (vao->isBound())
+	vao->DrawArrays(GL_TRIANGLE_STRIP, 4);
+
+	if (texture.IsBound())
 	texture.Unbind();
-	program->Unuse();
 	fprintf(stderr, "Renderer2D: Draw Quad(Overload +3)\n");
 }
 
@@ -134,4 +135,18 @@ void Renderer2D::SetPointSize(int size){
 
 void Renderer2D::SetLineSize(int size){
 	glLineWidth(size);
+}
+
+void Renderer2D::Begin(){
+	if (!vao->isBound())
+	vao->Bind();
+	if (!program->isInUse())
+		program->Use();
+}
+
+void Renderer2D::End(){
+	if (vao->isBound())
+	vao->Unbind();
+	if (program->isInUse())
+		program->Unuse();
 }

@@ -15,11 +15,13 @@ VertexArray::~VertexArray()
 }
 
 void VertexArray::Bind(){
+	bound = true;
 	glBindVertexArray(vao);
 	fprintf(stderr, "VertexArray : Bound VertexArray\n");
 }
 
 void VertexArray::Unbind(){
+	bound = false;
 	glBindVertexArray(0);
 	fprintf(stderr, "VertexArray : Unbound Vertex Array\n");
 }
@@ -37,4 +39,12 @@ void VertexArray::Draw(GLenum type, GLint count){
 	glDrawArrays(type, 0, count);
 	Unbind();
 	fprintf(stderr, "VertexArray : Drawing contents.\n");
+}
+
+void VertexArray::DrawArrays(GLenum type, GLint count){
+	glDrawArrays(type, 0, count);
+}
+
+bool VertexArray::isBound() const{
+	return bound;
 }

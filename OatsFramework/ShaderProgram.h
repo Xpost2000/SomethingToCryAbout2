@@ -22,8 +22,8 @@ public:
 	OATS_LIB_API void DetachShader(Shader& sh);
 	OATS_LIB_API void LinkProgram();
 	OATS_LIB_API void Use();
-	OATS_LIB_API static void Unuse();
-
+	OATS_LIB_API void Unuse();
+	OATS_LIB_API bool isInUse() const;
 	// Uniform Functions
 	// TODO: Use Specialized Templates for all of this.
 	OATS_LIB_API void SetUniform1i(const char* location, int v0);
@@ -35,6 +35,7 @@ public:
 	OATS_LIB_API void SetUniform4fv(const char* location, float* value);
 	OATS_LIB_API void SetUniformMatrix4fv(const char* location, float* value);
 private:
+	bool use;
 	GLuint sObject;
 };
 

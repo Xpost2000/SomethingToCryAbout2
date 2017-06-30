@@ -29,8 +29,13 @@ void ShaderProgram::LinkProgram(){
 }
 
 void ShaderProgram::Use(){
+	use = true;
 	glUseProgram(this->sObject);
 	fprintf(stderr, "ShaderProgram : Shader Program is now active\n");
+}
+
+bool ShaderProgram::isInUse() const{
+	return use;
 }
 
 /*
@@ -114,5 +119,6 @@ void ShaderProgram::SetUniformMatrix4fv(const char* location, float* value){
 }
 #endif
 void ShaderProgram::Unuse(){
+	use = false;
 	glUseProgram(0);
 }
