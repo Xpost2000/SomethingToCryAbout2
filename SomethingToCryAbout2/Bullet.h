@@ -14,7 +14,7 @@ public:
 	Bullet();
 	~Bullet();
 	void Update() {}
-	void Update(float dt);
+	void Update(float dt, std::vector<Entity> &others);
 private:
 	int LifeTime;
 };

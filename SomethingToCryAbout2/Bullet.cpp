@@ -11,12 +11,17 @@ Bullet::~Bullet()
 {
 }
 
-void Bullet::Update(float dt){
+void Bullet::Update(float dt, std::vector<Entity> &others){
 	if (LifeTime > 0){
 		MoveFromAngle(dt, DIR_FORWARD);
 		LifeTime--;
 	}
 	else{
 		bActive = false;
+	}
+	for (int i = 0; i < others.size(); i++){
+		if (AABBCollide(others[i])){
+			SetActive(false);
+		}
 	}
 }

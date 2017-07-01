@@ -199,17 +199,12 @@ void Game::UpdateGame(){
 				player.SideCollide(wall, ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
 				sideCollided = wall.GetName();
 			}
-			for (auto & proj : bullets){
-				if (proj.AABBCollide(wall)){
-					proj.SetActive(false);
-				}
-			}
 		}
 		for (int i = 0; i < bullets.size(); i++){
 			if (!bullets[i].isActive()){
 				bullets.erase(bullets.begin() + i);
 			}
-			bullets[i].Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
+			bullets[i].Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), walls);
 		}
 		for (int i = 0; i < testAi.size(); i++){
 			if (!testAi[i].isAlive()){
@@ -250,7 +245,7 @@ void Game::DrawGame(){
 				renderer->SetColor(wll.GetColor());
 				renderer->DrawRect(wll.GetPosition(), wll.GetSize(), 0);
 			}
-			}
+		}
 		renderer->End(*Textures["wall-dev"]);
 		renderer->Begin(*Textures["player"], glm::vec3(255));
 		for (auto & ai : testAi){

@@ -51,11 +51,9 @@ void Player::Update(float dt, InputManager *input, Camera2D*camera, std::vector<
 		RotateRight(10, dt);
 	});
 	if( input->isMouseButtonPressed(MouseButton::LEFT_CLICK)){
-		printf("Left Click\n");
 		FireBullet(bullets);
 	}
 	if (input->isMouseButtonPressed(MouseButton::RIGHT_CLICK)){
-		printf("Right Click\n");
 	}
 	firingCoolDown--;
 }
