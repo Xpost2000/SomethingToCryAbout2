@@ -207,12 +207,12 @@ void Game::UpdateGame(){
 			}
 			testAi[i].Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), player,bullets, walls);
 		}
-		fxWater.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), player, [&](){
+		fxWater.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), player, [&](Entity &trash){
 			waterFX = true;
 			player.SetSpeed(50, 50);
 			player.SetFire(false);
 		},
-			[&](){
+			[&](Entity &trash){
 			waterFX = false;
 			player.SetSpeed(120, 120);
 			player.SetFire(true);

@@ -10,11 +10,11 @@ Trigger::~Trigger()
 {
 }
 
-void Trigger::Update(float dt, Entity &other, std::function<void()> action, std::function<void()> opposite){
+void Trigger::Update(float dt, Entity& other, std::function<void(Entity&)> action, std::function<void(Entity&)> opposite){
 	if (AABBCollide(other)){
-		action();
+		action(other);
 	}
 	else{
-		opposite();
+		opposite(other);
 	}
 }

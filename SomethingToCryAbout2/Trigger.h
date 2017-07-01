@@ -1,5 +1,6 @@
 #pragma once
 #include <functional>
+#include <vector>
 #include "Entity.h"
 class Trigger : public Entity
 {
@@ -9,7 +10,7 @@ public:
 
 	}
 	// perform action on collision
-	void Update(float dt, Entity &other, std::function<void()> action, std::function<void()> opposite);
+	void Update(float dt, Entity &other, std::function<void(Entity&)> action, std::function<void(Entity&)> opposite);
 	Trigger();
 	~Trigger();
 private:
