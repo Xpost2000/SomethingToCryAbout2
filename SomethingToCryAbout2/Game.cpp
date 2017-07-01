@@ -62,11 +62,6 @@ Game::~Game(){
 	delete bullet;
 	delete playerT;
 }
-// Very Huge setup
-
-std::string TextureListNames[] = {
-	"wall-dev", "dev", "player"
-};
 
 void Game::InitGame(){
 	// Setup the map here
@@ -87,9 +82,9 @@ void Game::InitGame(){
 	wall->LoadImage("Assests\\Textures\\dvColBox.png");
 	devTex->LoadImage("Assests\\Textures\\dvBox.png");
 
-	Textures.insert(std::pair<std::string, glTexture*>(TextureListNames[0], wall)); // put all textures in a map;
-	Textures.insert(std::pair<std::string, glTexture*>(TextureListNames[1], devTex));
-	Textures.insert(std::pair<std::string, glTexture*>(TextureListNames[2], playerT));
+	Textures.insert(std::pair<std::string, glTexture*>("wall-dev", wall)); // put all textures in a map;
+	Textures.insert(std::pair<std::string, glTexture*>("dev", devTex));
+	Textures.insert(std::pair<std::string, glTexture*>("player", playerT));
 	Textures.insert(std::pair<std::string, glTexture*>("bullet", bullet));
 	camera = new Camera2D(view, width, height, 4, 0.5);
 	camera->SetScale(1);
@@ -141,9 +136,8 @@ void Game::InitGame(){
 	renderer->EnableAlpha(true);
 	renderer->EnableAntiAliasing(true);
 	// Setup orthographic matrix
-	scale.x = width; scale.y = height;
-	float l = 0.; float r = width; float b = height; float t = 0.;
-	projection = glm::ortho(l, r, b, t, -1.f, 1.f);
+	scale = { width, height };
+	projection = glm::ortho(0.f, (float)width, (float)height, 0.f, -1.f, 1.f);
 	program->SetUniformMatrix4fv("projection", glm::value_ptr(projection));
 	textProgram->SetUniformMatrix4fv("proj", glm::value_ptr(projection));
 	arial = new TextRenderer(textProgram);
@@ -268,7 +262,6 @@ void Game::DrawGame(){
 	scrProgram->Use();
 	FrameBuffer->Render();
 	scrProgram->Unuse();
-#ifdef DEBUG_HUD
 	smArial->Render("Player Angle : " + std::to_string(player.GetAngle()), glm::vec2(10, 190), 1, glm::vec3(1, 0, 0));
 	smArial->Render("Last Collided With : " + sideCollided, glm::vec2(10, 170), 1, glm::vec3(1, 0, 0));
 	smArial->Render("Camera Zoom : " + std::to_string(camera->GetScale()), glm::vec2(10, 150), 1, glm::vec3(1, 0, 0 ));
@@ -277,7 +270,6 @@ void Game::DrawGame(){
 	smArial->Render("OpenGL-SL Version : " + std::string(reinterpret_cast<const char*>(info.glsl_lang_version)), glm::vec2(10, 40), 1, glm::vec3(255));
 	smArial->Render("OpenGL Renderer : " + std::string(reinterpret_cast<const char*>(info.renderer)), glm::vec2(10, 90), 1, glm::vec3(255));
 	smArial->Render("OpenGL Supported Extensions #: " + std::to_string(info.ext_support_num), glm::vec2(10, 60), 1, glm::vec3(255));
-#endif 
 	if (inState == GameState::GAME_PAUSE || inState == GameState::GAME_MENU){
 	}
 	if (inState == GameState::GAME_RUNNING){
