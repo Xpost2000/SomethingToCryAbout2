@@ -43,3 +43,15 @@ bool InputManager::isKeyReleased(int sdlScanCode, std::function<void()> action){
 	}
 	return false;
 }
+
+bool InputManager::isMouseButtonPressed(MouseButton type){
+	if (type == MouseButton::LEFT_CLICK){
+		if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT))
+		return true;
+	}
+	if (type == MouseButton::RIGHT_CLICK){
+		if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_RIGHT))
+		return true;
+	}
+	return false;
+}

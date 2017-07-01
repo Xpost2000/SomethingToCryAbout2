@@ -22,6 +22,13 @@ struct MouseCoords{
 	isKeyPressed() // Use a scancode based system
 	isKeyReleased() // Check if key is not pressed.
 */
+
+enum class MouseButton{
+	LEFT_CLICK,
+	RIGHT_CLICK,
+	WHEEL_CLICK
+};
+
 class InputManager
 {
 public:
@@ -38,6 +45,7 @@ public:
 	OATS_LIB_API bool isKeyPressed(int sdlScanCode, std::function<void()> action);
 	// Check if key is released ( boolean value )
 	OATS_LIB_API bool isKeyReleased(int sdlScanCode, std::function<void()> action);
+	OATS_LIB_API bool isMouseButtonPressed(MouseButton type);
 private:
 	// Event struct for PollEvents style input
 	SDL_Event event;

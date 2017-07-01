@@ -1,5 +1,7 @@
 #include "Player.h"
 #include <Oats\MathHelperFunctions.h>
+int firingCoolDown = 0;
+
 Player::Player() : Entity(glm::vec2(300), glm::vec2(10), glm::vec3(255), 100, "Bob", true)
 {
 }
@@ -9,7 +11,18 @@ Player::~Player()
 {
 }
 
-void Player::Update(float dt, InputManager *input, Camera2D*camera){
+void Player::FireBullet(std::vector<Bullet> &bullets){
+	if (bullets.size() != MAX_PROJECTILES){
+		if (firingCoolDown < 0){
+			bullets.push_back(Bullet(glm::vec2(GetPosition()), glm::vec2(10), glm::vec3(255), 10, "bullet", false, 120));
+			bullets.back().SetAngle(GetAngle());
+			bullets.back().SetSpeed(350, 350);
+			firingCoolDown = 20;
+		}
+	}
+}
+
+void Player::Update(float dt, InputManager *input, Camera2D*camera, std::vector<Bullet> &bullets){
 	/*
 	Use lambda's to fix all of this
 	*/
@@ -37,4 +50,12 @@ void Player::Update(float dt, InputManager *input, Camera2D*camera){
 	input->isKeyPressed(SDL_SCANCODE_RIGHT, [&](){
 		RotateRight(10, dt);
 	});
+	if( input->isMouseButtonPressed(MouseButton::LEFT_CLICK)){
+		printf("Left Click\n");
+		FireBullet(bullets);
+	}
+	if (input->isMouseButtonPressed(MouseButton::RIGHT_CLICK)){
+		printf("Right Click\n");
+	}
+	firingCoolDown--;
 }

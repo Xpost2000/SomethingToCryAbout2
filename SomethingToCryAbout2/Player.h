@@ -2,7 +2,8 @@
 #include <Oats\Camera2D.h>
 #include <Oats\InputManager.h>
 #include "Entity.h"
-
+#include "Bullet.h"
+#include <vector>
 /*
 	Since pretty much 100% of the work is done inside of the entity class
 	The player isn't super important to build on
@@ -19,9 +20,10 @@ public:
 	}
 	Player();
 	~Player();
+	void FireBullet(std::vector<Bullet> &bullets);
 	void Update() {}
 	void Update(float dt) {} // This is so I techincally "implement the virtual update func"
-	void Update(float dt, InputManager *man, Camera2D* camera); // Add my own input function
+	void Update(float dt, InputManager *man, Camera2D* camera, std::vector<Bullet> &bullets); // Add my own input function
 private:
 };
 

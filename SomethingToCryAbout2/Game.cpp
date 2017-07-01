@@ -183,13 +183,13 @@ void Game::RunGame(){
 void Game::UpdateGame(){
 	// Simulate Everything here.
 	if (inState != GameState::GAME_PAUSE){
-		//SDL_SetRelativeMouseMode(SDL_TRUE);
+		SDL_SetRelativeMouseMode(SDL_TRUE);
 		mx = input->GetMouseX();
 		my = input->GetMouseY();
-		player.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), input, camera);
+		player.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), input, camera, bullets);
 	}
 	else{
-	//	SDL_SetRelativeMouseMode(SDL_FALSE);
+		SDL_SetRelativeMouseMode(SDL_FALSE);
 	}
 	model = glm::mat4();
 	ClockTimer::Tick();
@@ -217,7 +217,7 @@ void Game::UpdateGame(){
 			bullets[i].Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
 			for (int j = 0; j < testAi.size(); j++){
 				if (bullets[i].AABBCollide(testAi[j])){
-					testAi[j].SubtractToHealth(1);
+					testAi[j].SubtractToHealth(30);
 					bullets[i].SetActive(0);
 				}
 			}
@@ -229,6 +229,7 @@ void Game::UpdateGame(){
 			testAi[i].Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
 		}
 	}
+
 }
 
 void Game::DrawGame(){
@@ -343,11 +344,8 @@ void Game::HandleInput(){
 		}
 	});
 	input->isKeyPressed(SDL_SCANCODE_SPACE, [&](){
-		if (bullets.size() != MAX_PROJECTILES){
-			bullets.push_back(Bullet(glm::vec2(player.GetPosition()), glm::vec2(10), glm::vec3(255), 10, "bullet", false, 120));
-			bullets.back().SetAngle(player.GetAngle());
-			bullets.back().SetSpeed(350, 350);
-		}
+		player.FireBullet(bullets);
 	});
-	// atan2(input->GetMouseY() - test.GetPosition().y, input->GetMouseX() - test.GetPosition().x);
+	float v = atan2(input->GetMouseY() - player.GetPosition().y, input->GetMouseX() - player.GetPosition().x);
+	player.SetAngle(v); 
 }

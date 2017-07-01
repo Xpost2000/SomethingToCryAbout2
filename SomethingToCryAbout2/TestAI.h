@@ -10,8 +10,8 @@ public:
 	~TestAI();
 
 	void Update();
-	void Update(float dt);
-private:
+	virtual void Update(float dt);
+protected:
 	int decidingMove;
 	float targAngle;
 	int aiCoolDown = 0;
