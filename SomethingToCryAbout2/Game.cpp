@@ -3,6 +3,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "Paddle.h"
+#include "Trigger.h"
 #include "Bullet.h"
 #include "Entity.h"
 #include "Player.h"
@@ -19,7 +20,7 @@ Player player(glm::vec2(360), glm::vec2(20), glm::vec3(255), 100, "test", false)
 std::vector<Entity> walls;
 std::vector<TestAI> testAi;
 std::vector<Bullet> bullets;
-
+Trigger fxWater(glm::vec2(500, 0), glm::vec2(300, 768), glm::vec3(0), 0, "triggerA", false);
 glQueryInfo info;
 glTexture* wall;
 glTexture* playerT;
@@ -205,8 +206,13 @@ void Game::UpdateGame(){
 			}
 			testAi[i].Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), player,bullets, walls);
 		}
+		fxWater.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), player, [&](){
+			waterFX = true;
+		},
+			[&](){
+			waterFX = false;
+		});
 	}
-
 }
 
 void Game::DrawGame(){
