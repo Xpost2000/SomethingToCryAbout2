@@ -204,29 +204,18 @@ void Game::UpdateGame(){
 					proj.SetActive(false);
 				}
 			}
-			for (auto &ai : testAi){
-				if (ai.AABBCollide(wall)){
-					ai.SideCollide(wall, ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
-				}
-			}
 		}
 		for (int i = 0; i < bullets.size(); i++){
 			if (!bullets[i].isActive()){
 				bullets.erase(bullets.begin() + i);
 			}
 			bullets[i].Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
-			for (int j = 0; j < testAi.size(); j++){
-				if (bullets[i].AABBCollide(testAi[j])){
-					testAi[j].SubtractToHealth(30);
-					bullets[i].SetActive(0);
-				}
-			}
 		}
 		for (int i = 0; i < testAi.size(); i++){
 			if (!testAi[i].isAlive()){
 				testAi.erase(testAi.begin() + i);
 			}
-			testAi[i].Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
+			testAi[i].Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), bullets, walls);
 		}
 	}
 

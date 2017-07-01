@@ -14,7 +14,7 @@ void TestAI::Update(){
 
 }
 
-void TestAI::Update(float dt){
+void TestAI::Update(float dt, std::vector<Bullet>& bullets, std::vector<Entity> &others){
 	if (aiCoolDown < 0 || aiCoolDown == 0){
 		aiCoolDown = 90;
 		std::random_device rd;
@@ -32,6 +32,17 @@ void TestAI::Update(float dt){
 		}
 		else{
 			SetColor(255, 255, 255);
+		}
+	}
+	for (int i = 0; i < bullets.size(); i++){
+		if (bullets[i].AABBCollide(*this)){
+			SubtractToHealth(30);
+			bullets[i].SetActive(0);
+		}
+	}
+	for (int i = 0; i < others.size(); i++){
+		if (AABBCollide(others[i])){
+			SideCollide(others[i], dt);
 		}
 	}
 }

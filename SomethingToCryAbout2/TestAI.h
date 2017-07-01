@@ -1,5 +1,6 @@
 #pragma once
 #include "Entity.h"
+#include "Bullet.h"
 class TestAI : public Entity
 {
 public:
@@ -10,7 +11,7 @@ public:
 	~TestAI();
 
 	void Update();
-	virtual void Update(float dt);
+	virtual void Update(float dt, std::vector<Bullet>&bullets, std::vector<Entity> &others);
 protected:
 	int decidingMove;
 	float targAngle;

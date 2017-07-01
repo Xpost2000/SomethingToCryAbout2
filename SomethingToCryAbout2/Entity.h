@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include <string>
 #include <glm\glm.hpp>
 /*
@@ -13,6 +14,9 @@
 #define DIR_FORWARD 1
 #define DIR_BACKWARD 2
 
+class Player;
+class Bullet;
+
 class Entity
 {
 public:
@@ -21,6 +25,15 @@ public:
 	~Entity();
 	virtual void Update() {}
 	virtual void Update(float dt){}
+	// Have several more overloads
+	// For every possible type of implementation :(
+	virtual void Update(float dt,  std::vector<Entity> &other){}
+	virtual void Update(float dt, std::vector<Bullet>& bullets){}
+	virtual void Update(float dt, Player &player){}
+	virtual void Update(float dt, Player& player, std::vector<Bullet>& bullets){}
+	virtual void Update(float dt, Player& player, std::vector<Bullet>& bullets, std::vector<Entity> &others){}
+	virtual void Update(float dt, Player & player, std::vector<Entity> &others) {}
+	virtual void Update(float dt, std::vector<Bullet>& bullets, std::vector<Entity> &others){}
 	void SetSpeed(float x, float y) { vX = x; vY = y; }
 	void SetHealth(int hp);
 	void SetName( std::string name );
