@@ -22,7 +22,7 @@ void Player::FireBullet(std::vector<Bullet> &bullets){
 	}
 }
 
-void Player::Update(float dt, InputManager *input, Camera2D*camera, std::vector<Bullet> &bullets){
+void Player::Update(float dt, InputManager *input, Camera2D*camera, std::vector<Bullet> &bullets, std::vector<Entity> &others){
 	/*
 	Use lambda's to fix all of this
 	*/
@@ -56,4 +56,14 @@ void Player::Update(float dt, InputManager *input, Camera2D*camera, std::vector<
 	if (input->isMouseButtonPressed(MouseButton::RIGHT_CLICK)){
 	}
 	firingCoolDown--;
+
+	Update(dt, others);
+}
+
+void Player::Update(float dt, std::vector<Entity>&others){
+	for (int i = 0; i < others.size(); i++){
+		if (AABBCollide(others[i])){
+			SideCollide(others[i], dt);
+		}
+	}
 }

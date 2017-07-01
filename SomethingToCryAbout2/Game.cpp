@@ -186,7 +186,7 @@ void Game::UpdateGame(){
 		SDL_SetRelativeMouseMode(SDL_TRUE);
 		mx = input->GetMouseX();
 		my = input->GetMouseY();
-		player.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), input, camera, bullets);
+		player.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), input, camera, bullets, walls);
 	}
 	else{
 		SDL_SetRelativeMouseMode(SDL_FALSE);
@@ -194,12 +194,6 @@ void Game::UpdateGame(){
 	model = glm::mat4();
 	ClockTimer::Tick();
 	if (inState == GameState::GAME_RUNNING){
-		for (auto& wall : walls){
-			if(player.AABBCollide(wall)){
-				player.SideCollide(wall, ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
-				sideCollided = wall.GetName();
-			}
-		}
 		for (int i = 0; i < bullets.size(); i++){
 			if (!bullets[i].isActive()){
 				bullets.erase(bullets.begin() + i);
