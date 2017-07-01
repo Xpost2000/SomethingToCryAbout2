@@ -154,6 +154,7 @@ void Game::InitGame(){
 	player.SetAngle(360);
 
 	walls.push_back(Entity(glm::vec2(0), glm::vec2(1024, 768), glm::vec3(125, 20, 100), 100, "floor", false));
+	walls.push_back(Entity(fxWater.GetPosition(), fxWater.GetSize(), glm::vec3(0, 0, 255), 0, "triggerA", false));
 	walls.push_back(Entity(glm::vec2(400), glm::vec2(200), glm::vec3(255), 100, "dev", true));
 	walls.push_back(Entity(glm::vec2(200), glm::vec2(100), glm::vec3(255), 100, "wall-dev", true));
 	walls.push_back(Entity(glm::vec2(0), glm::vec2(30, 768), glm::vec3(0), 100, "Boundary", true));
@@ -208,9 +209,11 @@ void Game::UpdateGame(){
 		}
 		fxWater.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), player, [&](){
 			waterFX = true;
+			player.SetSpeed(50, 50);
 		},
 			[&](){
 			waterFX = false;
+			player.SetSpeed(120, 120);
 		});
 	}
 }
@@ -309,17 +312,6 @@ void Game::HandleInput(){
 					inState = GameState::GAME_PAUSE; else{
 					inState = GameState::GAME_RUNNING;
 				}
-				break;
-			case SDLK_1:
-				glitch = !glitch;
-				break;
-			case SDLK_2:
-				greyScale = !greyScale;
-				break;
-			case SDLK_3:
-				waterFX = !waterFX;
-				break;
-			case SDLK_SPACE:
 				break;
 			}
 			break;
