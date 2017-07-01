@@ -3,6 +3,7 @@
 #include "VertexBuffer.h"
 #include "glTexture.h"
 #include "ShaderProgram.h"
+#include "Shader.h"
 #include "MathHelperFunctions.h"
 
 /*
@@ -37,6 +38,9 @@ public:
 	OATS_LIB_API void EnablePointsDraw(bool);
 	OATS_LIB_API void SetPointSize(int);
 	OATS_LIB_API void SetLineSize(int);
+	// Manually swap and handle textures
+	void BindTexture(glTexture & tex) { tex.Bind(); }
+	void UnbindTexture(glTexture & tex) { tex.Unbind(); }
 private:
 	glm::mat4 model; // matrix
 

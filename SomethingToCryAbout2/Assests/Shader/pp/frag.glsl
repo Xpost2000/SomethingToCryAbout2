@@ -36,11 +36,22 @@ vec4 GlitchError(){
 }
 
 vec4 GreyScale(){
+
 	vec4 colorRes;
 	color = vec4(texture(frameBuffer, texCoords));
 	float average = (color.r + color.g + color.b) / 3.0f;
 	colorRes = vec4(average, average, average, 1.0f);
 	return colorRes;
+	/*
+	vec4 colorRes;
+	float px = 2000;
+	float dx = 17 * ( 1 / px);
+	float dy = 17 * ( 1 / px);
+	texCoords = vec2( dx * floor(texCoords.x / dx), dy * floor(texCoords.y / dy) - offSet *999);
+	color = vec4(texture(frameBuffer, texCoords));
+	colorRes = vec4(0.3, color.g *2, 0.1, 1.0f);
+	return colorRes*0.6;
+*/
 }
 
 void main(void){

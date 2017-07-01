@@ -15,7 +15,6 @@ int mx;
 int my;
 
 Player player(glm::vec2(360), glm::vec2(20), glm::vec3(255), 100, "test", false);
-TestAI one(glm::vec2(380), glm::vec2(20), glm::vec3(255), 100, "ai", true);
 
 std::vector<Entity> walls;
 std::vector<TestAI> testAi;
@@ -162,9 +161,7 @@ void Game::InitGame(){
 	walls.push_back(Entity(glm::vec2(1024, 0), glm::vec2(30, 768), glm::vec3(0), 100, "Boundary", true));
 	walls.push_back(Entity(glm::vec2(0), glm::vec2(1024, 30), glm::vec3(0), 100, "Boundary", true));
 	walls.push_back(Entity(glm::vec2(0, 768), glm::vec2(1024, 30), glm::vec3(0), 100, "Boundary", true));
-	one.SetSpeed(120, 120);
 
-	testAi.push_back(one);
 	testAi.push_back(TestAI(glm::vec2(200, 100), glm::vec2(20), glm::vec3(255), 100, "1oddity", true));
 	testAi.push_back(TestAI(glm::vec2(100, 200), glm::vec2(20), glm::vec3(255), 100, "bobbity", true));
 	testAi.push_back(TestAI(glm::vec2(200, 500), glm::vec2(50), glm::vec3(255), 100, "oddity", true));
@@ -190,9 +187,6 @@ void Game::UpdateGame(){
 		mx = input->GetMouseX();
 		my = input->GetMouseY();
 		player.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), input, camera);
-		for (auto & ai : testAi){
-			ai.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
-		}
 	}
 	else{
 	//	SDL_SetRelativeMouseMode(SDL_FALSE);
@@ -216,11 +210,23 @@ void Game::UpdateGame(){
 				}
 			}
 		}
-		for (auto & proj : bullets){
-			proj.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
-			if (!proj.isActive()){
-				bullets.pop_back(); // Change this
+		for (int i = 0; i < bullets.size(); i++){
+			if (!bullets[i].isActive()){
+				bullets.erase(bullets.begin() + i);
 			}
+			bullets[i].Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
+			for (int j = 0; j < testAi.size(); j++){
+				if (bullets[i].AABBCollide(testAi[j])){
+					testAi[j].SubtractToHealth(1);
+					bullets[i].SetActive(0);
+				}
+			}
+		}
+		for (int i = 0; i < testAi.size(); i++){
+			if (!testAi[i].isAlive()){
+				testAi.erase(testAi.begin() + i);
+			}
+			testAi[i].Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
 		}
 	}
 }
@@ -246,8 +252,10 @@ void Game::DrawGame(){
 		// walls
 		for (auto& wll : walls){
 			// Compare the name of these things to all possible wall name values
-			if (wll.GetName() == "wall-dev" || wll.GetName() == "dev")
+			if (wll.GetName() == "wall-dev" || wll.GetName() == "dev"){
+				renderer->BindTexture(*Textures[wll.GetName()]);
 				renderer->Draw(wll.GetPosition(), wll.GetSize(), 0);
+			}
 			else{
 				renderer->SetColor(wll.GetColor());
 				renderer->DrawRect(wll.GetPosition(), wll.GetSize(), 0);
@@ -256,9 +264,11 @@ void Game::DrawGame(){
 		renderer->End(*Textures["wall-dev"]);
 		renderer->Begin(*Textures["player"], glm::vec3(255));
 		for (auto & ai : testAi){
+			renderer->SetColor(ai.GetColor());
 			renderer->Draw(ai.GetPosition(), ai.GetSize(), ai.GetAngle());
 		}
 		//Everything else
+		renderer->SetColor(player.GetColor());
 		renderer->Draw(player.GetPosition(), player.GetSize(), player.GetAngle());
 		renderer->End(*Textures["player"]);
 		renderer->Begin(*Textures["bullet"], glm::vec3(255));

@@ -27,5 +27,11 @@ void TestAI::Update(float dt){
 	if (aiCoolDown != 0 || aiCoolDown > 0){
 		MoveFromAngle(dt, decidingMove);
 		aiCoolDown--;
+		if (fxCoolDown > 0){
+			fxCoolDown--;
+		}
+		else{
+			SetColor(255, 255, 255);
+		}
 	}
 }

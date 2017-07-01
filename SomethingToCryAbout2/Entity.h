@@ -38,6 +38,11 @@ public:
 	const int GetHealth() const;
 	bool AABBCollide(const Entity& other) const;
 	void SideCollide(const Entity &other, float dt);
+	void AddToHealth(float va) { health += va; color = glm::vec3(0., 255, 155); }
+	void SubtractToHealth(float va) {
+		health -= va; if (fxCoolDown == 0) { color = glm::vec3(255, 15.5, 0.5); fxCoolDown = 5; }
+}
+	void SetHealth(float va) { health = va; }
 	bool isAlive() { bActive = (health > 0); return bActive; };
 	bool isActive() { return bActive; }
 	void SetActive(bool val) { bActive = val; }
@@ -57,6 +62,7 @@ private:
 	bool bCollide; // Collidable?
 protected:
 	float angle;
+	float fxCoolDown = 0;
 	bool bActive;
 private:
 	std::string name;
