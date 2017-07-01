@@ -26,6 +26,7 @@ glTexture* playerT;
 glTexture* devTex;
 glTexture* bullet;
 std::string sideCollided = "Nothing";
+bool ext_dsaSupported;
 Game::Game()
 {
 	window = new Window("Something To Cry About : OpenGL Version Alpha", width, height);
@@ -35,7 +36,9 @@ Game::Game()
 	printf("OpenGL Version : %s \nOpenGL-SL Version : %s\n", info.version.legacy, info.glsl_lang_version);
 	printf("OpenGL Supported Extensions # : %d\n", info.ext_support_num);
 	printf("OpenGL Extensions Supported are :\n");
-	CheckExtension("GL_EXT_direct_state_access", info);
+
+	ext_dsaSupported = CheckExtension("GL_EXT_direct_state_access", info);
+
 	inState = GameState::GAME_RUNNING;
 }
 
@@ -198,7 +201,7 @@ void Game::UpdateGame(){
 			if (!testAi[i].isAlive()){
 				testAi.erase(testAi.begin() + i);
 			}
-			testAi[i].Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), bullets, walls);
+			testAi[i].Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), player,bullets, walls);
 		}
 	}
 
@@ -270,6 +273,12 @@ void Game::DrawGame(){
 	smArial->Render("OpenGL-SL Version : " + std::string(reinterpret_cast<const char*>(info.glsl_lang_version)), glm::vec2(10, 40), 1, glm::vec3(255));
 	smArial->Render("OpenGL Renderer : " + std::string(reinterpret_cast<const char*>(info.renderer)), glm::vec2(10, 90), 1, glm::vec3(255));
 	smArial->Render("OpenGL Supported Extensions #: " + std::to_string(info.ext_support_num), glm::vec2(10, 60), 1, glm::vec3(255));
+	if (!ext_dsaSupported){
+		smArial->Render("GL_EXT_direct_state_access not supported.", glm::vec2(10, 110), 1, glm::vec3(255, 0, 0));
+	}
+	else{
+		smArial->Render("GL_EXT_direct_state_access supported.", glm::vec2(10, 110), 1, glm::vec3(255, 0, 0));
+	}
 	if (inState == GameState::GAME_PAUSE || inState == GameState::GAME_MENU){
 	}
 	if (inState == GameState::GAME_RUNNING){

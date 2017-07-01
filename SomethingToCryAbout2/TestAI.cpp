@@ -1,4 +1,5 @@
 #include "TestAI.h"
+#include "Player.h"
 #include <random>
 #include <iostream>
 TestAI::TestAI()
@@ -14,7 +15,7 @@ void TestAI::Update(){
 
 }
 
-void TestAI::Update(float dt, std::vector<Bullet>& bullets, std::vector<Entity> &others){
+void TestAI::Update(float dt, Player &player, std::vector<Bullet>& bullets, std::vector<Entity> &others){
 	if (aiCoolDown < 0 || aiCoolDown == 0){
 		aiCoolDown = 90;
 		std::random_device rd;
@@ -44,5 +45,9 @@ void TestAI::Update(float dt, std::vector<Bullet>& bullets, std::vector<Entity> 
 		if (AABBCollide(others[i])){
 			SideCollide(others[i], dt);
 		}
+	}
+	if (AABBCollide(player)){
+		player.SideCollide(*this, dt);
+		SideCollide(player, dt);
 	}
 }
