@@ -24,7 +24,9 @@ public:
 	void Update() {}
 	void Update(float dt) {} // This is so I techincally "implement the virtual update func"
 	void Update(float dt, InputManager *man, Camera2D* camera, std::vector<Bullet> &bullets, std::vector<Entity> &others); // Add my own input function
+	void SetFire(bool val) { bCanFire = val; }
 private:
 	void Update(float dt, std::vector<Entity>&others);
+	bool bCanFire;
 };
 

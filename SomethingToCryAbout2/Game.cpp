@@ -210,10 +210,12 @@ void Game::UpdateGame(){
 		fxWater.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), player, [&](){
 			waterFX = true;
 			player.SetSpeed(50, 50);
+			player.SetFire(false);
 		},
 			[&](){
 			waterFX = false;
 			player.SetSpeed(120, 120);
+			player.SetFire(true);
 		});
 	}
 }
