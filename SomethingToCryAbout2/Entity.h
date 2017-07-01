@@ -56,6 +56,7 @@ public:
 		health -= va; if (fxCoolDown == 0) { color = glm::vec3(255, 15.5, 0.5); fxCoolDown = 5; }
 }
 	void SetHealth(float va) { health = va; }
+	bool isCollidable() { return bCollide; }
 	bool isAlive() { bActive = (health > 0); return bActive; };
 	bool isActive() { return bActive; }
 	void SetActive(bool val) { bActive = val; }

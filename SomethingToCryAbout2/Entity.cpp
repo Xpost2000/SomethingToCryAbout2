@@ -63,9 +63,9 @@ bool Entity::AABBCollide(const Entity& other) const{
 	/*
 		Return the value of this expression
 	*/
-	return (position.x < other.position.x + other.size.x&&
-			position.x + size.x > other.position.x) && 
-			(position.y < other.position.y + other.size.y && 
+		return (position.x < other.position.x + other.size.x&&
+			position.x + size.x > other.position.x) &&
+			(position.y < other.position.y + other.size.y &&
 			position.y + size.y > other.position.y);
 }
 

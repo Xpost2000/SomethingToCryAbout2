@@ -152,12 +152,14 @@ void Game::InitGame(){
 	player.SetSpeed(120, 120);
 	player.SetAngle(360);
 
+	walls.push_back(Entity(glm::vec2(0), glm::vec2(1024, 768), glm::vec3(125, 20, 100), 100, "floor", false));
 	walls.push_back(Entity(glm::vec2(400), glm::vec2(200), glm::vec3(255), 100, "dev", true));
 	walls.push_back(Entity(glm::vec2(200), glm::vec2(100), glm::vec3(255), 100, "wall-dev", true));
 	walls.push_back(Entity(glm::vec2(0), glm::vec2(30, 768), glm::vec3(0), 100, "Boundary", true));
 	walls.push_back(Entity(glm::vec2(1024, 0), glm::vec2(30, 768), glm::vec3(0), 100, "Boundary", true));
 	walls.push_back(Entity(glm::vec2(0), glm::vec2(1024, 30), glm::vec3(0), 100, "Boundary", true));
 	walls.push_back(Entity(glm::vec2(0, 768), glm::vec2(1024, 30), glm::vec3(0), 100, "Boundary", true));
+
 
 	testAi.push_back(TestAI(glm::vec2(200, 100), glm::vec2(20), glm::vec3(255), 100, "1oddity", true));
 	testAi.push_back(TestAI(glm::vec2(100, 200), glm::vec2(20), glm::vec3(255), 100, "bobbity", true));
@@ -230,6 +232,7 @@ void Game::DrawGame(){
 			// Compare the name of these things to all possible wall name values
 			if (wll.GetName() == "wall-dev" || wll.GetName() == "dev"){
 				renderer->BindTexture(*Textures[wll.GetName()]);
+				renderer->SetColor(wll.GetColor());
 				renderer->Draw(wll.GetPosition(), wll.GetSize(), 0);
 			}
 			else{
