@@ -3,33 +3,18 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "Paddle.h"
-#include "Trigger.h"
-#include "Bullet.h"
-#include "Entity.h"
-#include "Player.h"
-#include "TestAI.h"
+
 #include <Oats\ResourceManager.h>
-#include "LevelLoader.h"
+
 #include <cmath>
-#include <GL\glew.h>
 #include <ctime>
 int mx;
 int my;
 
 Player player(glm::vec2(360), glm::vec2(20), glm::vec3(255), 100, "HiroHito", false);
-LevelLoader a;
-std::vector<Entity> walls;
-std::vector<TestAI> testAi;
-std::vector<Trigger> triggers;
-std::vector<Bullet> bullets;
+
 glQueryInfo info;
-glTexture* wall;
-glTexture* playerT;
-glTexture* devTex;
-glTexture* bullet;
-glTexture* wdFlr;
-glTexture* smoothStone;
-glTexture* water;
+
 Game::Game()
 {
 	window = new Window("Something To Cry About : OpenGL Version Alpha", width, height);
@@ -132,51 +117,34 @@ void Game::InitGame(){
 	pFrag->LoadFromFile("Assests\\Shader\\pp\\frag.glsl"); // Postprocess Fragment
 	pVert->LoadFromFile("Assests\\Shader\\pp\\vert.glsl"); // Postprocess Vertex
 	fragment->LoadFromFile("Assests\\Shader\\frag.glsl"); // Standard Frag
-	vertex->LoadFromFile("Assests\\Shader\\vert.glsl"); // Standard Vertex
-	tFrag->LoadFromFile("Assests\\Shader\\text\\textFrag.glsl");
-	tVert->LoadFromFile("Assests\\Shader\\text\\textVert.glsl");
+	vertex->LoadFromFile("Assests\\Shader\\vert.glsl"); tFrag->LoadFromFile("Assests\\Shader\\text\\textFrag.glsl");tVert->LoadFromFile("Assests\\Shader\\text\\textVert.glsl");
 
 	program->AddShader(*vertex); // Adding Shaders for compilation
 	program->AddShader(*fragment);
-	program->LinkProgram(); // Link shaders
-	program->DetachShader(*vertex);
-	program->DetachShader(*fragment); // Detach Shaders
+	program->LinkProgram(); program->DetachShader(*vertex);	program->DetachShader(*fragment); // Detach Shaders
 
 	// Framebuffer / Postprocessing program
 	scrProgram->AddShader(*pFrag);
 	scrProgram->AddShader(*pVert);
-	scrProgram->LinkProgram();
-	scrProgram->DetachShader(*pFrag);
-	scrProgram->DetachShader(*pVert);
+	scrProgram->LinkProgram();scrProgram->DetachShader(*pFrag);scrProgram->DetachShader(*pVert);
 
 	textProgram->AddShader(*tFrag);
 	textProgram->AddShader(*tVert);
-	textProgram->LinkProgram();
-	textProgram->DetachShader(*tFrag);
-	textProgram->DetachShader(*tVert);
+	textProgram->LinkProgram();textProgram->DetachShader(*tFrag);textProgram->DetachShader(*tVert);
 	// Setting up textures
 	// Setting up renderer
 	renderer = new Renderer2D(program);
 	renderer->EnableAlpha(true);
-	renderer->EnableAntiAliasing(true);
 	// Setup orthographic matrix
 	scale = { width, height };
 	projection = glm::ortho(0.f, (float)width, (float)height, 0.f, -1.f, 1.f);
 	program->SetUniformMatrix4fv("projection", glm::value_ptr(projection));
 	textProgram->SetUniformMatrix4fv("proj", glm::value_ptr(projection));
-	arial = new TextRenderer(textProgram);
-	cmcSans = new TextRenderer(textProgram);
-	smArial = new TextRenderer(textProgram);
-	arial->LoadFont("Assests\\Font\\arial.ttf", 48);
-	cmcSans->LoadFont("Assests\\Font\\cmc.ttf", 72);
-	smArial->LoadFont("Assests\\Font\\arial.ttf", 14);
-	player.SetSpeed(120, 120);
-	player.SetAngle(360);
-	player.SetFire(true);
+	arial = new TextRenderer(textProgram); cmcSans = new TextRenderer(textProgram);smArial = new TextRenderer(textProgram);
+	arial->LoadFont("Assests\\Font\\arial.ttf", 48);cmcSans->LoadFont("Assests\\Font\\cmc.ttf", 72);smArial->LoadFont("Assests\\Font\\arial.ttf", 14);
+	player.SetSpeed(120, 120);player.SetAngle(360);player.SetFire(true);
 	scrProgram->SetUniform1i("frameBuffer", 0);
-	for (auto & a : testAi){
-		a.SetSpeed(120, 120);
-	}
+	for (auto & a : testAi){a.SetSpeed(120, 120);}
 }
 
 // Run game that condenses all seperate functions into one.
@@ -254,7 +222,6 @@ void Game::DrawGame(){
 	//
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClearColor(0.f, 0.2f, .3f, 1.0f);
-	//test.GetPosition().x + test.GetSize().x / 2) - width / 2., (test.GetPosition().y + test.GetSize().y / 2) - height / 2.)
 	camera->Identity();
 	camera->Translate(glm::vec2((-player.GetPosition().x*camera->GetScale() + width/2), (-player.GetPosition().y*camera->GetScale() + height/2)));
 	camera->Scale(glm::vec2(scale.x, scale.y)); // camera system.
@@ -306,6 +273,7 @@ void Game::DrawGame(){
 	FrameBuffer->Render();
 	scrProgram->Unuse();
 
+	// Reset the camera so it doesn't "Move" with the game
 	camera->Identity();
 	view = camera->RetrieveMatrix(); // Call this to transfer matrix.
 	program->SetUniformMatrix4fv("view", glm::value_ptr(view));
@@ -357,6 +325,5 @@ void Game::HandleInput(){
 	input->isKeyPressed(SDL_SCANCODE_SPACE, [&](){
 		player.FireBullet(bullets);
 	});
-	float v = atan2(input->GetMouseY() - player.GetPosition().y, input->GetMouseX() - player.GetPosition().x);
-	player.SetAngle(v); 
+	player.SetAngle(atan2(input->GetMouseY() - player.GetPosition().y, input->GetMouseX() - player.GetPosition().x));
 }

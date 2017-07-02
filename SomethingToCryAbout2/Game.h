@@ -13,6 +13,12 @@
 #include <Oats\Renderer2D.h>
 #include <Oats\Camera2D.h>
 #include <Oats\Framebuffer.h>
+#include "Trigger.h"
+#include "Bullet.h"
+#include "Entity.h"
+#include "Player.h"
+#include "TestAI.h"
+#include "LevelLoader.h"
 #include <map>
 #include "Button.h"
 class Game
@@ -53,6 +59,20 @@ private:
 	TextRenderer* arial;
 	TextRenderer* smArial;
 	TextRenderer* cmcSans;
+
+	glTexture* wall;
+	glTexture* playerT;
+	glTexture* devTex;
+	glTexture* bullet;
+	glTexture* wdFlr;
+	glTexture* smoothStone;
+	glTexture* water;
+
+	LevelLoader a;
+	std::vector<Entity> walls;
+	std::vector<TestAI> testAi;
+	std::vector<Trigger> triggers;
+	std::vector<Bullet> bullets;
 
 	int width = 1024, height = 768;
 	struct CameraScale{
