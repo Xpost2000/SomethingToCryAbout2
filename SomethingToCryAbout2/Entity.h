@@ -13,7 +13,7 @@
 
 #define DIR_FORWARD 1
 #define DIR_BACKWARD 2
-
+#define STANDARD_SIZE 20
 class Player;
 class Bullet;
 
@@ -51,7 +51,7 @@ public:
 	const int GetHealth() const;
 	bool AABBCollide(const Entity& other) const;
 	void SideCollide(const Entity &other, float dt);
-	void AddToHealth(float va) { health += va; color = glm::vec3(0., 255, 155); }
+	void AddToHealth(float va) { health += va; if (fxCoolDown == 0){ color = glm::vec3(10, 255, 0.5); fxCoolDown = 5; } }
 	void SubtractToHealth(float va) {
 		health -= va; if (fxCoolDown == 0) { color = glm::vec3(255, 15.5, 0.5); fxCoolDown = 5; }
 }

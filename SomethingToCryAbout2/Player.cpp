@@ -57,7 +57,12 @@ void Player::Update(float dt, InputManager *input, Camera2D*camera, std::vector<
 	if (input->isMouseButtonPressed(MouseButton::RIGHT_CLICK)){
 	}
 	firingCoolDown--;
-
+	if (fxCoolDown > 0){
+		fxCoolDown--;
+	}
+	else{
+		SetColor(255, 255, 255);
+	}
 	Update(dt, others);
 }
 

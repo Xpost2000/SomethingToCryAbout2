@@ -9,6 +9,7 @@
 #include "Player.h"
 #include "TestAI.h"
 #include <Oats\ResourceManager.h>
+#include "LevelLoader.h"
 #include <cmath>
 #include <GL\glew.h>
 #include <ctime>
@@ -16,11 +17,11 @@ int mx;
 int my;
 
 Player player(glm::vec2(360), glm::vec2(20), glm::vec3(255), 100, "test", false);
-
+LevelLoader a;
 std::vector<Entity> walls;
 std::vector<TestAI> testAi;
+std::vector<Trigger> triggers;
 std::vector<Bullet> bullets;
-Trigger fxWater(glm::vec2(500, 0), glm::vec2(300, 768), glm::vec3(0), 0, "triggerA", false);
 glQueryInfo info;
 glTexture* wall;
 glTexture* playerT;
@@ -69,6 +70,8 @@ Game::~Game(){
 
 void Game::InitGame(){
 	// Setup the map here
+	a.LoadLevel("Assests\\test.txt");
+	a.ProcessLevel(walls, testAi, triggers, player);
 	bullet = new glTexture();
 	wall = new glTexture();
 	devTex = new glTexture();
@@ -152,21 +155,7 @@ void Game::InitGame(){
 	smArial->LoadFont("Assests\\Font\\arial.ttf", 14);
 	player.SetSpeed(120, 120);
 	player.SetAngle(360);
-
-	walls.push_back(Entity(glm::vec2(0), glm::vec2(1024, 768), glm::vec3(125, 20, 100), 100, "floor", false));
-	walls.push_back(Entity(fxWater.GetPosition(), fxWater.GetSize(), glm::vec3(0, 0, 255), 0, "triggerA", false));
-	walls.push_back(Entity(glm::vec2(400), glm::vec2(200), glm::vec3(255), 100, "dev", true));
-	walls.push_back(Entity(glm::vec2(200), glm::vec2(100), glm::vec3(255), 100, "wall-dev", true));
-	walls.push_back(Entity(glm::vec2(0), glm::vec2(30, 768), glm::vec3(0), 100, "Boundary", true));
-	walls.push_back(Entity(glm::vec2(1024, 0), glm::vec2(30, 768), glm::vec3(0), 100, "Boundary", true));
-	walls.push_back(Entity(glm::vec2(0), glm::vec2(1024, 30), glm::vec3(0), 100, "Boundary", true));
-	walls.push_back(Entity(glm::vec2(0, 768), glm::vec2(1024, 30), glm::vec3(0), 100, "Boundary", true));
-
-
-	testAi.push_back(TestAI(glm::vec2(200, 100), glm::vec2(20), glm::vec3(255), 100, "1oddity", true));
-	testAi.push_back(TestAI(glm::vec2(100, 200), glm::vec2(20), glm::vec3(255), 100, "bobbity", true));
-	testAi.push_back(TestAI(glm::vec2(200, 500), glm::vec2(50), glm::vec3(255), 100, "oddity", true));
-
+	player.SetFire(true);
 	for (auto & a : testAi){
 		a.SetSpeed(120, 120);
 	}
@@ -207,16 +196,17 @@ void Game::UpdateGame(){
 			}
 			testAi[i].Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), player,bullets, walls);
 		}
-		fxWater.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), player, [&](Entity &trash){
-			waterFX = true;
-			player.SetSpeed(50, 50);
-			player.SetFire(false);
-		},
-			[&](Entity &trash){
-			waterFX = false;
-			player.SetSpeed(120, 120);
-			player.SetFire(true);
-		});
+		for (auto &t : triggers){
+			if (t.GetName() == "triggerHeal"){
+				t.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS),
+					player,
+					[&](Entity &t){
+					player.AddToHealth(40);
+				},
+					[&](Entity &t){
+				});
+			}
+		}
 	}
 }
 
