@@ -184,6 +184,10 @@ void Game::UpdateGame(){
 	model = glm::mat4();
 	ClockTimer::Tick();
 	if (inState == GameState::GAME_RUNNING){
+		// Restore the state
+		waterFX = false;
+		player.SetSpeed(120, 120);
+		player.SetFire(1);
 		for (int i = 0; i < bullets.size(); i++){
 			if (!bullets[i].isActive()){
 				bullets.erase(bullets.begin() + i);
@@ -205,6 +209,37 @@ void Game::UpdateGame(){
 				},
 					[&](Entity &t){
 				});
+			}
+			if (t.GetName() == "triggerWater"){
+				t.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS),
+					player,
+					[&](Entity &t){
+					player.SetFire(0);
+					waterFX = true;
+					player.SetSpeed(40, 40);
+				},
+					[&](Entity &t){
+				});
+			}
+			for (auto & ai : testAi){
+				if (t.GetName() == "triggerHeal"){
+					t.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS),
+						player,
+						[&](Entity &t){
+						t.AddToHealth(40);
+					},
+						[&](Entity &t){
+					});
+				}
+				if (t.GetName() == "triggerWater"){
+					t.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS),
+						ai,
+						[&](Entity &t){
+						 t.SetSpeed(40, 40);
+					},
+						[&](Entity &t){
+					});
+				}
 			}
 		}
 	}
