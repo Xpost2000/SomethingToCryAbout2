@@ -43,7 +43,7 @@ public:
 					entities.push_back(Entity(glm::vec2(x*STANDARD_SIZE, y*STANDARD_SIZE), glm::vec2(STANDARD_SIZE), glm::vec3(255), 100, "dev", false));
 					break;
 				case '_':
-					entities.push_back(Entity(glm::vec2(x*STANDARD_SIZE, y*STANDARD_SIZE), glm::vec2(STANDARD_SIZE), glm::vec3(12, 30, 255), 100, "triggerWater_box", false));
+					entities.push_back(Entity(glm::vec2(x*STANDARD_SIZE, y*STANDARD_SIZE), glm::vec2(STANDARD_SIZE), glm::vec3(100, 100, 255), 100, "water", false));
 					triggers.push_back(Trigger(glm::vec2(x*STANDARD_SIZE, y*STANDARD_SIZE), glm::vec2(STANDARD_SIZE), glm::vec3(255), 100, "triggerWater", false));
 					break;
 				case ',':

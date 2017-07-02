@@ -29,7 +29,7 @@ glTexture* devTex;
 glTexture* bullet;
 glTexture* wdFlr;
 glTexture* smoothStone;
-
+glTexture* water;
 Game::Game()
 {
 	window = new Window("Something To Cry About : OpenGL Version Alpha", width, height);
@@ -67,6 +67,7 @@ Game::~Game(){
 	delete devTex;
 	delete bullet;
 	delete playerT;
+	delete water;
 	delete wdFlr;
 }
 
@@ -80,6 +81,7 @@ void Game::InitGame(){
 	devTex = new glTexture();
 	playerT = new glTexture();
 	smoothStone = new glTexture();
+	water = new glTexture();
 	wall->SetFilter(GL_LINEAR);
 	devTex->SetFilter(GL_LINEAR);
 	wall->SetWrapMode(GL_REPEAT);
@@ -98,12 +100,16 @@ void Game::InitGame(){
 	smoothStone->SetFilter(GL_LINEAR);
 	smoothStone->SetWrapMode(GL_REPEAT);
 	smoothStone->LoadImage("Assests\\Textures\\smooth_stone.png");
+	water->SetFilter(GL_LINEAR);
+	water->SetWrapMode(GL_REPEAT);
+	water->LoadImage("Assests\\Textures\\water.png");
 	Textures.insert(std::pair<std::string, glTexture*>("wall-dev", wall)); // put all textures in a map;
 	Textures.insert(std::pair<std::string, glTexture*>("dev", devTex));
 	Textures.insert(std::pair<std::string, glTexture*>("player", playerT));
 	Textures.insert(std::pair<std::string, glTexture*>("bullet", bullet));
 	Textures.insert(std::pair<std::string, glTexture*>("wood-floor", wdFlr));
 	Textures.insert(std::pair<std::string, glTexture*>("smooth-stone", smoothStone));
+	Textures.insert(std::pair < std::string, glTexture*>("water", water));
 	camera = new Camera2D(view, width, height, 4, 0.5);
 	camera->SetScale(1);
 	/*
@@ -261,7 +267,7 @@ void Game::DrawGame(){
 		// walls
 		for (auto& wll : walls){
 			// Compare the name of these things to all possible wall name values
-			if (wll.GetName() == "wall-dev" || wll.GetName() == "dev" || wll.GetName() == "wood-floor" || wll.GetName() == "smooth-stone"){
+			if (wll.GetName() == "wall-dev" || wll.GetName() == "dev" || wll.GetName() == "wood-floor" || wll.GetName() == "smooth-stone" || wll.GetName() == "water"){
 				renderer->BindTexture(*Textures[wll.GetName()]);
 				renderer->SetColor(wll.GetColor());
 				renderer->Draw(wll.GetPosition(), wll.GetSize(), 0);
