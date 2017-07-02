@@ -28,7 +28,6 @@ glTexture* playerT;
 glTexture* devTex;
 glTexture* bullet;
 std::string sideCollided = "Nothing";
-bool ext_dsaSupported;
 Game::Game()
 {
 	window = new Window("Something To Cry About : OpenGL Version Alpha", width, height);
@@ -38,8 +37,7 @@ Game::Game()
 	printf("OpenGL Version : %s \nOpenGL-SL Version : %s\n", info.version.legacy, info.glsl_lang_version);
 	printf("OpenGL Supported Extensions # : %d\n", info.ext_support_num);
 	printf("OpenGL Extensions Supported are :\n");
-
-	ext_dsaSupported = CheckExtension("GL_EXT_direct_state_access", info);
+	PrintSupportedExtensions(info);
 
 	inState = GameState::GAME_RUNNING;
 }
@@ -156,6 +154,7 @@ void Game::InitGame(){
 	player.SetSpeed(120, 120);
 	player.SetAngle(360);
 	player.SetFire(true);
+	scrProgram->SetUniform1i("frameBuffer", 0);
 	for (auto & a : testAi){
 		a.SetSpeed(120, 120);
 	}
@@ -296,12 +295,9 @@ void Game::DrawGame(){
 	FrameBuffer->End();
 
 	glClear(GL_COLOR_BUFFER_BIT);
-	scrProgram->SetUniform1i("frameBuffer", 0);
-	if (waterFX == true)
+
 	scrProgram->SetUniform1i("waterFX", waterFX);
-	if (glitch == true)
 	scrProgram->SetUniform1i("glitch", glitch);
-	if (greyScale == true)
 	scrProgram->SetUniform1i("greyScale", greyScale);
 	scrProgram->SetUniform1f("offSet", 0.5f * ClockTimer::returnElaspedTime(TimeMeasure::TIME_SECONDS));
 	scrProgram->Use();
