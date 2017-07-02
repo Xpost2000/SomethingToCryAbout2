@@ -27,6 +27,8 @@ public:
 	OATS_LIB_API ~Renderer2D();
 	OATS_LIB_API void SupplyMatrix(glm::mat4 &model);
 	OATS_LIB_API void Begin(glTexture &tex, glm::vec3 color);
+	OATS_LIB_API void Begin();
+	OATS_LIB_API void End();
 	OATS_LIB_API void End(glTexture &tex);
 	OATS_LIB_API void Draw(glm::vec2 pos, glm::vec2 size, float angle);
 	// Colored rectangle draw + 1 overload

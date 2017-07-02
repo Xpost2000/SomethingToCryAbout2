@@ -16,7 +16,7 @@
 int mx;
 int my;
 
-Player player(glm::vec2(360), glm::vec2(20), glm::vec3(255), 100, "test", false);
+Player player(glm::vec2(360), glm::vec2(20), glm::vec3(255), 100, "HiroHito", false);
 LevelLoader a;
 std::vector<Entity> walls;
 std::vector<TestAI> testAi;
@@ -27,7 +27,7 @@ glTexture* wall;
 glTexture* playerT;
 glTexture* devTex;
 glTexture* bullet;
-std::string sideCollided = "Nothing";
+
 Game::Game()
 {
 	window = new Window("Something To Cry About : OpenGL Version Alpha", width, height);
@@ -200,15 +200,6 @@ void Game::UpdateGame(){
 			testAi[i].Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), player,bullets, walls);
 		}
 		for (auto &t : triggers){
-			if (t.GetName() == "triggerHeal"){
-				t.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS),
-					player,
-					[&](Entity &t){
-					player.AddToHealth(40);
-				},
-					[&](Entity &t){
-				});
-			}
 			if (t.GetName() == "triggerWater"){
 				t.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS),
 					player,
@@ -221,20 +212,12 @@ void Game::UpdateGame(){
 				});
 			}
 			for (auto & ai : testAi){
-				if (t.GetName() == "triggerHeal"){
-					t.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS),
-						player,
-						[&](Entity &t){
-						t.AddToHealth(40);
-					},
-						[&](Entity &t){
-					});
-				}
 				if (t.GetName() == "triggerWater"){
 					t.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS),
 						ai,
 						[&](Entity &t){
-						 t.SetSpeed(40, 40);
+				
+							t.SetSpeed(40, 40);
 					},
 						[&](Entity &t){
 					});
@@ -304,6 +287,19 @@ void Game::DrawGame(){
 	FrameBuffer->Render();
 	scrProgram->Unuse();
 
+	camera->Identity();
+	view = camera->RetrieveMatrix(); // Call this to transfer matrix.
+	program->SetUniformMatrix4fv("view", glm::value_ptr(view));
+	renderer->Begin();
+	renderer->SetColor(glm::vec3(0));
+	renderer->DrawRect(glm::vec2(0, 15), glm::vec2(300, 50), 0);
+	renderer->SetColor(glm::vec3(255, 0 ,0));
+	renderer->DrawRect(glm::vec2(40/2, (10+20)/2), glm::vec2(20/2, 80/2), 0);
+	renderer->DrawRect(glm::vec2(10/2, (40+20)/2), glm::vec2(80/2, 20/2), 0);
+	renderer->SetColor(glm::vec3(100, 233, 75));
+	renderer->DrawRect(glm::vec2(60, 40), glm::vec2(player.GetHealth()*2, 20), 0);
+	renderer->End();
+	smArial->Render("Health Bar", glm::vec2(60, 20), 1, glm::vec3(255));
 	if (inState == GameState::GAME_PAUSE || inState == GameState::GAME_MENU){
 	}
 	if (inState == GameState::GAME_RUNNING){

@@ -122,3 +122,17 @@ void Renderer2D::End(glTexture& tex){
 	if (program->isInUse())
 		program->Unuse();
 }
+
+void Renderer2D::Begin(){
+	if (!vao->isBound())
+		vao->Bind();
+	if (!program->isInUse())
+		program->Use();
+}
+
+void Renderer2D::End(){
+	if (vao->isBound())
+		vao->Unbind();
+	if (program->isInUse())
+		program->Unuse();
+}

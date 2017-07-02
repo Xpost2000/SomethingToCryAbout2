@@ -46,6 +46,7 @@ private:
 	ShaderProgram* scrProgram = nullptr;
 	ShaderProgram* textProgram = nullptr;
 	Renderer2D* renderer = nullptr;
+	
 	GameState inState;
 	InputManager* input;
 
