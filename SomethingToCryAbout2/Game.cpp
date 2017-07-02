@@ -317,6 +317,9 @@ void Game::DrawGame(){
 	renderer->DrawRect(glm::vec2(10/2, (40+20)/2), glm::vec2(80/2, 20/2), 0);
 	renderer->SetColor(glm::vec3(100, 233, 75));
 	renderer->DrawRect(glm::vec2(60, 40), glm::vec2(player.GetHealth()*2, 20), 0);
+	renderer->BindTexture(*Textures["player"]);
+	renderer->SetColor(glm::vec3(255));
+	renderer->Draw(glm::vec2(20, 70), glm::vec2(50), player.GetAngle());
 	renderer->End();
 	smArial->Render("Health Bar", glm::vec2(60, 20), 1, glm::vec3(255));
 	if (inState == GameState::GAME_PAUSE || inState == GameState::GAME_MENU){
