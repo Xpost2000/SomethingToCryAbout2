@@ -39,7 +39,6 @@ void Renderer2D::Draw(glm::vec2 pos, glm::vec2 size, float angle){
 	program->SetUniform1i("tex", 0);
 	program->SetUniformMatrix4fv("model", glm::value_ptr(model));
 	vao->DrawArrays(GL_TRIANGLE_STRIP, 4);
-	fprintf(stderr, "Renderer2D: Draw Quad (Overload +1)\n");
 }
 
 void Renderer2D::DrawRect(glm::vec2 pos, glm::vec2 size, float angle){
@@ -53,20 +52,16 @@ void Renderer2D::DrawRect(glm::vec2 pos, glm::vec2 size, float angle){
 	program->SetUniformMatrix4fv("model", glm::value_ptr(model));
 
 	vao->DrawArrays(GL_TRIANGLE_STRIP, 4);
-	
-	fprintf(stderr, "Renderer2D: Draw Quad(Overload +2)\n");
 }
 
 void Renderer2D::SupplyMatrix(glm::mat4& model){
 	this->model = model;
-	fprintf(stderr, "Renderer2D: Model Matrix Supplied.\n");
 }
 
 void Renderer2D::EnableAlpha(bool val){
 	if (val){
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		fprintf(stderr, "Renderer2D: Alpha has been Enabled\n");
 	}
 	else{
 		return;
@@ -76,7 +71,6 @@ void Renderer2D::EnableAlpha(bool val){
 void Renderer2D::EnableAntiAliasing(bool val){
 	if (val){
 		glEnable(GL_MULTISAMPLE);
-		fprintf(stderr, "Renderer2D: Anti-Aliasing Functionality Enabled\n");
 	}
 	else{
 		return;

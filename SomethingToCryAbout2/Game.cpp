@@ -297,27 +297,17 @@ void Game::DrawGame(){
 
 	glClear(GL_COLOR_BUFFER_BIT);
 	scrProgram->SetUniform1i("frameBuffer", 0);
+	if (waterFX == true)
 	scrProgram->SetUniform1i("waterFX", waterFX);
+	if (glitch == true)
 	scrProgram->SetUniform1i("glitch", glitch);
+	if (greyScale == true)
 	scrProgram->SetUniform1i("greyScale", greyScale);
 	scrProgram->SetUniform1f("offSet", 0.5f * ClockTimer::returnElaspedTime(TimeMeasure::TIME_SECONDS));
 	scrProgram->Use();
 	FrameBuffer->Render();
 	scrProgram->Unuse();
-	smArial->Render("Player Angle : " + std::to_string(player.GetAngle()), glm::vec2(10, 190), 1, glm::vec3(1, 0, 0));
-	smArial->Render("Last Collided With : " + sideCollided, glm::vec2(10, 170), 1, glm::vec3(1, 0, 0));
-	smArial->Render("Camera Zoom : " + std::to_string(camera->GetScale()), glm::vec2(10, 150), 1, glm::vec3(1, 0, 0 ));
-	smArial->Render("OpenGL Vendor: " + std::string(reinterpret_cast<const char*>(info.vendor)), glm::vec2(10, 20), 1, glm::vec3(255));
-	smArial->Render("OpenGL Version: " + std::string(reinterpret_cast<const char*>(info.version.legacy.gl_api_version)), glm::vec2(250, 20), 1, glm::vec3(255));
-	smArial->Render("OpenGL-SL Version : " + std::string(reinterpret_cast<const char*>(info.glsl_lang_version)), glm::vec2(10, 40), 1, glm::vec3(255));
-	smArial->Render("OpenGL Renderer : " + std::string(reinterpret_cast<const char*>(info.renderer)), glm::vec2(10, 90), 1, glm::vec3(255));
-	smArial->Render("OpenGL Supported Extensions #: " + std::to_string(info.ext_support_num), glm::vec2(10, 60), 1, glm::vec3(255));
-	if (!ext_dsaSupported){
-		smArial->Render("GL_EXT_direct_state_access not supported.", glm::vec2(10, 110), 1, glm::vec3(255, 0, 0));
-	}
-	else{
-		smArial->Render("GL_EXT_direct_state_access supported.", glm::vec2(10, 110), 1, glm::vec3(255, 0, 0));
-	}
+
 	if (inState == GameState::GAME_PAUSE || inState == GameState::GAME_MENU){
 	}
 	if (inState == GameState::GAME_RUNNING){
