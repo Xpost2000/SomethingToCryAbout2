@@ -4,6 +4,7 @@ out vec4 color;
 uniform sampler2D tex;
 uniform vec3 iClr;
 uniform int textured;
+uniform float offset;
 in vec2 uv;
 
 /*
@@ -20,9 +21,11 @@ The output depends on the textured uniform variable
 void main(){
 
 	vec2 TexUV = uv;
-	TexUV.x = TexUV.x;
-	TexUV.y = TexUV.y;
-    if(textured == 1)
+	if(textured == 3){
+		TexUV.x += sin(TexUV.y * 8*2*3.14159 + offset) / 30;
+		TexUV.y += cos(TexUV.x * 8*2*3.14159 /  offset) / 30;
+		color = texture(tex, TexUV); // Textured
+	}else if(textured == 1)
 	color = texture(tex, TexUV); // Textured
 	else if(textured == 2){
 	color = vec4(iClr/255.f , 1.0f) * texture(tex, TexUV);
