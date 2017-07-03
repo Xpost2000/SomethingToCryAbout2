@@ -239,7 +239,7 @@ void Game::DrawGame(){
 	if (inState == GameState::GAME_MENU){
 	}
 	if (inState == GameState::GAME_RUNNING){
-		renderer->Begin(*Textures["wall-dev"], glm::vec3(255));
+		renderer->Begin();
 		// walls
 		for (auto& wll : walls){
 			// Compare the name of these things to all possible wall name values
@@ -254,29 +254,22 @@ void Game::DrawGame(){
 				renderer->DrawRect(wll.GetPosition(), wll.GetSize(), 0);
 			}
 		}
-		renderer->End(*Textures["wall-dev"]);
-		renderer->Begin(*Textures["player"], glm::vec3(255));
+		renderer->BindTexture(*Textures["player"]);
 		for (auto & ai : testAi){
 			renderer->SetColor(ai.GetColor());
 			if (camera->InBounds(ai.GetPosition(), ai.GetSize())){
 				renderer->Draw(ai.GetPosition(), ai.GetSize(), ai.GetAngle());
-				printf("I'm seen\n");
 			}
-			else{
-				printf("I'm invisible\n");
-			}
-
 		}
 		//Everything else
 		renderer->SetColor(player.GetColor());
 		renderer->Draw(player.GetPosition(), player.GetSize(), player.GetAngle());
-		renderer->End(*Textures["player"]);
-		renderer->Begin(*Textures["bullet"], glm::vec3(255));
+		renderer->BindTexture(*Textures["bullet"]);
 		for (auto & proj : bullets){
+			if (camera->InBounds(proj.GetPosition(), proj.GetSize()))
 			renderer->Draw(proj.GetPosition(), proj.GetSize(), proj.GetAngle());
 		}
-		renderer->End(*Textures["bullet"]);
-
+		renderer->End();
 	}
 
 	FrameBuffer->End();
