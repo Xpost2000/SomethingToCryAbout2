@@ -55,6 +55,7 @@ Game::~Game(){
 	delete bullet;
 	delete playerT;
 	delete water;
+	delete grass;
 	delete vig;
 	delete wdFlr;
 }
@@ -70,7 +71,11 @@ void Game::InitGame(){
 	playerT = new glTexture();
 	smoothStone = new glTexture();
 	vig = new glTexture();
+	grass = new glTexture();
 	water = new glTexture();
+	grass->SetFilter(GL_LINEAR);
+	grass->SetWrapMode(GL_CLAMP_TO_BORDER);
+	grass->LoadImage("Assests\\Textures\\grass.png");
 	vig->SetFilter(GL_LINEAR);
 	vig->SetWrapMode(GL_CLAMP_TO_BORDER);
 	vig->LoadImage("Assests\\Textures\\vignette.png");
@@ -103,6 +108,7 @@ void Game::InitGame(){
 	Textures.insert(std::pair<std::string, glTexture*>("smooth-stone", smoothStone));
 	Textures.insert(std::pair < std::string, glTexture*>("water", water));
 	Textures.insert(std::pair<std::string, glTexture*>("vig", vig));
+	Textures.insert(std::pair<std::string, glTexture*>("grass", grass));
 	camera = new Camera2D(view, width, height, 2, 1.23);
 	camera->SetScale(1.23);
 	/*
@@ -247,6 +253,8 @@ void Game::DrawGame(){
 	if (inState == GameState::GAME_MENU){
 	}
 		renderer->Begin();
+		renderer->BindTexture(*Textures["grass"]);
+		renderer->Draw(glm::vec2(-512.0f, -512.f), glm::vec2(4096.0f), 0);
 		// walls
 		for (auto& wll : walls){
 			// Compare the name of these things to all possible wall name values

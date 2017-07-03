@@ -9,13 +9,16 @@ in vec2 uv;
 
 /*
 This shader belongs to SomethingToCryAbout 2's Engine Source Code.
-This is a basic GLSL shader that has the 3 capacities.
+This is a basic GLSL shader that has the 4 capacities.
 
 Render Texture.
 Render Flat Color.
 Render Texture + Color.
+Render With Sin Wave and Cos Wave pattern ( for dat water fx )
 
 The output depends on the textured uniform variable
+in order respective to above
+0 1 2 3
 */
 
 void main(){

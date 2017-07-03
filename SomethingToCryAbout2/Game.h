@@ -69,6 +69,7 @@ private:
 	glTexture* devTex;
 	glTexture* bullet;
 	glTexture* wdFlr;
+	glTexture* grass;
 	glTexture* smoothStone;
 	glTexture* vig;
 	glTexture* water;
