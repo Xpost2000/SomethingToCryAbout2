@@ -5,6 +5,8 @@ Camera2D::Camera2D(glm::mat4& matrix, float mX, float mY, float sX, float sY) :
 viewMatrix(matrix), maxBoundX(mX), maxBoundY(mY), maxScaleX(sX), maxScaleY(sY)
 {
 	viewMatrix = glm::ortho(0.f, maxBoundX, 0.f, maxBoundY);
+	size.x = maxBoundX;
+	size.y = maxBoundY;
 }
 
 
@@ -17,7 +19,15 @@ void Camera2D::SupplyMatrix(glm::mat4& matrix){
 }
 
 void Camera2D::Translate(glm::vec2 location){
-	viewMatrix = glm::translate(viewMatrix, glm::vec3(location.x, location.y, 0.0));
+	viewMatrix = glm::translate(viewMatrix, glm::vec3(-location.x, -location.y, 0.0));
+}
+
+void Camera2D::SetCameraLocation(glm::vec2 location){
+	pos = location;
+}
+
+void Camera2D::SetCameraSize(glm::vec2 size){
+	this->size = size;
 }
 
 void Camera2D::Scale(glm::vec2 amount){
@@ -31,6 +41,8 @@ glm::mat4 Camera2D::RetrieveMatrix(){
 void Camera2D::SetBounds(float x, float y){
 	maxBoundX = x;
 	maxBoundY = y;
+	size.x = maxBoundX;
+	size.y = maxBoundY;
 }
 
 void Camera2D::SetScale(float x){

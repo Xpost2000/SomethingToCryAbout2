@@ -13,7 +13,7 @@
 
 #define DIR_FORWARD 1
 #define DIR_BACKWARD 2
-#define STANDARD_SIZE 20
+#define STANDARD_SIZE 38
 class Player;
 class Bullet;
 

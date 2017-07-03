@@ -11,7 +11,7 @@
 int mx;
 int my;
 
-Player player(glm::vec2(360), glm::vec2(20), glm::vec3(255), 100, "HiroHito", false);
+Player player(glm::vec2(360), glm::vec2(STANDARD_SIZE), glm::vec3(255), 100, "HiroHito", false);
 
 glQueryInfo info;
 
@@ -53,6 +53,7 @@ Game::~Game(){
 	delete bullet;
 	delete playerT;
 	delete water;
+	delete vig;
 	delete wdFlr;
 }
 
@@ -66,7 +67,11 @@ void Game::InitGame(){
 	devTex = new glTexture();
 	playerT = new glTexture();
 	smoothStone = new glTexture();
+	vig = new glTexture();
 	water = new glTexture();
+	vig->SetFilter(GL_LINEAR);
+	vig->SetWrapMode(GL_CLAMP_TO_BORDER);
+	vig->LoadImage("Assests\\Textures\\vignette.png");
 	wall->SetFilter(GL_LINEAR);
 	devTex->SetFilter(GL_LINEAR);
 	wall->SetWrapMode(GL_REPEAT);
@@ -95,8 +100,9 @@ void Game::InitGame(){
 	Textures.insert(std::pair<std::string, glTexture*>("wood-floor", wdFlr));
 	Textures.insert(std::pair<std::string, glTexture*>("smooth-stone", smoothStone));
 	Textures.insert(std::pair < std::string, glTexture*>("water", water));
-	camera = new Camera2D(view, width, height, 4, 0.5);
-	camera->SetScale(1);
+	Textures.insert(std::pair<std::string, glTexture*>("vig", vig));
+	camera = new Camera2D(view, width, height, 1.23, 1.23);
+	camera->SetScale(1.23);
 	/*
 	 * Setting up the shaders for the
 	 * game
@@ -223,7 +229,10 @@ void Game::DrawGame(){
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClearColor(0.f, 0.2f, .3f, 1.0f);
 	camera->Identity();
-	camera->Translate(glm::vec2((-player.GetPosition().x*camera->GetScale() + width/2), (-player.GetPosition().y*camera->GetScale() + height/2)));
+	camera->Translate(glm::vec2(-(-player.GetPosition().x*camera->GetScale() + width/2), -(-player.GetPosition().y*camera->GetScale() + height/2)));
+	camera->SetCameraSize(glm::vec2(width / camera->GetScale(), height / camera->GetScale()));
+	camera->SetCameraLocation(glm::vec2(player.GetPosition().x*camera->GetScale() - width/1.5, player.GetPosition().y*camera->GetScale() - height/1.5));
+
 	camera->Scale(glm::vec2(scale.x, scale.y)); // camera system.
 	view = camera->RetrieveMatrix(); // Call this to transfer matrix.
 	program->SetUniformMatrix4fv("view", glm::value_ptr(view));
@@ -248,7 +257,14 @@ void Game::DrawGame(){
 		renderer->Begin(*Textures["player"], glm::vec3(255));
 		for (auto & ai : testAi){
 			renderer->SetColor(ai.GetColor());
-			renderer->Draw(ai.GetPosition(), ai.GetSize(), ai.GetAngle());
+			if (camera->InBounds(ai.GetPosition(), ai.GetSize())){
+				renderer->Draw(ai.GetPosition(), ai.GetSize(), ai.GetAngle());
+				printf("I'm seen\n");
+			}
+			else{
+				printf("I'm invisible\n");
+			}
+
 		}
 		//Everything else
 		renderer->SetColor(player.GetColor());
@@ -259,6 +275,7 @@ void Game::DrawGame(){
 			renderer->Draw(proj.GetPosition(), proj.GetSize(), proj.GetAngle());
 		}
 		renderer->End(*Textures["bullet"]);
+
 	}
 
 	FrameBuffer->End();
@@ -278,6 +295,10 @@ void Game::DrawGame(){
 	view = camera->RetrieveMatrix(); // Call this to transfer matrix.
 	program->SetUniformMatrix4fv("view", glm::value_ptr(view));
 	renderer->Begin();
+	renderer->SetColor(glm::vec3(255));
+	renderer->BindTexture(*vig);
+	renderer->Draw(glm::vec2(0, 0), glm::vec2(width, height), 0);
+	renderer->UnbindTexture(*vig);
 	renderer->SetColor(glm::vec3(0));
 	renderer->DrawRect(glm::vec2(0, 15), glm::vec2(300, 50), 0);
 	renderer->SetColor(glm::vec3(255, 0 ,0));
@@ -289,6 +310,7 @@ void Game::DrawGame(){
 	renderer->SetColor(glm::vec3(255));
 	renderer->Draw(glm::vec2(20, 70), glm::vec2(50), player.GetAngle());
 	renderer->End();
+
 	smArial->Render("Health Bar", glm::vec2(60, 20), 1, glm::vec3(255));
 	if (inState == GameState::GAME_PAUSE || inState == GameState::GAME_MENU){
 	}

@@ -15,7 +15,7 @@ void Player::FireBullet(std::vector<Bullet> &bullets){
 	if (bullets.size() != MAX_PROJECTILES){
 		if (bCanFire)
 		if (firingCoolDown < 0){
-			bullets.push_back(Bullet(glm::vec2(GetPosition()), glm::vec2(10), glm::vec3(255), 10, "bullet", false, 120));
+			bullets.push_back(Bullet(glm::vec2(GetPosition()), glm::vec2(STANDARD_SIZE/2), glm::vec3(255), 10, "bullet", false, 120));
 			bullets.back().SetAngle(GetAngle());
 			bullets.back().SetSpeed(350, 350);
 			firingCoolDown = 20;

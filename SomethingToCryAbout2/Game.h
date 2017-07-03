@@ -66,6 +66,7 @@ private:
 	glTexture* bullet;
 	glTexture* wdFlr;
 	glTexture* smoothStone;
+	glTexture* vig;
 	glTexture* water;
 
 	LevelLoader a;
