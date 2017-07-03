@@ -36,6 +36,9 @@ private:
 	glm::mat4 model = glm::mat4();
 	//
 	Window *window = nullptr;
+
+	Shader* waterFrag = nullptr;
+
 	Shader* fragment = nullptr;
 	Shader* vertex = nullptr;
 
@@ -48,6 +51,7 @@ private:
 	Framebuffer* FrameBuffer = nullptr;
 
 	Camera2D* camera = nullptr;
+	ShaderProgram* waterProgram = nullptr;
 	ShaderProgram* program = nullptr;
 	ShaderProgram* scrProgram = nullptr;
 	ShaderProgram* textProgram = nullptr;

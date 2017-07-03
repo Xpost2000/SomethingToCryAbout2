@@ -136,3 +136,25 @@ void Renderer2D::End(){
 	if (program->isInUse())
 		program->Unuse();
 }
+
+void Renderer2D::SetProgram(ShaderProgram* program){
+	program->Use();
+}
+
+void Renderer2D::ResetProgram(){
+	program->Use();
+}
+
+void Renderer2D::PassInUniform(const char* uni, float v0){
+	program->SetUniform1f(uni, v0);
+}
+
+void Renderer2D::PassInUniform(ShaderProgram* program, const char* uni, float v0){
+	program->SetUniform1f(uni, v0);
+}
+
+void Renderer2D::SendAllUniformsTo(ShaderProgram* program){
+	program->SetUniform1i("textured", 2);
+	program->SetUniform1i("tex", 0);
+	program->SetUniformMatrix4fv("model", glm::value_ptr(model));
+}

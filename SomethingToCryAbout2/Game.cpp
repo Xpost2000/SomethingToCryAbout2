@@ -50,6 +50,7 @@ Game::~Game(){
 	delete input;
 	delete wall;
 	delete smoothStone;
+	delete waterFrag;
 	delete devTex;
 	delete bullet;
 	delete playerT;
@@ -114,7 +115,9 @@ void Game::InitGame(){
 	pVert = new Shader(GL_VERTEX_SHADER); // postprocessing vert
 	tFrag = new Shader(GL_FRAGMENT_SHADER); // text frag
 	tVert = new Shader(GL_VERTEX_SHADER); // text vert
+	waterFrag = new Shader(GL_FRAGMENT_SHADER);
 	input = new InputManager(); // InputManager
+	waterProgram = new ShaderProgram();
 	textProgram = new ShaderProgram(); // Text Shader Program
 	scrProgram = new ShaderProgram(); // Screen Shader Program
 	program = new ShaderProgram(); // Default Shader Program
@@ -125,7 +128,10 @@ void Game::InitGame(){
 	pVert->LoadFromFile("Assests\\Shader\\pp\\vert.glsl"); // Postprocess Vertex
 	fragment->LoadFromFile("Assests\\Shader\\frag.glsl"); // Standard Frag
 	vertex->LoadFromFile("Assests\\Shader\\vert.glsl"); tFrag->LoadFromFile("Assests\\Shader\\text\\textFrag.glsl");tVert->LoadFromFile("Assests\\Shader\\text\\textVert.glsl");
-
+	waterFrag->LoadFromFile("Assests\\Shader\\wFrag.glsl");
+	waterProgram->AddShader(*waterFrag);
+	waterProgram->AddShader(*vertex);
+	waterProgram->LinkProgram();
 	program->AddShader(*vertex); // Adding Shaders for compilation
 	program->AddShader(*fragment);
 	program->LinkProgram(); program->DetachShader(*vertex);	program->DetachShader(*fragment); // Detach Shaders
@@ -245,15 +251,16 @@ void Game::DrawGame(){
 		// walls
 		for (auto& wll : walls){
 			// Compare the name of these things to all possible wall name values
-			if (camera->InBounds(wll.GetPosition(), wll.GetSize()))
-			if (wll.GetName() == "wall-dev" || wll.GetName() == "dev" || wll.GetName() == "wood-floor" || wll.GetName() == "smooth-stone" || wll.GetName() == "water"){
-				renderer->BindTexture(*Textures[wll.GetName()]);
-				renderer->SetColor(wll.GetColor());
-				renderer->Draw(wll.GetPosition(), wll.GetSize(), 0);
-			}
-			else{
-				renderer->SetColor(wll.GetColor());
-				renderer->DrawRect(wll.GetPosition(), wll.GetSize(), 0);
+			if (camera->InBounds(wll.GetPosition(), wll.GetSize())){
+				if (wll.GetName() == "wall-dev" || wll.GetName() == "dev" || wll.GetName() == "wood-floor" || wll.GetName() == "smooth-stone" || wll.GetName() == "water"){
+					renderer->BindTexture(*Textures[wll.GetName()]);
+					renderer->SetColor(wll.GetColor());
+					renderer->Draw(wll.GetPosition(), wll.GetSize(), 0);
+				}
+				else{
+					renderer->SetColor(wll.GetColor());
+					renderer->DrawRect(wll.GetPosition(), wll.GetSize(), 0);
+				}
 			}
 		}
 		renderer->BindTexture(*Textures["player"]);

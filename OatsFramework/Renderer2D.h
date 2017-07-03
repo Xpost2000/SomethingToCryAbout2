@@ -40,6 +40,14 @@ public:
 	OATS_LIB_API void EnablePointsDraw(bool);
 	OATS_LIB_API void SetPointSize(int);
 	OATS_LIB_API void SetLineSize(int);
+	OATS_LIB_API void SendAllUniformsTo(ShaderProgram* program);
+	// Bind a different program (Does not replace the one associated with the renderer itself)
+	OATS_LIB_API void SetProgram(ShaderProgram* program);
+	// Return control to the shader program that the class has
+	OATS_LIB_API void ResetProgram();
+	OATS_LIB_API void PassInUniform(const char* uni,float v0);
+	// Specify shader program to pass into
+	OATS_LIB_API void PassInUniform(ShaderProgram* program, const char* uni, float v0);
 	// Manually swap and handle textures
 	void BindTexture(glTexture & tex) { tex.Bind(); }
 	void UnbindTexture(glTexture & tex) { tex.Unbind(); }
