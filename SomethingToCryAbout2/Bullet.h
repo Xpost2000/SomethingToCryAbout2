@@ -1,5 +1,5 @@
 #pragma once
-#define MAX_PROJECTILES 50
+#define MAX_PROJECTILES 200
 /*
 Simple yet fun class
 */
