@@ -252,7 +252,13 @@ void Game::DrawGame(){
 		for (auto& wll : walls){
 			// Compare the name of these things to all possible wall name values
 			if (camera->InBounds(wll.GetPosition(), wll.GetSize())){
-				if (wll.GetName() == "wall-dev" || wll.GetName() == "dev" || wll.GetName() == "wood-floor" || wll.GetName() == "smooth-stone" || wll.GetName() == "water"){
+				if (wll.GetName() == "water"){
+					renderer->BindTexture(*Textures[wll.GetName()]);
+					renderer->SetColor(wll.GetColor());
+					renderer->DrawWater(wll.GetPosition(), wll.GetSize(), 0);
+					renderer->PassInUniform("offset", 15.3f / ClockTimer::returnElaspedTime(TimeMeasure::TIME_SECONDS) * ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
+				}
+				else if (wll.GetName() == "wall-dev" || wll.GetName() == "dev" || wll.GetName() == "wood-floor" || wll.GetName() == "smooth-stone"){
 					renderer->BindTexture(*Textures[wll.GetName()]);
 					renderer->SetColor(wll.GetColor());
 					renderer->Draw(wll.GetPosition(), wll.GetSize(), 0);

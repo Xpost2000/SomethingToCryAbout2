@@ -41,6 +41,19 @@ void Renderer2D::Draw(glm::vec2 pos, glm::vec2 size, float angle){
 	vao->DrawArrays(GL_TRIANGLE_STRIP, 4);
 }
 
+void Renderer2D::DrawWater(glm::vec2 pos, glm::vec2 size, float angle){
+	model = glm::mat4();
+	model = glm::translate(model, glm::vec3(pos, 1.0f));
+	model = glm::translate(model, glm::vec3(0.5f * size.x, 0.5f * size.y, 0.0f));
+	model = glm::rotate(model, angle, glm::vec3(0.0f, 0.0f, 1.0f));
+	model = glm::translate(model, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f));
+	model = glm::scale(model, glm::vec3(size.x, size.y, 1.0f));
+	program->SetUniform1i("textured", 3);
+	program->SetUniform1i("tex", 0);
+	program->SetUniformMatrix4fv("model", glm::value_ptr(model));
+	vao->DrawArrays(GL_TRIANGLE_STRIP, 4);
+}
+
 void Renderer2D::DrawRect(glm::vec2 pos, glm::vec2 size, float angle){
 	model = glm::mat4();
 	model = glm::translate(model, glm::vec3(pos, 1.0f));
