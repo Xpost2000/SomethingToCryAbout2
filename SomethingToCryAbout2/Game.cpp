@@ -101,7 +101,7 @@ void Game::InitGame(){
 	Textures.insert(std::pair<std::string, glTexture*>("smooth-stone", smoothStone));
 	Textures.insert(std::pair < std::string, glTexture*>("water", water));
 	Textures.insert(std::pair<std::string, glTexture*>("vig", vig));
-	camera = new Camera2D(view, width, height, 1.23, 1.23);
+	camera = new Camera2D(view, width, height, 1.4, 1.23);
 	camera->SetScale(1.23);
 	/*
 	 * Setting up the shaders for the
@@ -227,11 +227,11 @@ void Game::DrawGame(){
 	FrameBuffer->Begin();
 	//
 	glClear(GL_COLOR_BUFFER_BIT);
-	glClearColor(0.f, 0.2f, .3f, 1.0f);
+	glClearColor(0.f, 0.0f, .0f, 1.0f);
 	camera->Identity();
 	camera->Translate(glm::vec2(-(-player.GetPosition().x*camera->GetScale() + width/2), -(-player.GetPosition().y*camera->GetScale() + height/2)));
-	camera->SetCameraSize(glm::vec2(width / camera->GetScale(), height / camera->GetScale()));
-	camera->SetCameraLocation(glm::vec2(player.GetPosition().x*camera->GetScale() - width/1.5, player.GetPosition().y*camera->GetScale() - height/1.5));
+	camera->SetCameraSize(glm::vec2(width * camera->GetScale(), height * camera->GetScale()));
+	camera->SetCameraLocation(glm::vec2(player.GetPosition().x/camera->GetScale() - width/1.88, player.GetPosition().y/camera->GetScale() - height/1.88));
 
 	camera->Scale(glm::vec2(scale.x, scale.y)); // camera system.
 	view = camera->RetrieveMatrix(); // Call this to transfer matrix.
@@ -243,6 +243,7 @@ void Game::DrawGame(){
 		// walls
 		for (auto& wll : walls){
 			// Compare the name of these things to all possible wall name values
+			if (camera->InBounds(wll.GetPosition(), wll.GetSize()))
 			if (wll.GetName() == "wall-dev" || wll.GetName() == "dev" || wll.GetName() == "wood-floor" || wll.GetName() == "smooth-stone" || wll.GetName() == "water"){
 				renderer->BindTexture(*Textures[wll.GetName()]);
 				renderer->SetColor(wll.GetColor());
@@ -347,5 +348,5 @@ void Game::HandleInput(){
 	input->isKeyPressed(SDL_SCANCODE_SPACE, [&](){
 		player.FireBullet(bullets);
 	});
-	player.SetAngle(atan2(input->GetMouseY() - player.GetPosition().y, input->GetMouseX() - player.GetPosition().x));
+	//player.SetAngle(atan2(input->GetMouseY() - player.GetPosition().y, input->GetMouseX() - player.GetPosition().x));
 }
