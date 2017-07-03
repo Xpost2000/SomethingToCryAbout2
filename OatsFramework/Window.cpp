@@ -1,7 +1,7 @@
 #include "Window.h"
 #include "flag.h"
 #include <gl\glew.h>
-Window::Window(std::string name, int w, int h){
+Window::Window(char* name, int w, int h){
 	this->w = w;
 	this->h = h;
 	this->name = name;
@@ -20,7 +20,7 @@ Window::~Window()
 }
 
 void Window::CreateWindow(){
-	window = SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+	window = SDL_CreateWindow(name, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
 #ifdef COMPATIBILITY_33
 	SDL_GL_SetAttribute(SDL_GLattr::SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GLattr::SDL_GL_CONTEXT_MINOR_VERSION, 3);

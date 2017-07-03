@@ -11,13 +11,14 @@
 int mx;
 int my;
 
-Player player(glm::vec2(360), glm::vec2(STANDARD_SIZE), glm::vec3(255), 100, "HiroHito", false);
+Player player(glm::vec2(360), glm::vec2(STANDARD_SIZE), glm::vec3(255), 100, "Player", false);
 
 glQueryInfo info;
 
 Game::Game()
 {
 	window = new Window("Something To Cry About : OpenGL Version Alpha", width, height);
+
 	window->CreateWindow();
 	info = QueryInformation();
 	printf("OpenGL Vendor : %s \nOpenGL Renderer: %s\n", info.vendor, info.renderer);

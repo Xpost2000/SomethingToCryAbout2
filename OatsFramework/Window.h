@@ -5,7 +5,7 @@
 class Window
 {
 public:
-	OATS_LIB_API Window(std::string name, int w, int h);
+	OATS_LIB_API Window(char* name, int w, int h);
 	OATS_LIB_API Window();
 	OATS_LIB_API~Window();
 	OATS_LIB_API void CreateWindow();
@@ -14,7 +14,7 @@ public:
 	SDL_Event event;
 private:
 	int w, h;
-	std::string name;
+	char* name;
 	SDL_Window* window;
 	SDL_GLContext ogl;
 };
