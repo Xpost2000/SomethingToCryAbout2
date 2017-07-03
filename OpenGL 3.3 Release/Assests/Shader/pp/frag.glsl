@@ -39,8 +39,8 @@ vec4 GreyScale(){
 
 	vec4 colorRes;
 	color = vec4(texture(frameBuffer, texCoords));
-	float average = (color.r + color.g + color.b) / 3.0f;
-	colorRes = vec4(average, average, average, 1.0f);
+	float average = (color.r + color.g + color.b) / 4.5f;
+	colorRes = vec4(average, average, average, 0.5f);
 	return colorRes;
 	/*
 	vec4 colorRes;

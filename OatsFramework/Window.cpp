@@ -12,6 +12,13 @@ Window::Window() : Window("Default", 500, 500)
 {
 }
 
+void Window::ShouldClose(bool val){
+	bShouldClose = val;
+}
+
+bool Window::GetShouldClose(){
+	return bShouldClose;
+}
 
 Window::~Window()
 {

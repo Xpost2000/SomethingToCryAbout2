@@ -156,7 +156,7 @@ void Game::InitGame(){
 
 // Run game that condenses all seperate functions into one.
 void Game::RunGame(){
-	while (inState != GameState::GAME_QUIT){
+	while (inState != GameState::GAME_QUIT && !window->GetShouldClose()){
 		HandleInput();
 		UpdateGame();
 		DrawGame();
@@ -239,7 +239,6 @@ void Game::DrawGame(){
 	program->SetUniformMatrix4fv("view", glm::value_ptr(view));
 	if (inState == GameState::GAME_MENU){
 	}
-	if (inState == GameState::GAME_RUNNING){
 		renderer->Begin();
 		// walls
 		for (auto& wll : walls){
@@ -271,8 +270,6 @@ void Game::DrawGame(){
 			renderer->Draw(proj.GetPosition(), proj.GetSize(), proj.GetAngle());
 		}
 		renderer->End();
-	}
-
 	FrameBuffer->End();
 
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -308,8 +305,14 @@ void Game::DrawGame(){
 
 	smArial->Render("Health Bar", glm::vec2(60, 20), 1, glm::vec3(255));
 	if (inState == GameState::GAME_PAUSE || inState == GameState::GAME_MENU){
+		greyScale = true;
+		renderer->Begin();
+		renderer->DrawRect(glm::vec2(width / 2 - 150, height / 2-32), glm::vec2(370, 90), 0);
+		arial->Render("Game Paused", glm::vec2(width / 2 - 150, height / 2), 1, glm::vec3(0));
+		renderer->End();
 	}
-	if (inState == GameState::GAME_RUNNING){
+	else{
+		greyScale = false;
 	}
 	window->Refresh();
 }
@@ -320,6 +323,7 @@ void Game::HandleInput(){
 		switch (evnt->type){
 		case SDL_QUIT:
 			inState = GameState::GAME_QUIT;
+			window->ShouldClose(true);
 			break;
 		case SDL_KEYDOWN:
 			switch (evnt->key.keysym.sym){
