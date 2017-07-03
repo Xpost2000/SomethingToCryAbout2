@@ -43,6 +43,7 @@ Game::~Game(){
 	delete cmcSans;
 	delete textProgram;
 	delete window;
+	delete warning;
 	delete FrameBuffer;
 	delete camera;
 	delete tFrag;
@@ -65,6 +66,7 @@ void Game::InitGame(){
 	a.LoadLevel("Assests\\test.txt");
 	a.ProcessLevel(walls, testAi, triggers, player);
 	bullet = new glTexture();
+	warning = new glTexture();
 	wall = new glTexture();
 	wdFlr = new glTexture();
 	devTex = new glTexture();
@@ -73,6 +75,9 @@ void Game::InitGame(){
 	vig = new glTexture();
 	grass = new glTexture();
 	water = new glTexture();
+	warning->SetFilter(GL_LINEAR);
+	warning->SetWrapMode(GL_REPEAT);
+	warning->LoadImage("Assests\\Textures\\warning.png");
 	grass->SetFilter(GL_NEAREST);
 	grass->SetWrapMode(GL_CLAMP_TO_BORDER);
 	grass->LoadImage("Assests\\Textures\\grass.png");
@@ -108,6 +113,7 @@ void Game::InitGame(){
 	Textures.insert(std::pair<std::string, glTexture*>("smooth-stone", smoothStone));
 	Textures.insert(std::pair < std::string, glTexture*>("water", water));
 	Textures.insert(std::pair<std::string, glTexture*>("vig", vig));
+	Textures.insert(std::pair<std::string, glTexture*>("warning", warning));
 	Textures.insert(std::pair<std::string, glTexture*>("grass", grass));
 	camera = new Camera2D(view, width, height, 2, 1.23);
 	camera->SetScale(1.23);
@@ -265,7 +271,7 @@ void Game::DrawGame(){
 					renderer->DrawWater(wll.GetPosition(), wll.GetSize(), 0);
 					renderer->PassInUniform("offset", 15.3f / ClockTimer::returnElaspedTime(TimeMeasure::TIME_SECONDS));
 				}
-				else if (wll.GetName() == "wall-dev" || wll.GetName() == "dev" || wll.GetName() == "wood-floor" || wll.GetName() == "smooth-stone"){
+				else if (wll.GetName() == "wall-dev" || wll.GetName() == "dev" || wll.GetName() == "wood-floor" || wll.GetName() == "smooth-stone" || wll.GetName() == "warning"){
 					renderer->BindTexture(*Textures[wll.GetName()]);
 					renderer->SetColor(wll.GetColor());
 					renderer->Draw(wll.GetPosition(), wll.GetSize(), 0);

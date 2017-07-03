@@ -49,6 +49,9 @@ public:
 				case ',':
 					entities.push_back(Entity(glm::vec2(x*STANDARD_SIZE, y*STANDARD_SIZE), glm::vec2(STANDARD_SIZE), glm::vec3(255), 100, "wood-floor", false));
 					break;
+				case '=':
+					entities.push_back(Entity(glm::vec2(x*STANDARD_SIZE, y*STANDARD_SIZE), glm::vec2(STANDARD_SIZE), glm::vec3(255), 100, "warning", false));
+					break;
 				default:
 					break;
 				}

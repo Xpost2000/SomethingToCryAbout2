@@ -70,6 +70,7 @@ private:
 	glTexture* bullet;
 	glTexture* wdFlr;
 	glTexture* grass;
+	glTexture* warning;
 	glTexture* smoothStone;
 	glTexture* vig;
 	glTexture* water;
