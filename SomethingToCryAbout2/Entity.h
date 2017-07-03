@@ -13,7 +13,7 @@
 
 #define DIR_FORWARD 1
 #define DIR_BACKWARD 2
-#define STANDARD_SIZE 38
+#define STANDARD_SIZE 50
 class Player;
 class Bullet;
 
@@ -34,6 +34,7 @@ public:
 	virtual void Update(float dt, Player& player, std::vector<Bullet>& bullets, std::vector<Entity> &others){}
 	virtual void Update(float dt, Player & player, std::vector<Entity> &others) {}
 	virtual void Update(float dt, std::vector<Bullet>& bullets, std::vector<Entity> &others){}
+	void InWater(bool val){ if (val){ color = glm::vec3(110, 25, 225); } else{ color = glm::vec3(255); } }
 	void SetSpeed(float x, float y) { vX = x; vY = y; }
 	void SetHealth(int hp);
 	void SetName( std::string name );

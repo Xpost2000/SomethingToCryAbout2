@@ -17,7 +17,7 @@ void Player::FireBullet(std::vector<Bullet> &bullets){
 		if (firingCoolDown < 0){
 			bullets.push_back(Bullet(glm::vec2(GetPosition()), glm::vec2(STANDARD_SIZE/2), glm::vec3(255), 10, "bullet", false, 1220));
 			bullets.back().SetAngle(GetAngle());
-			bullets.back().SetSpeed(350, 350);
+			bullets.back().SetSpeed(550, 550);
 			firingCoolDown = 20;
 		}
 	}

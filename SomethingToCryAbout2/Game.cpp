@@ -103,7 +103,7 @@ void Game::InitGame(){
 	Textures.insert(std::pair<std::string, glTexture*>("smooth-stone", smoothStone));
 	Textures.insert(std::pair < std::string, glTexture*>("water", water));
 	Textures.insert(std::pair<std::string, glTexture*>("vig", vig));
-	camera = new Camera2D(view, width, height, 1.4, 1.23);
+	camera = new Camera2D(view, width, height, 2, 1.23);
 	camera->SetScale(1.23);
 	/*
 	 * Setting up the shaders for the
@@ -218,7 +218,6 @@ void Game::UpdateGame(){
 					t.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS),
 						ai,
 						[&](Entity &t){
-				
 							t.SetSpeed(40, 40);
 					},
 						[&](Entity &t){
@@ -256,7 +255,7 @@ void Game::DrawGame(){
 					renderer->BindTexture(*Textures[wll.GetName()]);
 					renderer->SetColor(wll.GetColor());
 					renderer->DrawWater(wll.GetPosition(), wll.GetSize(), 0);
-					renderer->PassInUniform("offset", 15.3f / ClockTimer::returnElaspedTime(TimeMeasure::TIME_SECONDS) * ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS));
+					renderer->PassInUniform("offset", 15.3f / ClockTimer::returnElaspedTime(TimeMeasure::TIME_SECONDS));
 				}
 				else if (wll.GetName() == "wall-dev" || wll.GetName() == "dev" || wll.GetName() == "wood-floor" || wll.GetName() == "smooth-stone"){
 					renderer->BindTexture(*Textures[wll.GetName()]);

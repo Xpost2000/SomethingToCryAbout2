@@ -22,8 +22,8 @@ void main(){
 
 	vec2 TexUV = uv;
 	if(textured == 3){
-		TexUV.x += sin(TexUV.y * 4*2*3.14159 + offset) / 100;
-		TexUV.y += cos(TexUV.x * 4*2*3.14159 + offset) / 100;
+		TexUV.x += sin(TexUV.y * 8*2*3.14159 + offset) / 30;
+		TexUV.y += cos(TexUV.x * 8*2*3.14159 /  offset) / 30;
 		color = texture(tex, TexUV); // Textured
 	}else if(textured == 1)
 	color = texture(tex, TexUV); // Textured
