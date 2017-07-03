@@ -14,7 +14,7 @@ int my;
 Player player(glm::vec2(360), glm::vec2(STANDARD_SIZE), glm::vec3(255), 100, "Player", false);
 
 glQueryInfo info;
-
+float factor = 1.88;
 Game::Game()
 {
 	window = new Window("Something To Cry About : OpenGL Version Alpha", width, height);
@@ -179,6 +179,7 @@ void Game::UpdateGame(){
 	if (inState == GameState::GAME_RUNNING){
 		// Restore the state
 		waterFX = false;
+		factor = 1.88;
 		player.SetSpeed(120, 120);
 		player.SetFire(1);
 		for (int i = 0; i < bullets.size(); i++){
@@ -201,6 +202,7 @@ void Game::UpdateGame(){
 					player.SetFire(0);
 					waterFX = true;
 					player.SetSpeed(40, 40);
+					factor = 1.10;
 				},
 					[&](Entity &t){
 				});
@@ -231,8 +233,8 @@ void Game::DrawGame(){
 	glClearColor(0.f, 0.0f, .0f, 1.0f);
 	camera->Identity();
 	camera->Translate(glm::vec2(-(-player.GetPosition().x*camera->GetScale() + width/2), -(-player.GetPosition().y*camera->GetScale() + height/2)));
-	camera->SetCameraSize(glm::vec2(width * camera->GetScale(), height * camera->GetScale()));
-	camera->SetCameraLocation(glm::vec2(player.GetPosition().x/camera->GetScale() - width/1.88, player.GetPosition().y/camera->GetScale() - height/1.88));
+	camera->SetCameraSize(glm::vec2(width * camera->GetScale(), height * camera->GetScale()-0.02));
+	camera->SetCameraLocation(glm::vec2(player.GetPosition().x/camera->GetScale() - width/factor, player.GetPosition().y/camera->GetScale() - height/factor));
 
 	camera->Scale(glm::vec2(scale.x, scale.y)); // camera system.
 	view = camera->RetrieveMatrix(); // Call this to transfer matrix.

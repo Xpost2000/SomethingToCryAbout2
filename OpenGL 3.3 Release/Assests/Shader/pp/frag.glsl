@@ -21,8 +21,8 @@ vec4 WaterSinWave(){
 	texCoords.x += sin(texCoords.y * 4*2*3.14159 + offSet) / 100;
 	texCoords.y += cos(texCoords.x * 4*2*3.14159 + offSet) / 100;
 	color = vec4(texture(frameBuffer, texCoords));
-	color -= vec4(0.4, 0.6, 0.0, 0.0);
-	return colorRes;
+	color -= vec4(0.4, 0.6, 0.2, 0.0);
+	return colorRes * 0.8;
 }
 
 vec4 GlitchError(){
@@ -68,5 +68,5 @@ void main(void){
 		color += WaterSinWave();
 	}
 	if((!greyScale && !waterFX && !glitch))
-	color = vec4(texture (frameBuffer, texCoords));
+	color = vec4(texture (frameBuffer, texCoords)) * 0.92;
 }
