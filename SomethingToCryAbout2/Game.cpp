@@ -73,7 +73,7 @@ void Game::InitGame(){
 	vig = new glTexture();
 	grass = new glTexture();
 	water = new glTexture();
-	grass->SetFilter(GL_LINEAR);
+	grass->SetFilter(GL_NEAREST);
 	grass->SetWrapMode(GL_CLAMP_TO_BORDER);
 	grass->LoadImage("Assests\\Textures\\grass.png");
 	vig->SetFilter(GL_LINEAR);
