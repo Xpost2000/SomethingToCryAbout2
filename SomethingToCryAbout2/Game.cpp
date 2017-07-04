@@ -75,6 +75,7 @@ void Game::InitGame(){
 	vig = new glTexture();
 	grass = new glTexture();
 	water = new glTexture();
+
 	warning->SetFilter(GL_LINEAR);
 	warning->SetWrapMode(GL_REPEAT);
 	warning->LoadImage("Assests\\Textures\\warning.png");

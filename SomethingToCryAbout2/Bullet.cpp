@@ -3,7 +3,7 @@
 
 Bullet::Bullet() : Entity(glm::vec2(300), glm::vec2(10), glm::vec3(255), 100, "Bullet Bill", true)
 {
-	LifeTime = 250;
+	LifeTime = 0;
 }
 
 
