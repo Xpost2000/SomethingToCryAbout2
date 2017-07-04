@@ -24,7 +24,7 @@ void VertexArray::Unbind(){
 	glBindVertexArray(0);
 }
 
-void VertexArray::Attrib(GLint index, GLint size, GLboolean normalized, int stride, int offset){
+void VertexArray::Attrib(const GLint index, const GLint size, const GLboolean normalized, const int stride, const int offset){
 	Bind();
 	glVertexAttribPointer(index, size, GL_FLOAT, normalized, sizeof(float)*stride, (void*)(sizeof(float)*offset));
 	glEnableVertexAttribArray(index);
@@ -32,13 +32,13 @@ void VertexArray::Attrib(GLint index, GLint size, GLboolean normalized, int stri
 	fprintf(stderr, "VertexArray : Vertex Attribute Set\n");
 }
 
-void VertexArray::Draw(GLenum type, GLint count){
+void VertexArray::Draw(const GLenum type, const GLint count){
 	Bind();
 	glDrawArrays(type, 0, count);
 	Unbind();
 }
 
-void VertexArray::DrawArrays(GLenum type, GLint count){
+void VertexArray::DrawArrays(const GLenum type, const GLint count){
 	glDrawArrays(type, 0, count);
 }
 
