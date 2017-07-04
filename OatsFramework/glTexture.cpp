@@ -18,6 +18,7 @@ glTexture::~glTexture()
 #ifndef COMPATIBILITY_33
 void glTexture::LoadImage(std::string path){
 	img = IMG_Load(path.c_str());
+	
 	glTextureImage2DEXT(tex, GL_TEXTURE_2D, 0, GL_RGBA, img->w, img->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, img->pixels);
 	glGenerateTextureMipmap(tex);
 	if (img != nullptr)
@@ -67,19 +68,33 @@ void glTexture::LoadImage(std::string path){
 }
 
 void glTexture::SetFilter(GLenum filter){
-	if (filter == GL_NEAREST | filter == GL_LINEAR){
-		Bind();
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
-		Unbind();
+	if (GL_EXT_direct_state_access){
+		glTextureParameteriEXT(tex, GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
+		glTextureParameteriEXT(tex, GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
 	}
 	else{
-		assert(filter == GL_NEAREST | filter == GL_LINEAR);
+		if (filter == GL_NEAREST | filter == GL_LINEAR){
+			Bind();
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
+			Unbind();
+		}
+		else{
+			assert(filter == GL_NEAREST | filter == GL_LINEAR);
+		}
 	}
 }
 
 void glTexture::SetWrapMode(GLenum mode){
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, mode);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, mode);
+	if (GLEW_EXT_direct_state_access){
+		glTextureParameteriEXT(tex, GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, mode);
+		glTextureParameteriEXT(tex, GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, mode);
+	}
+	else{
+		Bind();
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, mode);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, mode);
+		Unbind();
+	}
 }
 #endif
