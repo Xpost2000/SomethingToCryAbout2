@@ -33,38 +33,65 @@ Game::Game()
 
 Game::~Game(){
 	delete scrProgram;
+	scrProgram = nullptr;
 	delete pFrag;
+	pFrag = nullptr;
 	delete pVert;
+	pVert = nullptr;
 	delete fragment;
+	fragment = nullptr;
 	delete vertex;
+	vertex = nullptr;
 	delete program;
+	program = nullptr;
 	delete smArial;
+	smArial = nullptr;
 	delete arial;
+	arial = nullptr;
 	delete cmcSans;
+	cmcSans = nullptr;
 	delete textProgram;
+	textProgram = nullptr;
 	delete window;
+	window = nullptr;
 	delete warning;
+	warning = nullptr;
 	delete FrameBuffer;
+	FrameBuffer = nullptr;
 	delete camera;
+	camera = nullptr;
 	delete tFrag;
+	tFrag = nullptr;
 	delete tVert;
+	tVert = nullptr;
 	delete input;
+	input = nullptr;
 	delete wall;
+	wall = nullptr;
 	delete smoothStone;
+	smoothStone = nullptr;
 	delete waterFrag;
+	waterFrag = nullptr;
 	delete devTex;
+	devTex = nullptr;
 	delete bullet;
+	bullet = nullptr;
 	delete playerT;
+	playerT = nullptr;
 	delete water;
+	water = nullptr;
 	delete grass;
+	grass = nullptr;
 	delete vig;
+	vig = nullptr;
 	delete wdFlr;
+	wdFlr = nullptr;
 }
 
 void Game::InitGame(){
 	// Setup the map here
-	a.LoadLevel("Assests\\test.txt");
-	a.ProcessLevel(walls, testAi, triggers, player);
+	loader.LoadLevel("Assests\\test.txt");
+	loader.ProcessLevel(walls, testAi, triggers, player);
 	bullet = new glTexture();
 	warning = new glTexture();
 	wall = new glTexture();

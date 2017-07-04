@@ -58,24 +58,24 @@ private:
 	Renderer2D* renderer = nullptr;
 	
 	GameState inState;
-	InputManager* input;
+	InputManager* input = nullptr;
 
-	TextRenderer* arial;
-	TextRenderer* smArial;
-	TextRenderer* cmcSans;
+	TextRenderer* arial = nullptr;
+	TextRenderer* smArial = nullptr;
+	TextRenderer* cmcSans = nullptr;
 
-	glTexture* wall;
-	glTexture* playerT;
-	glTexture* devTex;
-	glTexture* bullet;
-	glTexture* wdFlr;
-	glTexture* grass;
-	glTexture* warning;
-	glTexture* smoothStone;
-	glTexture* vig;
-	glTexture* water;
+	glTexture* wall = nullptr;
+	glTexture* playerT = nullptr;
+	glTexture* devTex = nullptr;
+	glTexture* bullet = nullptr;
+	glTexture* wdFlr = nullptr;
+	glTexture* grass = nullptr;
+	glTexture* warning = nullptr;
+	glTexture* smoothStone = nullptr;
+	glTexture* vig = nullptr;
+	glTexture* water = nullptr;
 
-	LevelLoader a;
+	LevelLoader loader;
 	std::vector<Entity> walls;
 	std::vector<TestAI> testAi;
 	std::vector<Trigger> triggers;

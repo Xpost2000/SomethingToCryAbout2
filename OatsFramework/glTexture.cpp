@@ -59,12 +59,18 @@ bool glTexture::IsBound() const{
 #ifdef COMPATIBILITY_33
 void glTexture::LoadImage(std::string path){
 	img = IMG_Load(path.c_str());
-	Bind();
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img->w, img->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, img->pixels);
-	glGenerateMipmap(GL_TEXTURE_2D);
+	if (GLEW_EXT_direct_state_access){
+		glTextureImage2DEXT(tex, GL_TEXTURE_2D, 0, GL_RGBA, img->w, img->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, img->pixels);
+		glGenerateTextureMipmapEXT(tex, GL_TEXTURE_2D);
+	}
+	else{
+		Bind();
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img->w, img->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, img->pixels);
+		glGenerateMipmap(GL_TEXTURE_2D);
+		Unbind();
+	}
 	if (img != nullptr)
 		SDL_FreeSurface(img);
-	Unbind();
 }
 
 void glTexture::SetFilter(GLenum filter){
