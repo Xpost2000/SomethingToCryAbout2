@@ -18,10 +18,10 @@ void Turret::Update(float dt, Player& player, std::vector<Bullet> &bullets){
 		SetAngle(angle);
 		printf("Sentry :: Target In Sight!\n");
 		if (firingCoolDown <= 0){
-			firingCoolDown = 25;
+			firingCoolDown = 40;
 			bullets.push_back(Bullet(glm::vec2(GetPosition()), glm::vec2(STANDARD_SIZE / 2), glm::vec3(255), 10, "Tbullet", false, 1220));
 			bullets.back().SetAngle(GetAngle());
-			bullets.back().SetSpeed(550, 550);
+			bullets.back().SetSpeed(500, 500);
 		}
 		firingCoolDown--;
 	}

@@ -202,7 +202,7 @@ void Game::InitGame(){
 
 // Run game that condenses all seperate functions into one.
 void Game::RunGame(){
-	while (inState != GameState::GAME_QUIT && !window->GetShouldClose()){
+	while (inState != GameState::GAME_QUIT && !window->GetShouldClose() && player.isAlive()){
 		HandleInput();
 		UpdateGame();
 		DrawGame();
