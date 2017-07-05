@@ -19,8 +19,8 @@ void Bullet::Update(float dt, std::vector<Entity> &others){
 	else{
 		bActive = false;
 	}
-	for (int i = 0; i < others.size(); i++){
-		if (AABBCollide(others[i]) && others[i].isCollidable()){
+	for (size_t i = 0; i < others.size(); ++i){
+		if ((AABBCollide(others[i])) && (others[i].isCollidable())){
 			SetActive(false);
 		}
 	}

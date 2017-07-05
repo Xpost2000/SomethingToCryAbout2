@@ -39,8 +39,8 @@ public:
 	OATS_LIB_API void EnableAntiAliasing(bool);
 	OATS_LIB_API void EnableWireFrame(bool);
 	OATS_LIB_API void EnablePointsDraw(bool);
-	OATS_LIB_API void SetPointSize(int);
-	OATS_LIB_API void SetLineSize(int);
+	OATS_LIB_API void SetPointSize(const float);
+	OATS_LIB_API void SetLineSize(const float);
 	OATS_LIB_API void SendAllUniformsTo(ShaderProgram* program);
 	// Bind a different program (Does not replace the one associated with the renderer itself)
 	OATS_LIB_API void SetProgram(ShaderProgram* program);

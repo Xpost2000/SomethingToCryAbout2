@@ -49,14 +49,14 @@ public:
 	void MoveRight(float dt);
 	void MoveUp(float dt);
 	void MoveDown(float dt);
-	const int GetHealth() const;
+	const float GetHealth() const;
 	bool AABBCollide(const Entity& other) const;
 	void SideCollide(const Entity &other, float dt);
 	void AddToHealth(float va) { health += va; if (fxCoolDown == 0){ color = glm::vec3(10, 255, 0.5); fxCoolDown = 5; } }
 	void SubtractToHealth(float va) {
 		health -= va; if (fxCoolDown == 0) { color = glm::vec3(255, 15.5, 0.5); fxCoolDown = 5; }
 }
-	void SetHealth(float va) { health = va; }
+	void SetHealth(const float va);
 	bool isCollidable() { return bCollide; }
 	bool isAlive() { bActive = (health > 0); return bActive; };
 	bool isActive() { return bActive; }
@@ -73,7 +73,7 @@ public:
 private:
 	float vX;
 	float vY;
-	int health;
+	float health;
 	bool bCollide; // Collidable?
 protected:
 	float angle;

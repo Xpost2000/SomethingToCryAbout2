@@ -4,7 +4,7 @@
 #include <cassert>
 Shader::Shader(GLenum sh)
 {
-	if (sh == GL_FRAGMENT_SHADER | sh == GL_GEOMETRY_SHADER | sh == GL_VERTEX_SHADER){
+	if ((sh == GL_FRAGMENT_SHADER) | (sh == GL_GEOMETRY_SHADER) | (sh == GL_VERTEX_SHADER)){
 		shaderObject = glCreateShader(sh); // Start with shader creation
 		if (sh == GL_FRAGMENT_SHADER){
 			fprintf(stderr, "Shader Class : Created Shader Type FRAGMENT\n");

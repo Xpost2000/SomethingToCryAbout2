@@ -110,11 +110,11 @@ void Renderer2D::EnablePointsDraw(bool val){
 	}
 }
 
-void Renderer2D::SetPointSize(int size){
+void Renderer2D::SetPointSize(const float size){
 	glPointSize(size);
 }
 
-void Renderer2D::SetLineSize(int size){
+void Renderer2D::SetLineSize(const float size){
 	glLineWidth(size);
 }
 

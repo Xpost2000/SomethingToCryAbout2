@@ -26,7 +26,7 @@ void TestAI::Update(float dt, Player &player, std::vector<Bullet>& bullets, std:
 		aiCoolDown = 90;
 		std::random_device rd;
 		std::mt19937 gen(rd());
-		std::uniform_int_distribution<> distr(0, 360);
+		std::uniform_real_distribution<float> distr(0.0f, 360.0f);
 		std::uniform_int_distribution<> decide(1, 4);
 		angle = distr(gen);
 		decidingMove = decide(gen);
@@ -70,14 +70,14 @@ void TestAI::Update(float dt, Player &player, std::vector<Bullet>& bullets, std:
 			SetColor(255, 255, 255);
 		}
 	}
-	for (int i = 0; i < bullets.size(); i++){
+	for (size_t i = 0; i < bullets.size(); ++i){
 		if (bullets[i].GetName() != "Tbullet")
 		if (bullets[i].AABBCollide(*this)){
 			SubtractToHealth(30);
 			bullets[i].SetActive(0);
 		}
 	}
-	for (int i = 0; i < others.size(); i++){
+	for (size_t i = 0; i < others.size(); ++i){
 		if (AABBCollide(others[i])){
 			SideCollide(others[i], dt);
 		}

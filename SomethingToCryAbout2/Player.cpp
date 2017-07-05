@@ -63,7 +63,7 @@ void Player::Update(float dt, InputManager *input, Camera2D*camera, std::vector<
 	else{
 		SetColor(255, 255, 255);
 	}
-	for (int i = 0; i < bullets.size(); i++){
+	for (size_t i = 0; i < bullets.size(); ++i){
 		if (bullets[i].AABBCollide(*this) && bullets[i].GetName() != "bullet"){
 			SubtractToHealth(30);
 			bullets[i].SetActive(0);
@@ -73,7 +73,7 @@ void Player::Update(float dt, InputManager *input, Camera2D*camera, std::vector<
 }
 
 void Player::Update(float dt, std::vector<Entity>&others){
-	for (int i = 0; i < others.size(); i++){
+	for (size_t i = 0; i < others.size(); ++i){
 		if (AABBCollide(others[i])){
 			SideCollide(others[i], dt);
 		}

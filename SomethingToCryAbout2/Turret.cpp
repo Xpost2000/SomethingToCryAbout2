@@ -23,7 +23,7 @@ void Turret::Update(float dt, Player& player, std::vector<Bullet> &bullets){
 			bullets.back().SetSpeed(500, 500);
 		}
 	}
-	for (int i = 0; i < bullets.size(); i++){
+	for (unsigned int i = 0; i < bullets.size(); i++){
 		if (bullets[i].AABBCollide(*this) && bullets[i].GetName() != "Tbullet"){
 			SubtractToHealth(30);
 			bullets[i].SetActive(0);

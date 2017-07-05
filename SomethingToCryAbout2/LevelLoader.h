@@ -22,11 +22,11 @@ public:
 		level.close();
 	}
 	void ProcessLevel(std::vector<Entity> &entities, std::vector<TestAI> &entitiesTestAi, std::vector<Trigger> &triggers, std::vector<Turret> &turrets, Player& player, Trigger &goal){
-		for (int y = 0; y < lvlData.size(); y++){
-			for (int x = 0; x < lvlData[y].size(); x++){
+		for (size_t y = 0; y < lvlData.size(); ++y){
+			for (size_t x = 0; x < lvlData[y].size(); ++x){
 				switch (lvlData[y][x]){
 				case '@':
-					player.SetPos(x*STANDARD_SIZE, y*STANDARD_SIZE);
+					player.SetPos(static_cast<float>(x)*STANDARD_SIZE, static_cast<float>(y)*STANDARD_SIZE);
 					entities.push_back(Entity(glm::vec2(x*STANDARD_SIZE, y*STANDARD_SIZE), glm::vec2(STANDARD_SIZE), glm::vec3(255), 100, "smooth-stone", false));
 					break;
 				case '#':
@@ -58,7 +58,7 @@ public:
 					entities.push_back(Entity(glm::vec2(x*STANDARD_SIZE, y*STANDARD_SIZE), glm::vec2(STANDARD_SIZE), glm::vec3(255), 100, "warning", false));
 					break;
 				case '?':
-					goal.SetPos(x*STANDARD_SIZE, y*STANDARD_SIZE);
+					goal.SetPos(static_cast<float>(x)*STANDARD_SIZE, static_cast<float>(y)*STANDARD_SIZE);
 					entities.push_back(Entity(glm::vec2(x*STANDARD_SIZE, y*STANDARD_SIZE), glm::vec2(STANDARD_SIZE), glm::vec3(0, 255, 122), 100, "goal", false));
 					break;
 				default:

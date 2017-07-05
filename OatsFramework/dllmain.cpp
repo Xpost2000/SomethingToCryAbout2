@@ -4,7 +4,6 @@
 #include <SDL2\SDL_image.h>
 #include "dllDef.h"
 #include <ctime>
-
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,
                        LPVOID lpReserved

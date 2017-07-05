@@ -27,7 +27,7 @@ bool levelLoaded = 0;
 int score = 0;
 int killCounter = 0;
 glQueryInfo info;
-float factor = 1.88;
+float factor = 1.88f;
 Trigger goal(glm::vec2(364240), glm::vec2(STANDARD_SIZE), glm::vec3(255), 100, "Player", false);
 Game::Game()
 {
@@ -171,8 +171,8 @@ void Game::InitGame(){
 	Textures.insert(std::pair<std::string, glTexture*>("grass", grass));
 	Textures.insert(std::pair<std::string, glTexture*>("turret", turret));
 	Textures.insert(std::pair < std::string, glTexture*>("enemy", enemy));
-	camera = new Camera2D(view, width, height, 2, 1.23);
-	camera->SetScale(1.23);
+	camera = new Camera2D(view, static_cast<float>(width), static_cast<float>(height), 2.0f, 1.23f);
+	camera->SetScale(1.23f);
 	/*
 	 * Setting up the shaders for the
 	 * game
@@ -217,7 +217,7 @@ void Game::InitGame(){
 	renderer = new Renderer2D(program);
 	renderer->EnableAlpha(true);
 	// Setup orthographic matrix
-	scale = { width, height };
+	scale = { static_cast<float>(width), static_cast<float>(height) };
 	projection = glm::ortho(0.f, (float)width, (float)height, 0.f, -1.f, 1.f);
 	program->SetUniformMatrix4fv("projection", glm::value_ptr(projection));
 	textProgram->SetUniformMatrix4fv("proj", glm::value_ptr(projection));
@@ -240,7 +240,7 @@ void Game::RunGame(){
 void Game::UpdateGame(){
 	// Simulate Everything here.
 	if (!levelLoaded){
-		player.SetHealth(100);
+		player.SetHealth(100.0f);
 		walls.clear();
 		testAi.clear();
 		triggers.clear();
@@ -262,20 +262,20 @@ void Game::UpdateGame(){
 	if (inState == GameState::GAME_RUNNING && levelLoaded){
 		// Restore the state
 		waterFX = false;
-		factor = 1.88;
+		factor = 1.88f;
 		player.SetSpeed(playerSpeed, playerSpeed);
 		player.SetFire(1);
 		goal.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), player, [&](Entity &t){
 			levelLoaded = false;
 			currentLevel++;
 		}, [&](Entity&t){ });
-		for (int i = 0; i < bullets.size(); i++){
+		for (size_t i = 0; i < bullets.size(); ++i){
 			if (!bullets[i].isActive()){
 				bullets.erase(bullets.begin() + i);
 			}
 			bullets[i].Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), walls);
 		}
-		for (int i = 0; i < testAi.size(); i++){
+		for (size_t i = 0; i < testAi.size(); ++i){
 			testAi[i].SetSpeed(playerSpeed - 50, playerSpeed - 50);
 			if (!testAi[i].isAlive()){
 				testAi.erase(testAi.begin() + i);
@@ -285,7 +285,7 @@ void Game::UpdateGame(){
 			}
 			testAi[i].Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), player,bullets, walls);
 		}
-		for (int i = 0; i < turrets.size(); i++){
+		for (size_t i = 0; i < turrets.size(); ++i){
 			if (!turrets[i].isAlive()){
 				turrets.erase(turrets.begin() + i);
 				player.AddToHealth(70);
@@ -299,10 +299,10 @@ void Game::UpdateGame(){
 				t.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS),
 					player,
 					[&](Entity &t){
-					player.SetFire(0);
+					player.SetFire(false);
 					waterFX = true;
-					player.SetSpeed(140, 140);
-					factor = 1.70;
+					player.SetSpeed(140.0f, 140.0f);
+					factor = 1.70f;
 				},
 					[&](Entity &t){
 				});
@@ -422,8 +422,8 @@ void Game::DrawGame(){
 	renderer->End();
 
 	smArial->Render("Health Bar", glm::vec2(60, 20), 1, glm::vec3(255));
-	arial->Render("Score : " + std::to_string(score), glm::vec2(90, 90), 0.76, glm::vec3(0));
-	arial->Render("Kills : " + std::to_string(killCounter), glm::vec2(90, 140), 0.76, glm::vec3(0));
+	arial->Render("Score : " + std::to_string(score), glm::vec2(90, 90), 0.76f, glm::vec3(0));
+	arial->Render("Kills : " + std::to_string(killCounter), glm::vec2(90, 140), 0.76f, glm::vec3(0));
 	if (inState == GameState::GAME_PAUSE || inState == GameState::GAME_MENU){
 		greyScale = true;
 		renderer->Begin();

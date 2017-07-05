@@ -2,9 +2,10 @@
 
 Entity::Entity(glm::vec2 pos, glm::vec2 size, glm::vec3 color, int health, std::string name, bool collidable){
 	position = pos;
+	
 	this->size = size;
 	this->color = color;
-	this->health = health;
+	this->health = (float)health;
 	this->name = name;
 	bActive = true;
 	bCollide = collidable;
@@ -35,7 +36,7 @@ void Entity::SetColor(float r, float g, float b){
 	color = glm::vec3(r, g, b);
 }
 
-void Entity::SetHealth(int hp){
+void Entity::SetHealth(const float hp){
 	health = hp;
 }
 
@@ -55,7 +56,7 @@ const std::string Entity::GetName() const{
 	return name;
 }
 
-const int Entity::GetHealth() const{
+const float Entity::GetHealth() const{
 	return health;
 }
 

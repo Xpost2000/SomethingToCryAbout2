@@ -35,6 +35,7 @@ float ClockTimer::returnDeltatime(const TimeMeasure m){
 		return delta / 1000.0f;
 		break;
 	default:
+		return 0.0f;
 		break;
 	}
 }
@@ -50,6 +51,7 @@ float ClockTimer::returnElaspedTime(const TimeMeasure m){
 		return SDL_GetTicks() / 1000.0f;
 		break;
 	default:
+		return 0.0f;
 			break;
 	}
 }

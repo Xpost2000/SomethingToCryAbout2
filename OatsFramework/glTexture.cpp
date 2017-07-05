@@ -38,7 +38,7 @@ void glTexture::Unbind(){
 }
 #ifndef COMPATIBILITY_33
 void glTexture::SetFilter(GLenum filter){
-	if (filter == GL_NEAREST | filter == GL_LINEAR){
+	if ((filter == GL_NEAREST) | (filter == GL_LINEAR)){
 		glTextureParameteri(tex, GL_TEXTURE_MAG_FILTER, filter);
 		glTextureParameteri(tex, GL_TEXTURE_MIN_FILTER, filter);
 	}
@@ -79,7 +79,7 @@ void glTexture::SetFilter(GLenum filter){
 		glTextureParameteriEXT(tex, GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
 	}
 	else{
-		if (filter == GL_NEAREST | filter == GL_LINEAR){
+		if ((filter == GL_NEAREST) | (filter == GL_LINEAR)){
 			Bind();
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
