@@ -2,6 +2,12 @@
 #include "Player.h"
 #include <random>
 #include <iostream>
+
+/*
+	I'm going to eventually modify this and turn it into the Enemy class.
+	:)
+*/
+
 TestAI::TestAI()
 {
 }
