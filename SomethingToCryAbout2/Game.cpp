@@ -91,7 +91,7 @@ Game::~Game(){
 void Game::InitGame(){
 	// Setup the map here
 	loader.LoadLevel("Assests\\test.txt");
-	loader.ProcessLevel(walls, testAi, triggers, player);
+	loader.ProcessLevel(walls, testAi, triggers, turrets,player);
 	bullet = new glTexture();
 	warning = new glTexture();
 	wall = new glTexture();
@@ -240,6 +240,9 @@ void Game::UpdateGame(){
 			}
 			testAi[i].Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), player,bullets, walls);
 		}
+		for (auto &ai : turrets){
+			ai.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), player, bullets);
+		}
 		for (auto &t : triggers){
 			if (t.GetName() == "triggerWater"){
 				t.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS),
@@ -312,6 +315,12 @@ void Game::DrawGame(){
 		}
 		renderer->BindTexture(*Textures["player"]);
 		for (auto & ai : testAi){
+			renderer->SetColor(ai.GetColor());
+			if (camera->InBounds(ai.GetPosition(), ai.GetSize())){
+				renderer->Draw(ai.GetPosition(), ai.GetSize(), ai.GetAngle());
+			}
+		}
+		for (auto & ai : turrets){
 			renderer->SetColor(ai.GetColor());
 			if (camera->InBounds(ai.GetPosition(), ai.GetSize())){
 				renderer->Draw(ai.GetPosition(), ai.GetSize(), ai.GetAngle());
@@ -402,5 +411,5 @@ void Game::HandleInput(){
 	input->isKeyPressed(SDL_SCANCODE_SPACE, [&](){
 		player.FireBullet(bullets);
 	});
-	//player.SetAngle(atan2(input->GetMouseY() - player.GetPosition().y, input->GetMouseX() - player.GetPosition().x));
+	player.SetAngle(atan2(input->GetMouseY() - player.GetPosition().y, input->GetMouseX() - player.GetPosition().x));
 }

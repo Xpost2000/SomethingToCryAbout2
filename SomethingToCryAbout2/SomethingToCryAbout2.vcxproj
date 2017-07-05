@@ -156,6 +156,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="TestAI.cpp" />
     <ClCompile Include="Trigger.cpp" />
+    <ClCompile Include="Turret.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h" />
@@ -167,6 +168,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="TestAI.h" />
     <ClInclude Include="Trigger.h" />
+    <ClInclude Include="Turret.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SomethingToCryAbout2.rc" />

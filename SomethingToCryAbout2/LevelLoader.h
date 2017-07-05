@@ -5,6 +5,7 @@
 #include "Entity.h"
 #include "Player.h"
 #include "TestAI.h"
+#include "Turret.h"
 class LevelLoader
 {
 public:
@@ -20,7 +21,7 @@ public:
 		}
 		level.close();
 	}
-	void ProcessLevel(std::vector<Entity> &entities, std::vector<TestAI> &entitiesTestAi, std::vector<Trigger> &triggers, Player& player){
+	void ProcessLevel(std::vector<Entity> &entities, std::vector<TestAI> &entitiesTestAi, std::vector<Trigger> &triggers, std::vector<Turret> &turrets, Player& player){
 		for (int y = 0; y < lvlData.size(); y++){
 			for (int x = 0; x < lvlData[y].size(); x++){
 				switch (lvlData[y][x]){
@@ -40,6 +41,10 @@ public:
 					break;
 				case '!':
 					entitiesTestAi.push_back(TestAI(glm::vec2(x*STANDARD_SIZE, y*STANDARD_SIZE), glm::vec2(STANDARD_SIZE), glm::vec3(255), 100, "guy", true));
+					entities.push_back(Entity(glm::vec2(x*STANDARD_SIZE, y*STANDARD_SIZE), glm::vec2(STANDARD_SIZE), glm::vec3(255), 100, "smooth-stone", false));
+					break;
+				case '~':
+					turrets.push_back(Turret(glm::vec2(x*STANDARD_SIZE, y*STANDARD_SIZE), glm::vec2(STANDARD_SIZE), glm::vec3(255), 100, "gun", true));
 					entities.push_back(Entity(glm::vec2(x*STANDARD_SIZE, y*STANDARD_SIZE), glm::vec2(STANDARD_SIZE), glm::vec3(255), 100, "smooth-stone", false));
 					break;
 				case '_':
