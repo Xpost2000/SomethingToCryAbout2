@@ -240,8 +240,11 @@ void Game::UpdateGame(){
 			}
 			testAi[i].Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), player,bullets, walls);
 		}
-		for (auto &ai : turrets){
-			ai.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), player, bullets);
+		for (int i = 0; i < turrets.size(); i++){
+			if (!turrets[i].isAlive()){
+				turrets.erase(turrets.begin() + i);
+			}
+			turrets[i].Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), player, bullets);
 		}
 		for (auto &t : triggers){
 			if (t.GetName() == "triggerWater"){
