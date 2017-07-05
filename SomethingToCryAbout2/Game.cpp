@@ -1,4 +1,12 @@
-﻿#include "Game.h"
+﻿/*
+	As of 3:17 pm
+	7/5/17
+
+	Project to me is considered finished. I will just make occasional updates and add Main Menu and sounds in my free time.
+	What matters to me is that this was better than the original game. Which I believe is true.
+*/
+
+#include "Game.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
