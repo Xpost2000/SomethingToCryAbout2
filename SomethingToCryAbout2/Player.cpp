@@ -1,6 +1,6 @@
 #include "Player.h"
 #include <Oats\MathHelperFunctions.h>
-int firingCoolDown = 0;
+
 
 Player::Player() : Entity(glm::vec2(300), glm::vec2(10), glm::vec3(255), 100, "Bob", true)
 {
@@ -62,6 +62,12 @@ void Player::Update(float dt, InputManager *input, Camera2D*camera, std::vector<
 	}
 	else{
 		SetColor(255, 255, 255);
+	}
+	for (int i = 0; i < bullets.size(); i++){
+		if (bullets[i].AABBCollide(*this) && bullets[i].GetName() != "bullet"){
+			SubtractToHealth(30);
+			bullets[i].SetActive(0);
+		}
 	}
 	Update(dt, others);
 }

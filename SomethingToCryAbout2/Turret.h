@@ -12,5 +12,6 @@ public:
 	~Turret();
 	void Update(float dt, Player& player, std::vector<Bullet>& bullets);
 private:
+	int firingCoolDown = 0;
 };
 

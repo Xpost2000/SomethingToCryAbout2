@@ -195,7 +195,7 @@ void Game::InitGame(){
 	textProgram->SetUniformMatrix4fv("proj", glm::value_ptr(projection));
 	arial = new TextRenderer(textProgram); cmcSans = new TextRenderer(textProgram);smArial = new TextRenderer(textProgram);
 	arial->LoadFont("Assests\\Font\\arial.ttf", 48);cmcSans->LoadFont("Assests\\Font\\cmc.ttf", 72);smArial->LoadFont("Assests\\Font\\arial.ttf", 14);
-	player.SetSpeed(180, 180);player.SetAngle(360);player.SetFire(true);
+	player.SetSpeed(240, 240);player.SetAngle(360);player.SetFire(true);
 	scrProgram->SetUniform1i("frameBuffer", 0);
 	for (auto & a : testAi){a.SetSpeed(120, 120);}
 }

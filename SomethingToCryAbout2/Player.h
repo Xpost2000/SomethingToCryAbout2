@@ -28,5 +28,6 @@ public:
 private:
 	void Update(float dt, std::vector<Entity>&others);
 	bool bCanFire;
+	int firingCoolDown = 0;
 };
 
