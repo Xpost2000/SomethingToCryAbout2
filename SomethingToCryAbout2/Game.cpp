@@ -7,6 +7,7 @@
 #include <Oats\ResourceManager.h>
 
 #include <cmath>
+#include <iostream>
 #include <ctime>
 int mx;
 int my;
@@ -457,5 +458,9 @@ void Game::HandleInput(){
 	input->isKeyPressed(SDL_SCANCODE_SPACE, [&](){
 		player.FireBullet(bullets);
 	});
-	//player.SetAngle(atan2(input->GetMouseY() - player.GetPosition().y, input->GetMouseX() - player.GetPosition().x));
-}
+	/*
+	float angle = (atan2(input->GetMouseY() - player.GetPosition().y, input->GetMouseX() - player.GetPosition().x ) * 180 / M_PI) / 28.0f;
+	std::cout << "Angle " << angle << std::endl;
+	player.SetAngle(angle);
+		*/
+	}

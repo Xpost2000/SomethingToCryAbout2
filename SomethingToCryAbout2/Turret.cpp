@@ -14,7 +14,6 @@ Turret::~Turret()
 void Turret::Update(float dt, Player& player, std::vector<Bullet> &bullets){
 
 	if (abs(abs(player.GetPosition().x) - abs(GetPosition().x)) <= STANDARD_SIZE*8.8 && abs(abs(player.GetPosition().y) - abs(GetPosition().y) <= STANDARD_SIZE*8.8)){
-		printf("Sentry :: Target In Sight!\n");
 		float angle = atan2(player.GetPosition().y - GetPosition().y, player.GetPosition().x - GetPosition().x);
 		SetAngle(angle);
 		if (firingCoolDown <= 0){

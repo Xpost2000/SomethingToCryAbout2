@@ -33,7 +33,6 @@ void TestAI::Update(float dt, Player &player, std::vector<Bullet>& bullets, std:
 	}
 	if (aiCoolDown != 0 || aiCoolDown > 0){
 		if (abs(abs(player.GetPosition().x) - abs(GetPosition().x))<= STANDARD_SIZE*5.8 && abs(abs(player.GetPosition().y) - abs(GetPosition().y) <= STANDARD_SIZE*5.8)){
-			std::cout << " I see you" << std::endl;
 			float angle = atan2(player.GetPosition().y - GetPosition().y, player.GetPosition().x - GetPosition().x);
 			SetAngle(angle);
 
@@ -61,7 +60,6 @@ void TestAI::Update(float dt, Player &player, std::vector<Bullet>& bullets, std:
 			}
 		}
 		else{
-			std::cout << "Where the f**k are you?" << std::endl;
 			MoveFromAngle(dt, decidingMove);
 		}
 		aiCoolDown--;
