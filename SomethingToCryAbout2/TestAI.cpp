@@ -38,7 +38,7 @@ void TestAI::Update(float dt, Player &player, std::vector<Bullet>& bullets, std:
 			SetAngle(angle);
 
 			if (firingCoolDown <= 0){
-				firingCoolDown = 22;
+				firingCoolDown = 23;
 				bullets.push_back(Bullet(glm::vec2(GetPosition()), glm::vec2(STANDARD_SIZE / 2), glm::vec3(255), 10, "Tbullet", false, 1220));
 				bullets.back().SetAngle(GetAngle());
 				bullets.back().SetSpeed(500, 500);
