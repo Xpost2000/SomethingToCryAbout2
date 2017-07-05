@@ -15,6 +15,8 @@ const float playerSpeed = 230.f;
 Player player(glm::vec2(360), glm::vec2(STANDARD_SIZE), glm::vec3(255), 100, "Player", false);
 int currentLevel = 1;
 bool levelLoaded = 0;
+int score = 0;
+int killCounter = 0;
 glQueryInfo info;
 float factor = 1.88;
 Trigger goal(glm::vec2(364240), glm::vec2(STANDARD_SIZE), glm::vec3(255), 100, "Player", false);
@@ -268,12 +270,18 @@ void Game::UpdateGame(){
 			testAi[i].SetSpeed(playerSpeed - 50, playerSpeed - 50);
 			if (!testAi[i].isAlive()){
 				testAi.erase(testAi.begin() + i);
+				player.AddToHealth(20);
+				killCounter++;
+				score += 100;
 			}
 			testAi[i].Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), player,bullets, walls);
 		}
 		for (int i = 0; i < turrets.size(); i++){
 			if (!turrets[i].isAlive()){
 				turrets.erase(turrets.begin() + i);
+				player.AddToHealth(70);
+				killCounter++;
+				score += 200;
 			}
 			turrets[i].Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), player, bullets);
 		}
@@ -285,7 +293,7 @@ void Game::UpdateGame(){
 					player.SetFire(0);
 					waterFX = true;
 					player.SetSpeed(140, 140);
-					factor = 1.10;
+					factor = 1.70;
 				},
 					[&](Entity &t){
 				});
@@ -405,6 +413,8 @@ void Game::DrawGame(){
 	renderer->End();
 
 	smArial->Render("Health Bar", glm::vec2(60, 20), 1, glm::vec3(255));
+	arial->Render("Score : " + std::to_string(score), glm::vec2(90, 90), 0.76, glm::vec3(0));
+	arial->Render("Kills : " + std::to_string(killCounter), glm::vec2(90, 140), 0.76, glm::vec3(0));
 	if (inState == GameState::GAME_PAUSE || inState == GameState::GAME_MENU){
 		greyScale = true;
 		renderer->Begin();
