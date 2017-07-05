@@ -17,6 +17,7 @@ int currentLevel = 1;
 bool levelLoaded = 0;
 glQueryInfo info;
 float factor = 1.88;
+Trigger goal(glm::vec2(364240), glm::vec2(STANDARD_SIZE), glm::vec3(255), 100, "Player", false);
 Game::Game()
 {
 	window = new Window("Something To Cry About : OpenGL Version Alpha", width, height);
@@ -96,8 +97,8 @@ Game::~Game(){
 
 void Game::InitGame(){
 	// Setup the map here
-	loader[currentLevel-1].LoadLevel("Assests\\Levels\\level1.txt");
-
+	loader[0].LoadLevel("Assests\\Levels\\level1.txt");
+	loader[1].LoadLevel("Assests\\Levels\\level2.txt");
 	bullet = new glTexture();
 	warning = new glTexture();
 	wall = new glTexture();
@@ -228,11 +229,12 @@ void Game::RunGame(){
 void Game::UpdateGame(){
 	// Simulate Everything here.
 	if (!levelLoaded){
+		player.SetHealth(100);
 		walls.clear();
 		testAi.clear();
 		triggers.clear();
 		turrets.clear();
-		loader[currentLevel - 1].ProcessLevel(walls, testAi, triggers, turrets, player);
+		loader[currentLevel - 1].ProcessLevel(walls, testAi, triggers, turrets, player, goal);
 		levelLoaded = true;
 	}
 	if (inState != GameState::GAME_PAUSE){
@@ -252,6 +254,10 @@ void Game::UpdateGame(){
 		factor = 1.88;
 		player.SetSpeed(playerSpeed, playerSpeed);
 		player.SetFire(1);
+		goal.Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), player, [&](Entity &t){
+			levelLoaded = false;
+			currentLevel++;
+		}, [&](Entity&t){ });
 		for (int i = 0; i < bullets.size(); i++){
 			if (!bullets[i].isActive()){
 				bullets.erase(bullets.begin() + i);
