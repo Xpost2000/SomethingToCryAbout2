@@ -10,6 +10,7 @@
 #include <ctime>
 int mx;
 int my;
+const float playerSpeed = 230.f;
 
 Player player(glm::vec2(360), glm::vec2(STANDARD_SIZE), glm::vec3(255), 100, "Player", false);
 
@@ -86,6 +87,8 @@ Game::~Game(){
 	vig = nullptr;
 	delete wdFlr;
 	wdFlr = nullptr;
+	delete turret;
+	turret = nullptr;
 }
 
 void Game::InitGame(){
@@ -100,9 +103,13 @@ void Game::InitGame(){
 	playerT = new glTexture();
 	smoothStone = new glTexture();
 	vig = new glTexture();
+	turret = new glTexture();
 	grass = new glTexture();
 	water = new glTexture();
 
+	turret->SetFilter(GL_LINEAR);
+	turret->SetWrapMode(GL_REPEAT);
+	turret->LoadImage("Assests\\Textures\\turret.png");
 	warning->SetFilter(GL_LINEAR);
 	warning->SetWrapMode(GL_REPEAT);
 	warning->LoadImage("Assests\\Textures\\warning.png");
@@ -143,6 +150,7 @@ void Game::InitGame(){
 	Textures.insert(std::pair<std::string, glTexture*>("vig", vig));
 	Textures.insert(std::pair<std::string, glTexture*>("warning", warning));
 	Textures.insert(std::pair<std::string, glTexture*>("grass", grass));
+	Textures.insert(std::pair<std::string, glTexture*>("turret", turret));
 	camera = new Camera2D(view, width, height, 2, 1.23);
 	camera->SetScale(1.23);
 	/*
@@ -226,7 +234,7 @@ void Game::UpdateGame(){
 		// Restore the state
 		waterFX = false;
 		factor = 1.88;
-		player.SetSpeed(120, 120);
+		player.SetSpeed(playerSpeed, playerSpeed);
 		player.SetFire(1);
 		for (int i = 0; i < bullets.size(); i++){
 			if (!bullets[i].isActive()){
@@ -323,6 +331,9 @@ void Game::DrawGame(){
 				renderer->Draw(ai.GetPosition(), ai.GetSize(), ai.GetAngle());
 			}
 		}
+		renderer->SetColor(player.GetColor());
+		renderer->Draw(player.GetPosition(), player.GetSize(), player.GetAngle());
+		renderer->BindTexture(*Textures["turret"]);
 		for (auto & ai : turrets){
 			renderer->SetColor(ai.GetColor());
 			if (camera->InBounds(ai.GetPosition(), ai.GetSize())){
@@ -330,8 +341,6 @@ void Game::DrawGame(){
 			}
 		}
 		//Everything else
-		renderer->SetColor(player.GetColor());
-		renderer->Draw(player.GetPosition(), player.GetSize(), player.GetAngle());
 		renderer->BindTexture(*Textures["bullet"]);
 		for (auto & proj : bullets){
 			if (camera->InBounds(proj.GetPosition(), proj.GetSize()))

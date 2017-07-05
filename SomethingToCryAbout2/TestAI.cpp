@@ -32,7 +32,36 @@ void TestAI::Update(float dt, Player &player, std::vector<Bullet>& bullets, std:
 		decidingMove = decide(gen);
 	}
 	if (aiCoolDown != 0 || aiCoolDown > 0){
-		MoveFromAngle(dt, decidingMove);
+		if (abs(player.GetPosition().x) - abs(GetPosition().x) <= STANDARD_SIZE*2.6 && abs(player.GetPosition().y) - abs(GetPosition().y) <= STANDARD_SIZE*2.6){
+			std::cout << " I see you" << std::endl;
+			float angle = atan2(player.GetPosition().y - GetPosition().y, player.GetPosition().x - GetPosition().x);
+			SetAngle(angle);
+			if (firingCoolDown <= 0){
+				firingCoolDown = 40;
+				bullets.push_back(Bullet(glm::vec2(GetPosition()), glm::vec2(STANDARD_SIZE / 2), glm::vec3(255), 10, "Tbullet", false, 1220));
+				bullets.back().SetAngle(GetAngle());
+				bullets.back().SetSpeed(500, 500);
+			}
+			switch (decidingMove){
+			case 1:
+				MoveRight(dt);
+				break;
+			case 2:
+				MoveLeft(dt);
+				break;
+			case 3:
+				MoveUp(dt);
+				break;
+			case 4:
+				MoveDown(dt);
+				break;
+			default:
+				break;
+			}
+		}
+		else{
+			MoveFromAngle(dt, decidingMove);
+		}
 		aiCoolDown--;
 		if (fxCoolDown > 0){
 			fxCoolDown--;
@@ -42,6 +71,7 @@ void TestAI::Update(float dt, Player &player, std::vector<Bullet>& bullets, std:
 		}
 	}
 	for (int i = 0; i < bullets.size(); i++){
+		if (bullets[i].GetName() != "Tbullet")
 		if (bullets[i].AABBCollide(*this)){
 			SubtractToHealth(30);
 			bullets[i].SetActive(0);
@@ -56,4 +86,5 @@ void TestAI::Update(float dt, Player &player, std::vector<Bullet>& bullets, std:
 		player.SideCollide(*this, dt);
 		SideCollide(player, dt);
 	}
+	firingCoolDown--;
 }

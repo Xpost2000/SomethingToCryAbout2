@@ -16,6 +16,7 @@ public:
 protected:
 	int decidingMove;
 	float targAngle;
+	int firingCoolDown = 0;
 	int aiCoolDown = 0;
 };
 

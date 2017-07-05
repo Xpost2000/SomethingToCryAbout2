@@ -75,6 +75,7 @@ private:
 	glTexture* smoothStone = nullptr;
 	glTexture* vig = nullptr;
 	glTexture* water = nullptr;
+	glTexture* turret = nullptr;
 
 	LevelLoader loader;
 	std::vector<Entity> walls;
