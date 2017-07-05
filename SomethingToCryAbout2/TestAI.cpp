@@ -32,12 +32,13 @@ void TestAI::Update(float dt, Player &player, std::vector<Bullet>& bullets, std:
 		decidingMove = decide(gen);
 	}
 	if (aiCoolDown != 0 || aiCoolDown > 0){
-		if (abs(player.GetPosition().x) - abs(GetPosition().x) <= STANDARD_SIZE*2.6 && abs(player.GetPosition().y) - abs(GetPosition().y) <= STANDARD_SIZE*2.6){
+		if (abs(abs(player.GetPosition().x) - abs(GetPosition().x))<= STANDARD_SIZE*5.8 && abs(abs(player.GetPosition().y) - abs(GetPosition().y) <= STANDARD_SIZE*5.8)){
 			std::cout << " I see you" << std::endl;
 			float angle = atan2(player.GetPosition().y - GetPosition().y, player.GetPosition().x - GetPosition().x);
 			SetAngle(angle);
+
 			if (firingCoolDown <= 0){
-				firingCoolDown = 40;
+				firingCoolDown = 80;
 				bullets.push_back(Bullet(glm::vec2(GetPosition()), glm::vec2(STANDARD_SIZE / 2), glm::vec3(255), 10, "Tbullet", false, 1220));
 				bullets.back().SetAngle(GetAngle());
 				bullets.back().SetSpeed(500, 500);
@@ -60,6 +61,7 @@ void TestAI::Update(float dt, Player &player, std::vector<Bullet>& bullets, std:
 			}
 		}
 		else{
+			std::cout << "Where the f**k are you?" << std::endl;
 			MoveFromAngle(dt, decidingMove);
 		}
 		aiCoolDown--;

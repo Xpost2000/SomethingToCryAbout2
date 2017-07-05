@@ -66,6 +66,7 @@ private:
 	TextRenderer* cmcSans = nullptr;
 
 	glTexture* wall = nullptr;
+	glTexture* enemy = nullptr;
 	glTexture* playerT = nullptr;
 	glTexture* devTex = nullptr;
 	glTexture* bullet = nullptr;
@@ -77,7 +78,7 @@ private:
 	glTexture* water = nullptr;
 	glTexture* turret = nullptr;
 
-	LevelLoader loader;
+	LevelLoader loader[5];
 	std::vector<Entity> walls;
 	std::vector<TestAI> testAi;
 	std::vector<Trigger> triggers;

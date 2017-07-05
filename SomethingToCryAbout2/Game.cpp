@@ -13,7 +13,8 @@ int my;
 const float playerSpeed = 230.f;
 
 Player player(glm::vec2(360), glm::vec2(STANDARD_SIZE), glm::vec3(255), 100, "Player", false);
-
+int currentLevel = 1;
+bool levelLoaded = 0;
 glQueryInfo info;
 float factor = 1.88;
 Game::Game()
@@ -89,12 +90,14 @@ Game::~Game(){
 	wdFlr = nullptr;
 	delete turret;
 	turret = nullptr;
+	delete enemy;
+	enemy = nullptr;
 }
 
 void Game::InitGame(){
 	// Setup the map here
-	loader.LoadLevel("Assests\\test.txt");
-	loader.ProcessLevel(walls, testAi, triggers, turrets,player);
+	loader[currentLevel-1].LoadLevel("Assests\\Levels\\level1.txt");
+
 	bullet = new glTexture();
 	warning = new glTexture();
 	wall = new glTexture();
@@ -102,6 +105,7 @@ void Game::InitGame(){
 	devTex = new glTexture();
 	playerT = new glTexture();
 	smoothStone = new glTexture();
+	enemy = new glTexture();
 	vig = new glTexture();
 	turret = new glTexture();
 	grass = new glTexture();
@@ -137,6 +141,9 @@ void Game::InitGame(){
 	smoothStone->SetFilter(GL_LINEAR);
 	smoothStone->SetWrapMode(GL_REPEAT);
 	smoothStone->LoadImage("Assests\\Textures\\smooth_stone.png");
+	enemy->SetFilter(GL_LINEAR);
+	enemy->SetWrapMode(GL_REPEAT);
+	enemy->LoadImage("Assests\\Textures\\enemy.png");
 	water->SetFilter(GL_LINEAR);
 	water->SetWrapMode(GL_REPEAT);
 	water->LoadImage("Assests\\Textures\\water.png");
@@ -151,6 +158,7 @@ void Game::InitGame(){
 	Textures.insert(std::pair<std::string, glTexture*>("warning", warning));
 	Textures.insert(std::pair<std::string, glTexture*>("grass", grass));
 	Textures.insert(std::pair<std::string, glTexture*>("turret", turret));
+	Textures.insert(std::pair < std::string, glTexture*>("enemy", enemy));
 	camera = new Camera2D(view, width, height, 2, 1.23);
 	camera->SetScale(1.23);
 	/*
@@ -219,6 +227,14 @@ void Game::RunGame(){
 // Neat little update function
 void Game::UpdateGame(){
 	// Simulate Everything here.
+	if (!levelLoaded){
+		walls.clear();
+		testAi.clear();
+		triggers.clear();
+		turrets.clear();
+		loader[currentLevel - 1].ProcessLevel(walls, testAi, triggers, turrets, player);
+		levelLoaded = true;
+	}
 	if (inState != GameState::GAME_PAUSE){
 		SDL_SetRelativeMouseMode(SDL_TRUE);
 		mx = input->GetMouseX();
@@ -230,7 +246,7 @@ void Game::UpdateGame(){
 	}
 	model = glm::mat4();
 	ClockTimer::Tick();
-	if (inState == GameState::GAME_RUNNING){
+	if (inState == GameState::GAME_RUNNING && levelLoaded){
 		// Restore the state
 		waterFX = false;
 		factor = 1.88;
@@ -243,6 +259,7 @@ void Game::UpdateGame(){
 			bullets[i].Update(ClockTimer::returnDeltatime(TimeMeasure::TIME_SECONDS), walls);
 		}
 		for (int i = 0; i < testAi.size(); i++){
+			testAi[i].SetSpeed(playerSpeed - 50, playerSpeed - 50);
 			if (!testAi[i].isAlive()){
 				testAi.erase(testAi.begin() + i);
 			}
@@ -261,7 +278,7 @@ void Game::UpdateGame(){
 					[&](Entity &t){
 					player.SetFire(0);
 					waterFX = true;
-					player.SetSpeed(40, 40);
+					player.SetSpeed(140, 140);
 					factor = 1.10;
 				},
 					[&](Entity &t){
@@ -324,13 +341,14 @@ void Game::DrawGame(){
 				}
 			}
 		}
-		renderer->BindTexture(*Textures["player"]);
+		renderer->BindTexture(*Textures["enemy"]);
 		for (auto & ai : testAi){
 			renderer->SetColor(ai.GetColor());
 			if (camera->InBounds(ai.GetPosition(), ai.GetSize())){
 				renderer->Draw(ai.GetPosition(), ai.GetSize(), ai.GetAngle());
 			}
 		}
+		renderer->BindTexture(*Textures["player"]);
 		renderer->SetColor(player.GetColor());
 		renderer->Draw(player.GetPosition(), player.GetSize(), player.GetAngle());
 		renderer->BindTexture(*Textures["turret"]);
@@ -423,5 +441,5 @@ void Game::HandleInput(){
 	input->isKeyPressed(SDL_SCANCODE_SPACE, [&](){
 		player.FireBullet(bullets);
 	});
-	player.SetAngle(atan2(input->GetMouseY() - player.GetPosition().y, input->GetMouseX() - player.GetPosition().x));
+	//player.SetAngle(atan2(input->GetMouseY() - player.GetPosition().y, input->GetMouseX() - player.GetPosition().x));
 }
