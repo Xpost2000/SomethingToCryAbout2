@@ -17,6 +17,7 @@
 #include "Bullet.h"
 #include "Entity.h"
 #include "Player.h"
+#include "Turret.h"
 #include "TestAI.h"
 #include "LevelLoader.h"
 #include <map>
@@ -80,6 +81,7 @@ private:
 	std::vector<TestAI> testAi;
 	std::vector<Trigger> triggers;
 	std::vector<Bullet> bullets;
+	std::vector<Turret> turrets;
 
 	int width = 1024, height = 768;
 	struct CameraScale{
