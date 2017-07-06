@@ -41,6 +41,7 @@ public:
 	OATS_LIB_API static float returnFramesPerSecond();
 private:
 	// Delta time variable
+	static uint32_t start;
 	static uint32_t delta;
 	// Previous delta time
 	static uint32_t last;

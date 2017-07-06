@@ -3,6 +3,7 @@
  uint32_t ClockTimer::delta = 0;
  uint32_t ClockTimer::last = 0;
  uint32_t ClockTimer::curFrame = 0;
+ uint32_t ClockTimer::start = 0;
 ClockTimer::ClockTimer()
 {
 	delete this;

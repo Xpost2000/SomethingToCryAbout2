@@ -234,6 +234,7 @@ void Game::RunGame(){
 		HandleInput();
 		UpdateGame();
 		DrawGame();
+		std::cout << ClockTimer::returnFramesPerSecond() << std::endl;
 	}
 }
 // Neat little update function
