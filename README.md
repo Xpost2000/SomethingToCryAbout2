@@ -3,7 +3,7 @@ The sequel to SomethingToCryAbout. and definitely better than the original :)
 ## How is it better than the original one??
 - AI is seemingly smarter ( It's definitely more difficult )
 - Less glitchy ( especially since I fixed the timestep issues from the original )
-- Less renderer glitchs.
+- Less renderer glitches.
 - Improved loading performance ( all assests preloaded and used when needed ).
 - Better graphics ( using some OpenGL things like Framebuffers to create some nice post processing effects)
 ### You said it's pretty much complete. How much is missing?
