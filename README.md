@@ -24,7 +24,9 @@ exactly planning anything. I learned from some of the mistakes in the original g
 I made this to practice my OpenGL skills but primarily to make better video games.
 
 The framework can indeed be used outside of developing the game and is ment to be general purpose ( but explicitly 2D,
-since it is OpenGL however. you can modify it to work with a 3D environment ).
+since it is OpenGL however. you can modify it to work with a 3D environment ). The engine sort of like the game had no real
+design plan ( I did everything as I went ) and it really does show since the class interfaces are either semi working or 
+don't do 100% what they should be doing etc.
 
 ## Issues ( That I will manually add to the issues section ) 
   - Oatsframework's window class does not work when explicitly called (default constructor works which delegates) [SIGNIFICANT]
