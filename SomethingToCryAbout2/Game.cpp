@@ -467,9 +467,7 @@ void Game::HandleInput(){
 	input->isKeyPressed(SDL_SCANCODE_SPACE, [&](){
 		player.FireBullet(bullets);
 	});
-	/*
-	float angle = (atan2(input->GetMouseY() - player.GetPosition().y, input->GetMouseX() - player.GetPosition().x ) * 180 / M_PI) / 28.0f;
-	std::cout << "Angle " << angle << std::endl;
+	
+	float angle = (atan2(input->GetMouseY() - 360, input->GetMouseX() - 360 ));
 	player.SetAngle(angle);
-		*/
 	}
