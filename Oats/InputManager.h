@@ -35,6 +35,8 @@ public:
 	// Constructor not needed
 	int GetMouseX() { return coords.x; };
 	int GetMouseY() { return coords.y; };
+	int GetMouseXRel() { return relative_coords.x; }
+	int GetMouseYRel() { return relative_coords.y; }
 	OATS_LIB_API InputManager();
 	OATS_LIB_API ~InputManager();
 	//Update the mouse coordinates and update Keyboard state
@@ -52,5 +54,6 @@ private:
 	// Holds current keyboardState
 	Uint8 *internalKeyState;
 	MouseCoords coords;
+	MouseCoords relative_coords;
 };
 

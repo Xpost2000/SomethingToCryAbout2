@@ -28,6 +28,7 @@ void InputManager::Update(){
 	const Uint8* interalKeyState = SDL_GetKeyboardState(0);
 	internalKeyState = const_cast<Uint8*>(interalKeyState);
 	SDL_GetMouseState((int*)&coords.x, (int*)&coords.y);
+	SDL_GetRelativeMouseState((int*)&relative_coords.x, (int*)&relative_coords.y);
 }
 
 void InputManager::PollEvents(std::function<void(SDL_Event*)> func){
