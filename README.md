@@ -7,8 +7,10 @@ The sequel to SomethingToCryAbout. and definitely better than the original :)
 - Improved loading performance ( all assests preloaded and used when needed ).
 - Better graphics ( using some OpenGL things like Framebuffers to create some nice post processing effects)
 ### You said it's pretty much complete. How much is missing?
+Ok... Maybe I should be more specific. The gameplay aspect is complete. Content wise it's probably
+drier than most deserts right now.
  - 2 / 5 levels (planned to add later on).
- - A main menu ( Again I plan to add pretty soon ).
+ ~~- A main menu ( Again I plan to add pretty soon ).~~
  - Sound ( This is probably the last thing I'll ever do. )
  
 I made this sequel to (hopefully) learn to make better video games.
