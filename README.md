@@ -31,3 +31,4 @@ don't do 100% what they should be doing etc.
 
 ## Issues ( That I will manually add to the issues section ) 
   - Oatsframework's window class does not work when explicitly called (default constructor works which delegates) [SIGNIFICANT]
+  (3/24/18) Don't know why I never updated that. It works and I think it was just some other outside non program related issue that caused it to crash upon calling.
