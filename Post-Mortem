@@ -1,0 +1,16 @@
+My 5th project? First 5 definitely.
+
+This was actually almost fun to play but suffered from the same development
+issues as the first game which were
+
+- Really implusive coding. ( Very little looks like I actually put thought into it )
+- Overusage of inheritance ( I still do this because I've not used Entity-Component Systems yet, but I should seriously consider it )
+- Again little usage of data driven programming which would've been very useful.
+- Lack of content ( I spent too much time programming the basics )
+- Speaking of too much time on the basics, I spent too much time adding unnecessary things to the "framework" as I intended to originally reuse it.
+- The problem with the framework is that it's not flexible and features were mainly added because of the game
+- Speaking of which I didn't listen to the "develop game not engine" mentality ( which there is a pretty fine line towards. )
+- Also lack of art and stuff like that didn't help.
+
+In general this needs a lot of work, but at least it actually runs on my PC properly unlike the first one which I broke accidently
+and haven't reverted any commits cause I was lazy :P
